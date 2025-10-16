@@ -12,4 +12,4 @@ class Tree(Unit):
     Trees will randomly grow on empty tiles adjacent to other trees that are not water tiles.
     """
     def __init__(self, owner=None):
-        super().__init__(unit_type="tree", attack_power=0, defense_power=0, upkeep=1, cost=0, can_move=False, owner=owner)
+        super().__init__(unitType="tree", attackPower=0, defensePower=0, upkeep=1, cost=0, canMove=False, owner=owner)

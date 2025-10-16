@@ -13,12 +13,12 @@ class Structure(Unit):
     """
     def __init__(self, structureType=None, owner=None, numFarms=0):
         if structureType == "capital":
-            super().__init__(unit_type="capital", attack_power=0, defense_power=1, upkeep=0, cost=0, can_move=False, owner=owner)
+            super().__init__(unitType="capital", attackPower=0, defensePower=1, upkeep=0, cost=0, canMove=False, owner=owner)
         elif structureType == "tower1":
-            super().__init__(unit_type="tower1", attack_power=0, defense_power=2, upkeep=1, cost=15, can_move=False, owner=owner)
+            super().__init__(unitType="tower1", attackPower=0, defensePower=2, upkeep=1, cost=15, canMove=False, owner=owner)
         elif structureType == "tower2":
-            super().__init__(unit_type="tower2", attack_power=0, defense_power=3, upkeep=6, cost=35, can_move=False, owner=owner)
+            super().__init__(unitType="tower2", attackPower=0, defensePower=3, upkeep=6, cost=35, canMove=False, owner=owner)
         elif structureType == "farm":
-            super().__init__(unit_type="farm", attack_power=0, defense_power=0, upkeep=-4, cost=12 + numFarms * 2, can_move=False, owner=owner)
+            super().__init__(unitType="farm", attackPower=0, defensePower=0, upkeep=-4, cost=12 + numFarms * 2, canMove=False, owner=owner)
         else:
             raise ValueError("Invalid structure type. Must be 'capital', 'tower1', 'tower2', or 'farm'.")
