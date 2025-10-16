@@ -11,14 +11,14 @@ class Structure(Unit):
     Structures cannot be built on tiles with trees.
     Structures do not move or attack.
     """
-    def __init__(self, structure_type=None, owner=None):
-        if structure_type == "capital":
-            super().__init__(unit_type="capital", attack_power=0, defense_power=2, upkeep=1, cost=0, can_move=False, owner=owner)
-        elif structure_type == "tower1":
-            super().__init__(unit_type="tower1", attack_power=0, defense_power=3, upkeep=2, cost=0, can_move=False, owner=owner)
-        elif structure_type == "tower2":
-            super().__init__(unit_type="tower2", attack_power=0, defense_power=4, upkeep=3, cost=0, can_move=False, owner=owner)
-        elif structure_type == "farm":
-            super().__init__(unit_type="farm", attack_power=0, defense_power=0, upkeep=1, cost=0, can_move=False, owner=owner)
+    def __init__(self, structureType=None, owner=None, numFarms=0):
+        if structureType == "capital":
+            super().__init__(unit_type="capital", attack_power=0, defense_power=1, upkeep=0, cost=0, can_move=False, owner=owner)
+        elif structureType == "tower1":
+            super().__init__(unit_type="tower1", attack_power=0, defense_power=2, upkeep=1, cost=15, can_move=False, owner=owner)
+        elif structureType == "tower2":
+            super().__init__(unit_type="tower2", attack_power=0, defense_power=3, upkeep=6, cost=35, can_move=False, owner=owner)
+        elif structureType == "farm":
+            super().__init__(unit_type="farm", attack_power=0, defense_power=0, upkeep=-4, cost=12 + numFarms * 2, can_move=False, owner=owner)
         else:
             raise ValueError("Invalid structure type. Must be 'capital', 'tower1', 'tower2', or 'farm'.")
