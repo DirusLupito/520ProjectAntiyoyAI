@@ -14,12 +14,12 @@ class Soldier(Unit):
     """
     def __init__(self, tier=1, owner=None):
         if tier == 1:
-            super().__init__(unit_type="soldier_tier1", attack_power=1, defense_power=1, upkeep=2, cost=10, can_move=True, owner=owner)
+            super().__init__(unitType="soldierTier1", attackPower=1, defensePower=2, upkeep=2, cost=10, canMove=True, owner=owner)
         elif tier == 2:
-            super().__init__(unit_type="soldier_tier2", attack_power=2, defense_power=2, upkeep=6, cost=20, can_move=True, owner=owner)
+            super().__init__(unitType="soldierTier2", attackPower=2, defensePower=3, upkeep=6, cost=20, canMove=True, owner=owner)
         elif tier == 3:
-            super().__init__(unit_type="soldier_tier3", attack_power=3, defense_power=3, upkeep=18, cost=30, can_move=True, owner=owner)
+            super().__init__(unitType="soldierTier3", attackPower=3, defensePower=4, upkeep=18, cost=30, canMove=True, owner=owner)
         elif tier == 4:
-            super().__init__(unit_type="soldier_tier4", attack_power=4, defense_power=3, upkeep=36, cost=40, can_move=True, owner=owner)
+            super().__init__(unitType="soldierTier4", attackPower=4, defensePower=4, upkeep=36, cost=40, canMove=True, owner=owner)
         else:
             raise ValueError("Invalid soldier tier. Must be 1, 2, 3, or 4.")
