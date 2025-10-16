@@ -13,5 +13,5 @@ class Unit:
         self.defensePower = defensePower  # Integer, Defense power of the unit
         self.upkeep = upkeep  # Integer, Upkeep cost of the unit
         self.cost = cost  # Integer, Cost to build the unit
-        self.canMove = canMove  # Boolean indicating if the unit can move
+        self.canMove = canMove  # Boolean indicating if the unit can move. Also indicates if a soldier has moved this turn.
         self.owner = owner  # Faction that owns the unit

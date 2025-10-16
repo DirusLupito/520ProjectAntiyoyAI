@@ -286,14 +286,14 @@ class Province:
         All prexisting gravestones turn into normal trees.
         All trees randomly grow onto empty adjacent tiles regardless of province ownership.
         """
-        if not self.active:
-            self.resources = 0
-            return
-        
         income = self.computeIncome()
         self.resources += income
         
         if self.resources < 0:
+            self.resources = 0
+
+        # Inactivity check here so that soldiers still die on inactive provinces
+        if not self.active:
             self.resources = 0
         
         if self.resources == 0:

@@ -32,4 +32,3 @@ class HexTile:
         unit_type = self.unit.unitType if self.unit else "None"
         terrain = "Water" if self.isWater else "Plain"
         return f"HexTile(Owner: {owner_name}, Unit: {unit_type}, Terrain: {terrain})"
-
