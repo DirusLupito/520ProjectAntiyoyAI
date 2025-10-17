@@ -1,4 +1,5 @@
 # Starting point of the Antiyoy AI project program
+from game.Scenario import Scenario
 
 def main():
     """
@@ -8,6 +9,12 @@ def main():
     including the loop for turns and holds the game state data structures.
     """
     print("ASCIIyoy")
+    # Invalid map data in reality, but of the right dimension to
+    # test the printing of a map (4x2 grid of the integer 0).
+    mapData = [[0, 0, 0, 0],
+               [0, 0, 0, 0]]
+    scenario = Scenario(name="debug", mapData=mapData)
+    scenario.printMap()
 
 if __name__ == "__main__":
     main()
