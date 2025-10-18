@@ -37,6 +37,32 @@ class Province:
             self.active = True  # Province is active if it has 2 or more tiles
         self.resources = resources  # Integer, Resources in the province's treasury
         self.faction = faction  # Faction that controls the province
+
+    def placeCapital(self, tiles):
+        """
+        Places a capital unit on one of the provided tiles using the following priority:
+        1. Empty tiles
+        2. Farm tiles
+        3. Any tile in the group
+        Returns the tile where the capital was placed.
+        """
+        # Try to find an empty tile first
+        emptyTiles = [t for t in tiles if t.unit is None]
+        farmTiles = [t for t in tiles if t.unit is not None and t.unit.unitType == "farm"]
+
+        # If we can find an empty tile, use it
+        if emptyTiles:
+            capitalTile = random.choice(emptyTiles)
+        # Otherwise, if we can find a farm tile, use it 
+        elif farmTiles:
+            capitalTile = random.choice(farmTiles)
+        # Otherwise, just pick any tile in the group
+        else:
+            capitalTile = random.choice(tiles)
+
+        # Place capital on the chosen tile
+        capitalTile.unit = Structure(structureType="capital", owner=self.faction)
+        return capitalTile
         
     def addTile(self, tile):
         """
@@ -147,6 +173,11 @@ class Province:
             self.active = True  # Ensure province is marked as active
             # Add the tile to the conquering province if provided
             conqueringProvince.addTile(tile)
+
+            # If this province lost its capital, we need to place a new one
+            capitalExists = any(t.unit is not None and t.unit.unitType == "capital" for t in self.tiles)
+            if not capitalExists:
+                self.placeCapital(self.tiles)
             return
 
         # Province is no longer contiguous, need to split it
@@ -243,23 +274,7 @@ class Province:
                 continue
             
             # Place a new capital unit in the new province
-            # Try to find an empty tile first
-            emptyTiles = [t for t in group if t.unit is None]
-            farmTiles = [t for t in group if t.unit is not None and t.unit.unitType == "farm"]
-
-            # If we can find an empty tile, use it
-            if emptyTiles:
-                capitalTile = random.choice(emptyTiles)
-            # Otherwise, if we can find a farm tile, use it 
-            elif farmTiles:
-                capitalTile = random.choice(farmTiles)
-            # Otherwise, just pick any tile in the group
-            else:
-                capitalTile = random.choice(group)
-
-            # Place capital on the chosen tile
-            capitalTile.unit = Structure(structureType="capital", owner=self.faction)
-            
+            newProvince.placeCapital(group)
             
     def computeIncome(self):
         """
