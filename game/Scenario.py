@@ -133,6 +133,9 @@ class Scenario:
                     line2 += f"___/{row},{col}\\"
                     if col == num_cols - 2:
                         line2 += "___/"
+                # Exception for the 1 column case
+                elif num_cols == 1:
+                    line2 += "\\___/"
             print(line2)
 
         # Print the bottom line

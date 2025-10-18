@@ -11,8 +11,7 @@ def main():
     print("ASCIIyoy")
     # Invalid map data in reality, but of the right dimension to
     # test the printing of a map (2x5 grid of the integer 0).
-    mapData = [[0, 0, 0, 0, 0],
-               [0, 0, 0, 0, 0]]
+    mapData = [[0] * 5 for _ in range(2)]
     scenario = Scenario(name="debug", mapData=mapData)
     scenario.printMap()
 
