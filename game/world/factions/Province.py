@@ -3,6 +3,7 @@ from game.world.factions.Faction import Faction
 from game.world.units.Unit import Unit
 from game.world.units.Structure import Structure
 from game.world.units.Tree import Tree
+from game.Action import Action
 import random
 
 class Province:
@@ -40,15 +41,18 @@ class Province:
 
     def placeCapital(self, tiles):
         """
-        Places a capital unit on one of the provided tiles using the following priority:
+        Creates an action to place a capital unit on one of the provided tiles using the following priority:
         1. Empty tiles
         2. Farm tiles
         3. Any tile in the group
-        Returns the tile where the capital was placed.
+        Returns a tuple with the tile where the capital should be placed and the action.
         """
         # Try to find an empty tile first
         emptyTiles = [t for t in tiles if t.unit is None]
         farmTiles = [t for t in tiles if t.unit is not None and t.unit.unitType == "farm"]
+
+        # Ensures deterministic behavior if the same set of tiles is provided
+        random.seed(len(tiles))
 
         # If we can find an empty tile, use it
         if emptyTiles:
@@ -60,69 +64,176 @@ class Province:
         else:
             capitalTile = random.choice(tiles)
 
-        # Place capital on the chosen tile
-        capitalTile.unit = Structure(structureType="capital", owner=self.faction)
-        return capitalTile
+        # Create action for placing a capital (store previous unit for invertibility)
+        previousState = {"unit": capitalTile.unit}
+        newState = {"unit": Structure(structureType="capital", owner=self.faction)}
         
+        action = Action("tileChange", {
+            "hexCoordinates": (capitalTile.row, capitalTile.col),
+            "newTileState": newState,
+            "previousTileState": previousState,
+            "costOfAction": 0
+        }, isDirectConsequenceOfAnotherAction=True)
+        
+        return capitalTile, [action]
+
     def addTile(self, tile):
         """
-        Adds a tile to the province, and to the tile's owner.
+        Creates actions to add a tile to the province.
         This will also check to see if the tile is adjacent to any other provinces
-        owned by the same faction, and if so, merge those provinces into this one,
-        cleaning up any references to the old provinces.
+        owned by the same faction, and if so, merge those provinces into this one.
+        Returns a list of actions for applying the changes.
+
         Merging provinces is done by adding all tiles from the other province
         to this province, updating those HexTile's owner to this province,
         removing the other province from the faction's list of provinces,
         deleting the capital unit of the other province, 
         and merging the resources of the other province's treasury into this province's treasury.
         """
+        actions = []
+        
         if tile in self.tiles:
-            return  # Tile is already in the province, nothing to do
+            return actions  # Tile is already in the province, nothing to do
+            
         if tile.isWater:
             raise ValueError("Cannot add a water tile to a province.")
+            
+        # Create action for changing tile ownership
+        previousState = {"owner": tile.owner}
+        newState = {"owner": self}
+        
+        action = Action("tileChange", {
+            "hexCoordinates": (tile.row, tile.col),
+            "newTileState": newState,
+            "previousTileState": previousState,
+            "costOfAction": 0
+        }, isDirectConsequenceOfAnotherAction=True)
+        
+        actions.append(action)
+        
+        # Province merging logic 
+        mergeableProvinces = []
+        
+        # Check if the tile belongs to another province of the same faction
         if tile.owner is not None and tile.owner != self and tile.owner.faction == self.faction:
             # This should be impossible if the game logic is correct,
             # but just in case, we handle it gracefully by merging the provinces
-            self.mergeProvinces(tile.owner)
-        self.tiles.append(tile)
-        tile.owner = self
+            mergeableProvinces.append(tile.owner)
+        
         # Check for adjacent provinces owned by the same faction to merge
         for neighbor in tile.neighbors:
-            if neighbor is not None and neighbor.owner is not None and neighbor.owner != self and neighbor.owner.faction == self.faction:
-                self.mergeProvinces(neighbor.owner)
+            if (neighbor is not None and 
+                neighbor.owner is not None and 
+                neighbor.owner != self and 
+                neighbor.owner.faction == self.faction and
+                neighbor.owner not in mergeableProvinces):
+                mergeableProvinces.append(neighbor.owner)
+        
+        # Actually perform the tile addition first
+        self.tiles.append(tile)
+        
+        # Then perform merges (which will generate more actions)
+        for province in mergeableProvinces:
+            merge_actions = self._createMergeActions(province)
+            actions.extend(merge_actions)
             
+        return actions
+
+    def _createMergeActions(self, otherProvince):
+        """
+        Helper method to create actions for merging another province into this one.
+        Returns a list of actions for applying the changes.
+        """
+        actions = []
+        
+        if otherProvince == self:
+            return actions  # Cannot merge a province with itself
+            
+        if otherProvince.faction != self.faction:
+            raise ValueError("Cannot merge provinces controlled by different factions.")
+        
+        # Create actions for changing ownership of tiles
+        for tile in otherProvince.tiles:
+            if tile not in self.tiles:
+                previousState = {"owner": tile.owner}
+                newState = {"owner": self}
+                
+                action = Action("tileChange", {
+                    "hexCoordinates": (tile.row, tile.col),
+                    "newTileState": newState,
+                    "previousTileState": previousState,
+                    "costOfAction": 0
+                }, isDirectConsequenceOfAnotherAction=True)
+                
+                actions.append(action)
+        
+        # Create action for removing the capital unit of the other province, if it exists
+        for tile in otherProvince.tiles:
+            if tile.unit is not None and tile.unit.unitType == "capital":
+                previousState = {"unit": tile.unit}
+                newState = {"unit": None}
+                
+                action = Action("tileChange", {
+                    "hexCoordinates": (tile.row, tile.col),
+                    "newTileState": newState,
+                    "previousTileState": previousState,
+                    "costOfAction": 0
+                }, isDirectConsequenceOfAnotherAction=True)
+
+                actions.append(action)
+                break
+                
+        return actions
+
     def mergeProvinces(self, otherProvince):
         """
-        Merges another province into this one.
+        Merges another province into this one and returns a list of actions.
+
         This involves adding all tiles from the other province
         to this province, updating those HexTile's owner to this province,
         removing the other province from the faction's list of provinces,
         deleting the capital unit of the other province, 
         and merging the resources of the other province's treasury into this province's treasury.
         """
+        # Create the actions first
+        actions = self._createMergeActions(otherProvince)
+        
+        # Now actually perform the merge
         if otherProvince == self:
-            return  # Cannot merge a province with itself
+            return actions
+            
         if otherProvince.faction != self.faction:
             raise ValueError("Cannot merge provinces controlled by different factions.")
+            
+        # Add tiles
         for tile in otherProvince.tiles:
             if tile not in self.tiles:
                 self.tiles.append(tile)
                 tile.owner = self
+                
+        # Merge resources
         self.resources += otherProvince.resources
+        
+        # Remove from faction's provinces list
         if otherProvince in self.faction.provinces:
             self.faction.provinces.remove(otherProvince)
-        # Remove the capital unit of the other province, if it exists
+            
+        # Remove capital
         for tile in otherProvince.tiles:
             if tile.unit is not None and tile.unit.unitType == "capital":
-                tile.unit = None  # Capital is destroyed upon merging
+                tile.unit = None
                 break
-        # Clear the other province's tiles to help with garbage collection
+                
+        # Clear the other province's tiles
         otherProvince.tiles.clear()
         
+        return actions
+
     def removeTile(self, tile, conqueringProvince):
         """
-        Removes a tile from the province, and from the tile's owner.
-        Adds the tile to the conquering province, which is handled in addTile.
+        Creates actions to remove a tile from the province and add it to another province.
+        Returns a list of actions for applying the changes.
+
         This will also check to see if the province is still contiguous,
         and if not, split the province into multiple provinces,
         each of which will come from one of the contiguous groups of tiles
@@ -139,53 +250,84 @@ class Province:
         If removing the tile would result in the province having 0 tiles,
         the entire province is removed instead. 
         """
+        actions = []
+        
         if tile not in self.tiles:
-            return  # Tile is not in this province, nothing to do
+            return actions  # Tile is not in this province, nothing to do
+            
         if conqueringProvince == None:
             raise ValueError("A conquering province must be provided when removing a tile.")
+            
         if conqueringProvince.faction == self.faction:
             raise ValueError("The conquering province must be controlled by a different faction.")
-
-        # Remove the tile from this province
+            
+        # Create action for removing ownership
+        previousState = {"owner": self}
+        newState = {"owner": None}  # Temporarily set to None before conquering province takes it
+        
+        action = Action("tileChange", {
+            "hexCoordinates": (tile.row, tile.col),
+            "newTileState": newState,
+            "previousTileState": previousState,
+            "costOfAction": 0
+        }, isDirectConsequenceOfAnotherAction=True)
+        
+        actions.append(action)
+        
+        # Actually remove the tile
         self.tiles.remove(tile)
         tile.owner = None
-
-        # If province now has 0 tiles, remove it entirely
+        
+        # Handle province with 0 tiles - remove it entirely
         if len(self.tiles) == 0:
             if self in self.faction.provinces:
                 self.faction.provinces.remove(self)
-            conqueringProvince.addTile(tile)
-            return
-
-        # If province now has 1 tile, mark as inactive and reset treasury
+            # Add tile to conquering province and get the resulting actions
+            conquerActions = conqueringProvince.addTile(tile)
+            actions.extend(conquerActions)
+            return actions
+            
+        # Handle province with 1 tile - mark as inactive and reset treasury
         if len(self.tiles) == 1:
             self.active = False
             self.resources = 0
-            conqueringProvince.addTile(tile)
-            return
-
-        # Check if province is still contiguous after removing the tile
-        # Use BFS to find all contiguous groups of tiles
+            # Add tile to conquering province and get the resulting actions
+            conquerActions = conqueringProvince.addTile(tile)
+            actions.extend(conquerActions)
+            return actions
+            
+        # Check if province is still contiguous
+        # Uses BFS to find all contiguous groups of tiles
         contiguousGroups = self.findContiguousGroups()
-
+        
         # If there's only one group, the province is still contiguous
         if len(contiguousGroups) == 1:
-            self.active = True  # Ensure province is marked as active
-            # Add the tile to the conquering province if provided
-            conqueringProvince.addTile(tile)
-
+            self.active = True
+            
+            # Add tile to conquering province and get the resulting actions
+            conquerActions = conqueringProvince.addTile(tile)
+            actions.extend(conquerActions)
+            
             # If this province lost its capital, we need to place a new one
             capitalExists = any(t.unit is not None and t.unit.unitType == "capital" for t in self.tiles)
             if not capitalExists:
-                self.placeCapital(self.tiles)
-            return
-
-        # Province is no longer contiguous, need to split it
+                _, capital_actions = self.placeCapital(self.tiles)
+                actions.extend(capital_actions)
+            return actions
+            
+        # Province needs to be split
+        split_actions = self._splitProvinceActions(contiguousGroups)
+        actions.extend(split_actions)
+        
+        # Actually perform the split
         self.splitProvince(contiguousGroups)
-
-        # Add the tile to the conquering province
-        conqueringProvince.addTile(tile)
-
+        
+        # Add tile to conquering province and get the resulting actions
+        conquerActions = conqueringProvince.addTile(tile)
+        actions.extend(conquerActions)
+        
+        return actions
+    
     def findContiguousGroups(self):
         """
         Find all contiguous groups of tiles in this province using BFS.
@@ -222,60 +364,76 @@ class Province:
 
         return contiguousGroups
 
-    def splitProvince(self, contiguousGroups):
+    def _splitProvinceActions(self, contiguousGroups):
         """
-        Split this province into multiple provinces based on contiguous groups.
+        Helper method to create actions for splitting a province.
         The largest group keeps the original province data (resources, capital).
         Other groups form new provinces with new capitals and 0 resources.
+
+        Returns a list of actions for applying the changes.
         """
-
-        # Find the largest group - it will keep the original province
+        actions = []
+        
+        # Find the largest group
         largestGroup = max(contiguousGroups, key=len)
-
-        # Update this province to only contain the largest group
-        self.tiles = largestGroup
-        for tile in largestGroup:
-            tile.owner = self
-
-        # Create new provinces for the other groups
+        
+        # Create actions for all groups except the largest
         for group in contiguousGroups:
             if group == largestGroup:
-                continue  # Skip the largest group as it's handled above
-            
-            # Create a new province
+                continue
+                
+            # Set province as active if it has 2+ tiles
             newProvince = Province(tiles=[], resources=0, faction=self.faction)
-            self.faction.provinces.append(newProvince)
-
-            # Add tiles to the new province
-            for tile in group:
-                newProvince.tiles.append(tile)
-                tile.owner = newProvince
-
-            # Set the new province as active if it has 2 or more tiles
             newProvince.active = len(group) >= 2
-
+            
+            # Create actions for inactive provinces (1 tile)
             # If the new province is inactive (1 tile), 
             # rather than place a capital, we need to either
             # delete or transform the unit on that tile
             if not newProvince.active:
                 singleTile = group[0]
+                
                 if singleTile.unit is not None and singleTile.unit.unitType == "capital":
                     # If the single tile has a capital, turn it into a tree
-                    singleTile.unit = Tree(owner=self.faction)
+                    previousState = {"unit": singleTile.unit}
+                    newState = {"unit": Tree(owner=self.faction)}
+                    
+                    action = Action("tileChange", {
+                        "hexCoordinates": (singleTile.row, singleTile.col),
+                        "newTileState": newState,
+                        "previousTileState": previousState,
+                        "costOfAction": 0
+                    }, isDirectConsequenceOfAnotherAction=True)
+                    
+                    actions.append(action)
+                    
                 # If it has a tower or farm, just remove it
                 elif singleTile.unit is not None and (singleTile.unit.unitType == "tower1" or 
-                                                      singleTile.unit.unitType == "tower2" or 
-                                                      singleTile.unit.unitType == "farm"):
-                    singleTile.unit = None
-                    # If it has a soldier or tree, leave it as is
-                    # ... no code needed here
-
-                # Skip placing a capital for inactive provinces
-                continue
-            
-            # Place a new capital unit in the new province
-            newProvince.placeCapital(group)
-            
+                                                     singleTile.unit.unitType == "tower2" or 
+                                                     singleTile.unit.unitType == "farm"):
+                    # Remove tower or farm
+                    previousState = {"unit": singleTile.unit}
+                    newState = {"unit": None}
+                    
+                    action = Action("tileChange", {
+                        "hexCoordinates": (singleTile.row, singleTile.col),
+                        "newTileState": newState,
+                        "previousTileState": previousState,
+                        "costOfAction": 0
+                    }, isDirectConsequenceOfAnotherAction=True)
+                    
+                    actions.append(action)
+                    
+                # If it has a soldier or tree, leave it as is
+                # ... no code needed here
+                    
+            else:
+                # For active provinces, place a new capital
+                _, capital_actions = newProvince.placeCapital(group)
+                actions.extend(capital_actions)
+                
+        return actions
+    
     def computeIncome(self):
         """
         Computes the income of the province based on its tiles and units.
@@ -326,8 +484,14 @@ class Province:
         for tile in self.tiles:
             if tile.unit is not None and tile.unit.unitType == "gravestone":
                 tile.unit = Tree(owner=self.faction)
-        
-        # Randomly grow trees onto empty adjacent tiles
+
+        # Handle random tree growth
+        self._growTrees()
+
+    def _growTrees(self):
+        """
+        Handles random tree growth.
+        """
         for tile in self.tiles:
             if tile.unit is not None and tile.unit.unitType == "tree":
                 for neighbor in tile.neighbors:

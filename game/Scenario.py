@@ -1,3 +1,5 @@
+from game.Action import Action
+
 class Scenario:
     """
     Represents a game scenario with its settings and configurations.
@@ -141,3 +143,109 @@ class Scenario:
         for col in range(1, num_cols, 2):
             print("\\___/   ", end="")
         print()
+
+    def applyAction(self, action):
+        """
+        Applies the given action to the scenario,
+        mutating the scenario's state accordingly.
+        The action should be an instance of the Action class.
+        See the documentation of the Action class for details.
+
+        Some actions, such as moving a unit, may result in
+        yet more actions being performed, like a capital
+        spawning if a province loses its capital tile
+        or is split up. These additional actions are handled
+        within this method as well, and they are returned
+        so that a comprehensive list of all actions performed
+        as a result of this action can be obtained.
+        """
+        if not isinstance(action, Action):
+            raise ValueError("Invalid action type.")
+        
+        consequenceActions = []
+        
+        if action.actionType == "moveUnit":
+            # Extract the coordinates
+            initRow, initCol = action.data["initialHexCoordinates"]
+            finalRow, finalCol = action.data["finalHexCoordinates"]
+            
+            # Get the tiles
+            initTile = self.mapData[initRow][initCol]
+            finalTile = self.mapData[finalRow][finalCol]
+            
+            # Check if this move involves capturing a tile
+            isCaptureMove = False
+            if finalTile.owner is not None and initTile.owner is not None:
+                if finalTile.owner.faction != initTile.owner.faction:
+                    isCaptureMove = True
+            
+            # Update the tiles
+            finalTile.unit = initTile.unit
+            initTile.unit = None
+            
+            # Handle income from chopping trees
+            if action.data["incomeFromMove"] != 0 and initTile.owner:
+                # Can only get income from cutting down a tree if
+                # the tree belongs to your own province
+                if finalTile.owner == initTile.owner:
+                    finalTile.owner.resources += action.data["incomeFromMove"]
+            
+            # Handle tile capture if needed
+            if isCaptureMove:
+                # Get the conquering province (the province that owns the unit)
+                conqueringProvince = initTile.owner
+                
+                # Get the province that's losing a tile
+                losingProvince = finalTile.owner
+                
+                # Remove the tile from the losing province and add to conquering province
+                captureActions = losingProvince.removeTile(finalTile, conqueringProvince)
+                
+                # Apply each capture-related action
+                for captureAction in captureActions:
+                    # Apply the action
+                    moreConsequences = self.applyAction(captureAction)
+                    # Add this action and any further consequences to our list
+                    consequenceActions.append(captureAction)
+                    consequenceActions.extend(moreConsequences)
+
+            # If the final tile has no province, then we only need to add
+            # the tile to the conquering province without removing it from anywhere
+            elif finalTile.owner is None:
+                # Get the conquering province (the province that owns the unit)
+                conqueringProvince = initTile.owner
+
+                # Add the tile to the conquering province
+                captureActions = conqueringProvince.addTile(finalTile)
+
+                # Apply each capture-related action
+                for captureAction in captureActions:
+                    # Apply the action
+                    moreConsequences = self.applyAction(captureAction)
+                    # Add this action and any further consequences to our list
+                    consequenceActions.append(captureAction)
+                    consequenceActions.extend(moreConsequences)
+                    
+        elif action.actionType == "tileChange":
+            row, col = action.data["hexCoordinates"]
+            tile = self.mapData[row][col]
+            
+            # Apply tile state changes
+            if "unit" in action.data["newTileState"]:
+                tile.unit = action.data["newTileState"]["unit"]
+            
+            if "owner" in action.data["newTileState"]:
+                tile.owner = action.data["newTileState"]["owner"]
+                
+            # Update resources if this action has a cost
+            if action.data["costOfAction"] != 0:
+                faction = self.getFactionToPlay()
+                if faction:
+                    # Find the province that should be charged
+                    for province in faction.provinces:
+                        if tile in province.tiles:
+                            province.resources -= action.data["costOfAction"]
+                            break
+    
+        # Return all the consequence actions so they can be tracked
+        return consequenceActions
