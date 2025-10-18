@@ -1,3 +1,5 @@
+import pdb
+
 class Scenario:
     """
     Represents a game scenario with its settings and configurations.
@@ -19,44 +21,44 @@ class Scenario:
         # mapData is a 2D array of HexTile objects representing the map.
         # We do a simple map between the 2D "rectangular" array and
         # the hexagonal grid by using offset coordinates.
-        # So for example, consider the following 2 by 2 grid:
+        # So for example, consider the following 2 by 5 grid:
         # ASCII representation of hex grid:
         #     ___     ___     ___
-        #    /0,0\___/2,0\___/4,0\
-        #    \___/1,0\___/3,0\___/
-        #    /0,1\___/2,1\___/4,1\
-        #    \___/1,1\___/3,1\___/
+        #    /0,0\___/0,2\___/0,4\
+        #    \___/0,1\___/0,3\___/
+        #    /1,0\___/1,2\___/1,4\
+        #    \___/1,1\___/1,3\___/
         #        \___/   \___/
         #            
         # In this case, mapData[0][0] is hex tile (0,0),
-        # mapData[0][1] is hex tile (1,0), and so on.
+        # mapData[0][1] is hex tile (0,1), and so on.
         # Basically, if we label columns of the hexagonal grid as "q" 
         # and row as "r", then the hex tile at (r, q) is stored in
         # mapData[r][q].
         # 
         # Due to how hexagons are arranged, rows may rise and fall a 
         # bit, but columns remain straight (see the diagram above).
-        # Also note that if 1,0 were above 0,0 rather than below it,
+        # Also note that if 0,1 were above 0,0 rather than below it,
         # the neighbor relationships would be different, 
         # so it's important to understand that we start at 0,0
-        # with 0,0 being raised above 1,0.
+        # with 0,0 being raised above 0,1.
         # 
         # With this in mind, we can realize that if we have
         # the i,j hex tile in mapData[i][j], and we want to find
         # its neighbors, we can do so as follows:
         # - If j is even (0, 2, 4, ...):
-        #   - North:     (i, j-1)
-        #   - Northeast: (i+1, j-1)
-        #   - Southeast: (i+1, j)
-        #   - South:     (i, j+1)
-        #   - Southwest: (i-1, j)
+        #   - North:     (i-1, j)
+        #   - Northeast: (i-1, j+1)
+        #   - Southeast: (i, j+1)
+        #   - South:     (i+1, j)
+        #   - Southwest: (i, j-1)
         #   - Northwest: (i-1, j-1)
         # - If j is odd (1, 3, 5, ...):
-        #   - North:     (i, j-1)
-        #   - Northeast: (i+1, j)
+        #   - North:     (i-1, j)
+        #   - Northeast: (i, j+1)
         #   - Southeast: (i+1, j+1)
-        #   - South:     (i, j+1)
-        #   - Southwest: (i-1, j+1)
+        #   - South:     (i+1, j)
+        #   - Southwest: (i, j-1)
         #   - Northwest: (i-1, j)
         
         self.mapData = mapData if mapData is not None else []
@@ -85,57 +87,56 @@ class Scenario:
     def printMap(self):
         """
         Prints the board state as an ASCII art picture.
-        For example, the following would represent a 4x2 grid:
+        For example, the following would represent a 2x5 grid:
              ___     ___     ___
-            /0,0\___/2,0\___/4,0\
-            \___/1,0\___/3,0\___/
-            /0,1\___/2,1\___/4,1\
-            \___/1,1\___/3,1\___/
+            /0,0\___/0,2\___/0,4\
+            \___/0,1\___/0,3\___/
+            /1,0\___/1,2\___/1,4\
+            \___/1,1\___/1,3\___/
                 \___/   \___/
         """
-        # doesn't work
-        # if not self.mapData:
-        #     print("Empty map")
-        #     return
+        if not self.mapData:
+            print("Empty map")
+            return
 
-        # # Determine dimensions
-        # num_rows = len(self.mapData)
-        # max_cols = max(len(row) for row in self.mapData) if num_rows > 0 else 0
+        # Determine dimensions
+        num_rows = len(self.mapData)
+        num_cols = max(len(row) for row in self.mapData) if num_rows > 0 else 0
 
-        # # Print the top line
-        # print("     ", end="")
-        # for col in range(0, max_cols, 2):
-        #     print("___     ", end="")
-        # print()
+        # Print the top line
+        print("     ", end="")
+        for col in range(0, num_cols, 2):
+            print("___     ", end="")
+        print()
 
-        # # Print the hexagonal grid
-        # for row in range(num_rows):
-        #     # Top half of even columns and connections to odd columns
-        #     line1 = "    "
-        #     for col in range(max_cols):
-        #         if col % 2 == 0:  # Even column
-        #             if col < len(self.mapData[row]):
-        #                 line1 += f"/{col},{row}\\___"
-        #             else:
-        #                 line1 += "/   \\___"
-        #         else:  # Odd column
-        #             if col < len(self.mapData[row]):
-        #                 line1 += f"/{col},{row}\\"
-        #             else:
-        #                 line1 += "/   \\"
-        #     print(line1)
+            
 
-        #     # Bottom half of hexagons
-        #     line2 = "    "
-        #     for col in range(max_cols):
-        #         if col % 2 == 0:
-        #             line2 += "\\___/"
-        #         else:
-        #             line2 += "___/"
-        #     print(line2)
+        # Print the hexagonal grid
+        for row in range(num_rows):
+            # Top half of even columns and connections to odd columns
+            line1 = "    "
+            for col in range(num_cols):
+                if col % 2 == 0:  # Even column
+                    line1 += f"/{row},{col}\\"
+                    if col + 1 < len(self.mapData[row]):
+                        line1 += "___"
+                    if row > 0 and col == num_cols - 2:
+                        line1 += "/"
+            print(line1)
 
-        # # Print the bottom line
-        # print("        ", end="")
-        # for col in range(1, max_cols, 2):
-        #     print("\\___/   ", end="")
-        # print()
+            # Bottom half of hexagons
+            line2 = "    "
+            for col in range(num_cols):
+                if col % 2 == 1:  # Odd column
+                    if col == 1:
+                        line2 += "\\"
+                    line2 += f"___/{row},{col}\\"
+                    if col == num_cols - 2:
+                        line2 += "___/"
+            print(line2)
+
+        # Print the bottom line
+        print("        ", end="")
+        for col in range(1, num_cols, 2):
+            print("\\___/   ", end="")
+        print()
