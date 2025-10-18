@@ -7,12 +7,15 @@ class HexTile:
     If no province controls the tile, the owner is None.
     A tile has a unit on it, which can either represent a soldier of some sort,
     a tree of some sort, or a building of some sort, or be None if the tile is empty.
+    A tile knows where it is in a Scenario's mapData via its position in that 2D.
     
     If the tile is a water tile, it cannot have an owner or a unit.
     Otherwise, if it is a plain tile, it can have an owner and a unit.
     These are the only two types of terrain for now.
     """
-    def __init__(self, neighbors=None, owner=None, unit=None, isWater=False):
+    def __init__(self, row, col, neighbors=None, owner=None, unit=None, isWater=False):
+        self.row = row
+        self.col = col
         # List of 6 neighbors
         # Index 0: northern neighbor,
         # Index 1: northeastern neighbor,
