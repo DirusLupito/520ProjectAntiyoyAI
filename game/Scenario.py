@@ -1,5 +1,3 @@
-import pdb
-
 class Scenario:
     """
     Represents a game scenario with its settings and configurations.
