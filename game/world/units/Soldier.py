@@ -13,6 +13,7 @@ class Soldier(Unit):
     except for tier 4 soldiers which can destroy each other.
     """
     def __init__(self, tier=1, owner=None):
+        self.tier = tier
         if tier == 1:
             super().__init__(unitType="soldierTier1", attackPower=1, defensePower=2, upkeep=2, cost=10, canMove=True, owner=owner)
         elif tier == 2:
