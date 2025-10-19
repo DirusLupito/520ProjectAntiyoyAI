@@ -1,5 +1,6 @@
 # Starting point of the Antiyoy AI project program
 from game.Scenario import Scenario
+from game.scenarioGenerator import generateRandomScenario
 from game.world.factions.Faction import Faction
 
 def main():
@@ -10,10 +11,6 @@ def main():
     including the loop for turns and holds the game state data structures.
     """
     print("ASCIIyoy")
-    # Invalid map data in reality, but of the right dimension to
-    # test the printing of a map (2x5 grid of the integer 0).
-    mapData = [[0] * 5 for _ in range(2)]
-    scenario = Scenario(name="debug", mapData=mapData)
     dimension = 10
     targetNumberOfLandTiles = 60
     initialProvinceSize = 2
@@ -21,9 +18,9 @@ def main():
     faction2 = Faction(name="Faction 2", color="Blue")
     factions = [faction1, faction2]
     randomSeed = 2
-    scenario2 = scenario.generateRandomScenario(dimension, targetNumberOfLandTiles, factions, initialProvinceSize, randomSeed)
-    scenario2.printMap()
-    scenario2.printMapWithDetails()
+    scenario = generateRandomScenario(dimension, targetNumberOfLandTiles, factions, initialProvinceSize, randomSeed)
+    scenario.printMap()
+    scenario.printMapWithDetails()
 
 
 if __name__ == "__main__":
