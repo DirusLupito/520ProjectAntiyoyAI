@@ -1,5 +1,6 @@
 # Starting point of the Antiyoy AI project program
 from game.Scenario import Scenario
+from game.world.factions.Faction import Faction
 
 def main():
     """
@@ -13,7 +14,17 @@ def main():
     # test the printing of a map (2x5 grid of the integer 0).
     mapData = [[0] * 5 for _ in range(2)]
     scenario = Scenario(name="debug", mapData=mapData)
-    scenario.printMap()
+    dimension = 10
+    targetNumberOfLandTiles = 60
+    initialProvinceSize = 2
+    faction1 = Faction(name="Faction 1", color="Red")
+    faction2 = Faction(name="Faction 2", color="Blue")
+    factions = [faction1, faction2]
+    randomSeed = 2
+    scenario2 = scenario.generateRandomScenario(dimension, targetNumberOfLandTiles, factions, initialProvinceSize, randomSeed)
+    scenario2.printMap()
+    scenario2.printMapWithDetails()
+
 
 if __name__ == "__main__":
     main()
