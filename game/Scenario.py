@@ -330,132 +330,188 @@ class Scenario:
 
         return Action(actionType="moveUnit", data=actionData)
     
-    def buildUnitOnTile(self, row, col, unit, province):
+    def getBuildableUnitsOnTile(self, row, col, province):
         """
-        Builds the given unit on the specified tile.
-        Returns an Action instance representing this tile change,
-        which can be used to invert the action later if needed.
+        Returns a list of unitType strings that are valid for construction
+        on the specified tile for the given province.
 
-        Errors are raised if the build is invalid, such as:
-        - Tile is water
-        - Tile already has a unit, with some exceptions
-          a) If a soldier is being built on top of a valid merge target
-             (another soldier of the same faction where the sum of tiers is <= 4)
-          b) If a soldier is being built on top of a tree (chopping down the tree
-             and consuming the soldier's move for the turn)
-         - Tile is not owned by the province provided, except if
-           the move is to build a soldier on a tile which is a valid
-           capture target for the soldier of that level (it must be directly
-           adjacent to a tile owned by the province, and neither
-           the target tile nor any neighboring tiles owned by the same
-           province as the target tile can have units with defensePower
-           greater than the soldier's attackPower)
-         - Any building is being placed on a tile with a unit already on it
-           except for placing a tower2 on top of a tower1
-        - Province does not have enough resources to build the unit
+        Valid unitTypes include: "soldierTier1", "soldierTier2", "soldierTier3", "soldierTier4",
+                                 "farm", "tower1", "tower2"
+
+        Rules for building:
+        - Cannot build on water tiles
+        - Province must have enough resources
+        - Farms can only be built adjacent to a capital or another farm
+        - Soldiers can be built on enemy tiles if conditions are met
+            a) Tile is adjacent to a tile owned by the province
+            b) Neither the target tile nor any neighboring tiles owned by the same province
+               as the target tile have any units with a unit possessing a
+               defensePower strictly greater than (>) the attackPower
+               of the soldier attempting to be built there.
+        - Units cannot be built on tiles with other units, except:
+            a) Soldiers can be built on trees (chopping them down)
+            b) Soldiers can merge with other soldiers of the same faction
+               if their combined tier <= 4
+            c) Tower2 can be built on top of Tower1
+        - Otherwise, can only build on empty tiles owned by the province
         """
+        buildable_units = []
+
         # Validate coordinates
         if not (0 <= row < len(self.mapData)) or not (0 <= col < len(self.mapData[row])):
-            raise ValueError("Invalid hex coordinates.")
-        
+            return buildable_units  # Empty list if coordinates are invalid
+
         tile = self.mapData[row][col]
-        
-        # Validate that the tile is not water
+
+        # Cannot build on water tiles
         if tile.isWater:
-            raise ValueError("Cannot build on water tiles.")
-        
-        # Validate that the province has enough resources
-        if province.resources < unit.cost:
-            raise ValueError("Province does not have enough resources to build the unit.")
-        
+            return buildable_units
+
+        # Check if province owns the tile
+        if tile.owner == province:
+            # Check what's on the tile
+            if tile.unit is None:
+                # Empty tile - can build any unit if resources permit
+                if province.resources >= 10:
+                    buildable_units.append("soldierTier1")
+                if province.resources >= 20:
+                    buildable_units.append("soldierTier2")
+                if province.resources >= 30:
+                    buildable_units.append("soldierTier3")
+                if province.resources >= 40:
+                    buildable_units.append("soldierTier4")
+
+                # For farms, check if adjacent to capital or farm
+                can_build_farm = False
+                for neighbor in tile.neighbors:
+                    if (neighbor is not None and 
+                        neighbor.owner == province and 
+                        neighbor.unit is not None and 
+                        (neighbor.unit.unitType == "capital" or neighbor.unit.unitType == "farm")):
+                        can_build_farm = True
+                        break
+
+                if can_build_farm and province.resources >= 12:
+                    # Calculate farm cost based on existing farms
+                    farm_count = sum(1 for t in province.tiles if t.unit is not None and t.unit.unitType == "farm")
+                    farm_cost = 12 + farm_count * 2
+                    if province.resources >= farm_cost:
+                        buildable_units.append("farm")
+
+                if province.resources >= 15:
+                    buildable_units.append("tower1")
+
+                if province.resources >= 35:
+                    buildable_units.append("tower2")
+
+            elif tile.unit.unitType == "tower1" and province.resources >= 35:
+                # Can upgrade tower1 to tower2
+                buildable_units.append("tower2")
+
+            elif tile.unit.unitType == "tree":
+                # Can build soldiers on trees
+                if province.resources >= 7:  # 10 - 3 (income from tree)
+                    buildable_units.append("soldierTier1")
+                if province.resources >= 17:  # 20 - 3
+                    buildable_units.append("soldierTier2")
+                if province.resources >= 27:  # 30 - 3
+                    buildable_units.append("soldierTier3")
+                if province.resources >= 37:  # 40 - 3
+                    buildable_units.append("soldierTier4")
+
+            elif isinstance(tile.unit, Soldier):
+                # Check if we can merge with this soldier
+                existing_tier = tile.unit.tier
+                for tier in range(1, 5):
+                    if existing_tier + tier <= 4 and province.resources >= tier * 10:
+                        buildable_units.append(f"soldierTier{tier}")
+
+        else:
+            # For tiles not owned by the province, we can only build soldiers as capture
+            # The tile must be adjacent to a tile owned by the province
+            is_adjacent_to_province = False
+            for neighbor in tile.neighbors:
+                if neighbor is not None and neighbor.owner == province:
+                    is_adjacent_to_province = True
+                    break
+
+            if not is_adjacent_to_province:
+                return buildable_units
+
+            # Check defensePower conditions
+            max_defense_power = tile.unit.defensePower if tile.unit is not None else 0
+            for neighbor in tile.neighbors:
+                if neighbor is not None and neighbor.owner == tile.owner and neighbor.unit is not None:
+                    if neighbor.unit.defensePower > max_defense_power:
+                        max_defense_power = neighbor.unit.defensePower
+
+            # Add soldier tiers that can capture this tile
+            for tier in range(1, 5):
+                attack_power = tier
+                if attack_power > max_defense_power and province.resources >= tier * 10:
+                    buildable_units.append(f"soldierTier{tier}")
+
+        return buildable_units
+
+    def buildUnitOnTile(self, row, col, unitType, province):
+        """
+        Builds a unit of the specified type on the given tile.
+        Returns an Action instance representing this tile change,
+        or raises an error if the build is invalid.
+
+        Delegates validation of whether the unit can be built
+        on the specified tile to getBuildableUnitsOnTile.
+        """
+        # Get all buildable units for this tile
+        buildable_units = self.getBuildableUnitsOnTile(row, col, province)
+
+        # Check if the requested unitType is buildable
+        if unitType not in buildable_units:
+            raise ValueError(f"Cannot build {unitType} on the specified tile.")
+
+        tile = self.mapData[row][col]
+
+        # Create the appropriate unit object based on unitType
+        if unitType.startswith("soldier"):
+            tier = int(unitType[-1])
+            unit = Soldier(tier=tier, owner=province.faction)
+        elif unitType == "farm":
+            farm_count = sum(1 for t in province.tiles if t.unit is not None and t.unit.unitType == "farm")
+            unit = Structure(structureType="farm", owner=province.faction, numFarms=farm_count)
+        elif unitType == "tower1":
+            unit = Structure(structureType="tower1", owner=province.faction)
+        elif unitType == "tower2":
+            unit = Structure(structureType="tower2", owner=province.faction)
+        else:
+            raise ValueError(f"Unknown unit type: {unitType}")
+
         # Prepare previous state for inversion
         previousTileState = {
             "unit": tile.unit,
             "owner": tile.owner
         }
-        
+
+        # Calculate cost of action
         costOfAction = unit.cost
-        
-        # Validate that the province owns the tile or it's a valid capture target
-        if tile.owner != province:
-            # Check if it's a valid capture target for a soldier
-            if not (isinstance(unit, Soldier)):
-                raise ValueError("Tile is not owned by the province and unit is not a soldier.")
-            # Check if the tile is adjacent to a tile owned by the province
-            isAdjacentToProvince = False
-            for neighbor in tile.neighbors:
-                if neighbor is not None and neighbor.owner == province:
-                    isAdjacentToProvince = True
-                    break
-            if not isAdjacentToProvince:
-                raise ValueError("Tile is not owned by the province and is not adjacent to any tile owned by the province.")
-            # Check defensePower conditions
-            maxDefensePowerOfNeighbors = tile.unit.defensePower if tile.unit is not None else 0
-            for neighbor in tile.neighbors:
-                if neighbor is not None and neighbor.owner == tile.owner and neighbor.unit is not None:
-                    if neighbor.unit.defensePower > maxDefensePowerOfNeighbors:
-                        maxDefensePowerOfNeighbors = neighbor.unit.defensePower
-            if maxDefensePowerOfNeighbors >= unit.attackPower:
-                raise ValueError("Tile or its neighboring tiles have units with defensePower greater than or equal to the soldier's attackPower.")
-            
-            # At this point, we know it's a valid capture target
-            actionData = {
-                "hexCoordinates": (row, col),
-                "newTileState": {
-                    "unit": unit,
-                    "owner": province
-                },
-                "previousTileState": previousTileState,
-                "costOfAction": costOfAction
-            }
 
-            return Action(actionType="tileChange", data=actionData)
-
-        # If we reach here, the province owns the tile
-        # Handle placing units on tiles with existing units
-        if tile.unit is not None and isinstance(tile.unit, Soldier) and unit is not None and isinstance(unit, Soldier):
-            # Check if they can be merged
-            if unit.tier + tile.unit.tier <= 4:
-                # Create the new merged soldier
-                newSoldier = Soldier(tier=unit.tier + tile.unit.tier, owner=unit.owner)
-                newTileState = {
-                    "unit": newSoldier,
-                    "owner": province
-                }
-            else:
-                raise ValueError("Cannot build soldier: merging with existing soldier would exceed tier 4.")
-        elif tile.unit is not None and isinstance(tile.unit, Tree) and unit is not None and isinstance(unit, Soldier):
-            # Building a soldier on top of a tree in the same province as the soldier will chop it down,
-            # thereby reducing the cost of the action by 3 (income from chopping the tree)
-            newTileState = {
-                "unit": unit,
-                "owner": province
-            }
+        # Special cases for cost adjustment
+        if isinstance(tile.unit, Tree) and isinstance(unit, Soldier) and tile.owner == province:
             costOfAction -= 3  # Reduce cost by 3 for chopping the tree
-        elif tile.unit is not None and tile.unit.unitType == "tower1" and unit is not None and unit.unitType == "tower2":
-            # Upgrading tower1 to tower2
-            newTileState = {
-                "unit": unit,
-                "owner": province
-            }
-        elif tile.unit is not None:
-            # If the tile already has a unit and none of the special cases apply, raise an error
-            raise ValueError("Cannot build unit: tile already has a unit.")
-        else:
-            # Default case, no existing unit on tile
-            newTileState = {
-                "unit": unit,
-                "owner": province
-            }
 
-            
+        # Prepare the new tile state
+        newTileState = {
+            "unit": unit,
+            "owner": province
+        }
+
+        # Create and return the action
         actionData = {
             "hexCoordinates": (row, col),
             "newTileState": newTileState,
             "previousTileState": previousTileState,
             "costOfAction": costOfAction
         }
-        
+
         return Action(actionType="tileChange", data=actionData)
         
 
