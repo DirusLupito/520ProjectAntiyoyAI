@@ -13,11 +13,11 @@ class Structure(Unit):
     """
     def __init__(self, structureType=None, owner=None, numFarms=0):
         if structureType == "capital":
-            super().__init__(unitType="capital", attackPower=0, defensePower=1, upkeep=0, cost=0, canMove=False, owner=owner)
+            super().__init__(unitType="capital", attackPower=0, defensePower=2, upkeep=0, cost=0, canMove=False, owner=owner)
         elif structureType == "tower1":
-            super().__init__(unitType="tower1", attackPower=0, defensePower=2, upkeep=1, cost=15, canMove=False, owner=owner)
+            super().__init__(unitType="tower1", attackPower=0, defensePower=3, upkeep=1, cost=15, canMove=False, owner=owner)
         elif structureType == "tower2":
-            super().__init__(unitType="tower2", attackPower=0, defensePower=3, upkeep=6, cost=35, canMove=False, owner=owner)
+            super().__init__(unitType="tower2", attackPower=0, defensePower=4, upkeep=6, cost=35, canMove=False, owner=owner)
         elif structureType == "farm":
             super().__init__(unitType="farm", attackPower=0, defensePower=0, upkeep=-4, cost=12 + numFarms * 2, canMove=False, owner=owner)
         else:
