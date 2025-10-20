@@ -20,8 +20,9 @@ def main():
     factions = [faction1, faction2]
     randomSeed = 2
     scenario = generateRandomScenario(dimension, targetNumberOfLandTiles, factions, initialProvinceSize, randomSeed)
-    scenario.printMap()
-    scenario.printMapWithDetails()
+    scenario.displayMap()
+    # Keeps track of all actions taken in the turn for potential undo
+    actions = []
     print(f"The faction to play is {scenario.getFactionToPlay().name}, with color {scenario.getFactionToPlay().color}")
     print(f"This faction has {len(scenario.getFactionToPlay().provinces)} province(s).")
     for i, province in enumerate(scenario.getFactionToPlay().provinces):
@@ -41,21 +42,51 @@ def main():
         itemNumber = int(input("Enter 0 for no unit, or the item number to build that unit: "))
         if itemNumber > 0 and itemNumber <= len(unitTypes):
             selectedUnitType = unitTypes[itemNumber - 1]
-            actions = scenario.buildUnitOnTile(row, col, selectedUnitType, province)
-            for action in actions:
+            currActionIndex = len(actions)
+            actions.extend(scenario.buildUnitOnTile(row, col, selectedUnitType, province))
+            latestActions = actions[currActionIndex:]
+            for action in latestActions:
                 scenario.applyAction(action, province)
             print(f"Built {selectedUnitType} on tile ({row}, {col}).")
         else:
             print("No unit built.")
         print(f"    Province {i+1} has {len(province.tiles)} tiles and {province.resources} resources. Its income per turn is {province.computeIncome()}.")
-        scenario.printMapWithDetails()
-        # undo the actions by applying their inverses in reverse order
-        for action in reversed(actions):
-            inverseAction = action.invert()
-            scenario.applyAction(inverseAction, province)
-        print(f"    After undo, Province {i+1} has {len(province.tiles)} tiles and {province.resources} resources. Its income per turn is {province.computeIncome()}.")
+        numUnitsWhichCanMove = sum(1 for tile in province.tiles if tile.unit and tile.unit.canMove and tile.unit.owner == province.faction)
+        print(f"    Province {i+1} has {numUnitsWhichCanMove} unit(s) that can move.")
+        scenario.displayMap()
+        for _ in range(numUnitsWhichCanMove):
+            moveInput = input("    Enter move command as initialRow,initialCol->finalRow,finalCol (or 'done' to finish moves): ")
+            if moveInput.lower() == 'done':
+                break
+            initialPart, finalPart = moveInput.split("->")
+            initialRow, initialCol = map(int, initialPart.split(","))
+            finalRow, finalCol = map(int, finalPart.split(","))
+            currActionIndex = len(actions)
+            actions.extend(scenario.moveUnit(initialRow, initialCol, finalRow, finalCol))
+            latestActions = actions[currActionIndex:]
+            for action in latestActions:
+                scenario.applyAction(action, province)
+            scenario.displayMap()
+            print(f"    Moved unit from ({initialRow}, {initialCol}) to ({finalRow}, {finalCol}).")
+        inputUndo = input("    Do you want to undo the last action? (y/n): ")
+        if inputUndo.lower() == 'y' and actions:
+            print("    Undoing the last action...")
+            # undo the actions by applying their inverses in reverse order
+            # until hitting an action which is not a consequence of the original action
+            # undo that final consequence at the very end
+            latestAction = actions[-1] if actions else None
+            while latestAction.isDirectConsequenceOfAnotherAction:
+                scenario.applyAction(latestAction.invert(), province)
+                actions.pop()
+                latestAction = actions[-1] if actions else None
+            if latestAction:
+                scenario.applyAction(latestAction.invert(), province)
+                actions.pop()
+            print(f"    After undo, Province {i+1} has {len(province.tiles)} tiles and {province.resources} resources. Its income per turn is {province.computeIncome()}.")
 
-    scenario.printMapWithDetails()
+    scenario.displayMap()
+    scenario.advanceTurn()
+    scenario.displayMap()
 
 
 if __name__ == "__main__":
