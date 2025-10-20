@@ -134,8 +134,8 @@ class Province:
         
         # Create merge actions for each mergeable province
         for province in mergeableProvinces:
-            merge_actions = self.mergeProvinces(province)
-            actions.extend(merge_actions)
+            mergeActions = self.mergeProvinces(province)
+            actions.extend(mergeActions)
             
         return actions
 
@@ -321,12 +321,65 @@ class Province:
             return actions
             
         # Province needs to be split - create split actions
-        split_actions = self._createSplitActions(contiguousGroups, tile)
-        actions.extend(split_actions)
+        splitActions = self._createSplitActions(contiguousGroups)
+        actions.extend(splitActions)
         
         # Create actions for conquering province to add the tile
         conquerActions = conqueringProvince.addTile(tile)
         actions.extend(conquerActions)
+        
+        return actions
+    
+    def _createSplitActions(self, contiguousGroups):
+        """
+        Creates actions to split the province into multiple provinces
+        based on the provided contiguous groups of tiles.
+        The largest group retains the original province's resources and capital,
+        while the other groups become new provinces with 0 resources
+        and a newly placed capital.
+        Returns a list of actions for applying the split.
+        """
+        actions = []
+        
+        # Sort groups by size (largest first)
+        contiguousGroups.sort(key=len, reverse=True)
+
+        # The first group retains the original province's resources and capital
+        mainGroup = contiguousGroups[0]
+        otherGroups = contiguousGroups[1:]
+        
+        # Ensure the main group remains active if it has 2 or more tiles
+        activationAction = Action("provinceActivationChange", {
+            "province": self,
+            "previousActiveState": self.active,
+            "newActiveState": mainGroup if len(mainGroup) >= 2 else False
+        }, isDirectConsequenceOfAnotherAction=True)
+        actions.append(activationAction)
+        
+        # Create new provinces for other groups
+        for group in otherGroups:
+            newProvince = Province(tiles=group, resources=0, faction=self.faction)
+            
+            # Create province creation action
+            createAction = Action("provinceCreate", {
+                "faction": self.faction,
+                "province": newProvince
+            }, isDirectConsequenceOfAnotherAction=True)
+            actions.append(createAction)
+            
+            # Create tile ownership change actions
+            for tile in group:
+                tileAction = Action("tileChange", {
+                    "hexCoordinates": (tile.row, tile.col),
+                    "newTileState": {"owner": newProvince},
+                    "previousTileState": {"owner": self},
+                    "costOfAction": 0
+                }, isDirectConsequenceOfAnotherAction=True)
+                actions.append(tileAction)
+            
+            # Create actions to place a capital in the new province
+            _, capital_actions = newProvince.placeCapital(group)
+            actions.extend(capital_actions)
         
         return actions
     
@@ -401,6 +454,13 @@ class Province:
         if not self.active:
             self.resources = 0
         
+        # Turn all preexisting gravestones into normal trees
+        # Done before turning soldiers into gravestones to avoid 
+        # immediate conversion back to normal trees
+        for tile in self.tiles:
+            if tile.unit is not None and tile.unit.unitType == "gravestone":
+                tile.unit = Tree(owner=self.faction)
+        
         if self.resources == 0:
             # All soldier units become gravestones
             for tile in self.tiles:
@@ -411,11 +471,6 @@ class Province:
         for tile in self.tiles:
             if tile.unit is not None and tile.unit.unitType.startswith("soldier"):
                 tile.unit.canMove = True
-        
-        # Turn all preexisting gravestones into normal trees
-        for tile in self.tiles:
-            if tile.unit is not None and tile.unit.unitType == "gravestone":
-                tile.unit = Tree(owner=self.faction)
 
         # Handle random tree growth
         self._growTrees()
