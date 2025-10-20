@@ -86,10 +86,22 @@ class Scenario:
         """
         Advances the turn to the next faction in the list.
         Loops back to the first faction after the last one.
+        Updates all provinces of the faction whose turn just ended.
         """
         if len(self.factions) == 0:
             return
+        currentFaction = self.getFactionToPlay()
+        for province in currentFaction.provinces:
+            province.updateAfterTurn()
         self.indexOfFactionToPlay = (self.indexOfFactionToPlay + 1) % len(self.factions)
+
+    def displayMap(self):
+        """
+        Encapsulates displaying the current state of the map.
+        Can be changed depending on how we want to visualize the map.
+        """
+        self.printMap()
+        self.printMapWithDetails()
 
     def printMap(self):
         """
@@ -296,12 +308,12 @@ class Scenario:
     def moveUnit(self, initialHexRow, initialHexCol, finalHexRow, finalHexCol):
         """
         Moves a unit from the initial hex coordinates to the final hex coordinates.
-        Returns an Action instance representing this move,
-        which can be used to invert the move later if needed.
-
         Errors are raised if the move is invalid, such as:
         - No unit at the initial hex
         - Final hex not a valid movement target for the unit
+
+        Returns a list of Action instances representing this move and all its consequences,
+        which can be applied in sequence to properly update the game state.
         """
         # Validate coordinates
         if not (0 <= initialHexRow < len(self.mapData)) or not (0 <= initialHexCol < len(self.mapData[initialHexRow])):
@@ -312,79 +324,34 @@ class Scenario:
         initialTile = self.mapData[initialHexRow][initialHexCol]
         finalTile = self.mapData[finalHexRow][finalHexCol]
         
-        # Validate presence of a mobile unit at the initial hex
+        # Validate presence of a mobile unit
         if initialTile.unit is None or not initialTile.unit.canMove:
             raise ValueError("No mobile unit at the initial hex to move.")
-
+            
         unitToMove = initialTile.unit
-
-        # Validate that the final hex is within movement range
+        
+        # Validate movement range
         validMovementTiles = self.getAllTilesWithinMovementRange(initialHexRow, initialHexCol)
         if (finalHexRow, finalHexCol) not in validMovementTiles:
             raise ValueError("Final hex is not a valid movement target for the unit.")
         
-        # If we are moving onto a tile controlled by the same province,
-        # and there is a unit there, we need to perform additional checks
-        if finalTile.owner == initialTile.owner:
-            if finalTile.unit is not None:
-                # Can't move onto a structure
-                if isinstance(finalTile.unit, Structure):
-                    raise ValueError("Cannot move onto a tile with a structure.")
-                # You can only merge soldiers if the sum of their tiers is <= 4
-                # So a tier 1 soldier can merge with tier 1, 2, or 3 soldiers but not tier 4,
-                # tier 2 can merge with tier 1 or 2 soldiers but not tier 3 or 4,
-                # tier 3 can only merge with tier 1 soldiers,
-                # and tier 4 soldiers cannot merge with any other soldiers.
-                if isinstance(unitToMove, Soldier) and isinstance(finalTile.unit, Soldier):
-                    if unitToMove.tier + finalTile.unit.tier > 4:
-                        raise ValueError("Cannot merge soldiers: tier sum exceeds 4.")
-                    else:
-                        # Merge is done in the applyAction method
-                        # We just need to prepare the Action instance here
-                        # which says to move the initial soldier to the final tile
-                        # and the applyAction method will handle the merging.
-                        previousInitialHexState = {
-                            "unit": initialTile.unit,
-                            "owner": initialTile.owner
-                        }
-                        previousFinalHexState = {
-                            "unit": finalTile.unit,
-                            "owner": finalTile.owner
-                        }
-
-                        actionData = {
-                            "initialHexCoordinates": (initialHexRow, initialHexCol),
-                            "finalHexCoordinates": (finalHexRow, finalHexCol),
-                            "previousInitialHexState": previousInitialHexState,
-                            "previousFinalHexState": previousFinalHexState,
-                            "incomeFromMove": 0
-                        }
-                        return Action(actionType="moveUnit", data=actionData)   
-
-                # Handle the case of a tree getting chopped down
-                if isinstance(finalTile.unit, Tree):
-                    # Prepare previous states for inversion
-                    previousInitialHexState = {
-                        "unit": initialTile.unit,
-                        "owner": initialTile.owner
-                    }
-                    previousFinalHexState = {
-                        "unit": finalTile.unit,
-                        "owner": finalTile.owner
-                    }
-                    
-                    # Create and return the Action instance
-                    actionData = {
-                        "initialHexCoordinates": (initialHexRow, initialHexCol),
-                        "finalHexCoordinates": (finalHexRow, finalHexCol),
-                        "previousInitialHexState": previousInitialHexState,
-                        "previousFinalHexState": previousFinalHexState,
-                        "incomeFromMove": 3 # Income from chopping down a tree
-                    }
-                    
-                    return Action(actionType="moveUnit", data=actionData)
+        # Additional validations for specific cases (structures, soldier merging)
+        if finalTile.owner == initialTile.owner and finalTile.unit is not None:
+            if isinstance(finalTile.unit, Structure):
+                raise ValueError("Cannot move onto a tile with a structure.")
                 
-        # Prepare previous states for inversion
+            if isinstance(unitToMove, Soldier) and isinstance(finalTile.unit, Soldier):
+                if unitToMove.tier + finalTile.unit.tier > 4:
+                    raise ValueError("Cannot merge soldiers: tier sum exceeds 4.")
+        
+        # Create list to store all actions
+        actions = []
+        
+        # Create the primary movement action
+        incomeFromMove = 0
+        if isinstance(finalTile.unit, Tree) and finalTile.owner == initialTile.owner:
+            incomeFromMove = 3  # Income from tree
+        
         previousInitialHexState = {
             "unit": initialTile.unit,
             "owner": initialTile.owner
@@ -393,17 +360,37 @@ class Scenario:
             "unit": finalTile.unit,
             "owner": finalTile.owner
         }
-
-        actionData = {
+        
+        moveAction = Action("moveUnit", {
             "initialHexCoordinates": (initialHexRow, initialHexCol),
             "finalHexCoordinates": (finalHexRow, finalHexCol),
             "previousInitialHexState": previousInitialHexState,
             "previousFinalHexState": previousFinalHexState,
-            "incomeFromMove": 0
-        }
-
-        return Action(actionType="moveUnit", data=actionData)
+            "incomeFromMove": incomeFromMove
+        })
+        
+        actions.append(moveAction)
+        
+        # Add consequence actions for tile capture if needed
+        if finalTile.owner is not None and initialTile.owner is not None:
+            if finalTile.owner.faction != initialTile.owner.faction:
+                # This is a capture move
+                conqueringProvince = initialTile.owner
+                losingProvince = finalTile.owner
+                
+                # Get actions for province changes
+                captureActions = losingProvince.removeTile(finalTile, conqueringProvince)
+                actions.extend(captureActions)
+        
+        # If moving to a neutral tile, claim it
+        elif finalTile.owner is None and initialTile.owner is not None:
+            conqueringProvince = initialTile.owner
+            addActions = conqueringProvince.addTile(finalTile)
+            actions.extend(addActions)
+        
+        return actions
     
+
     def getBuildableUnitsOnTile(self, row, col, province):
         """
         Returns a list of unitType strings that are valid for construction
@@ -607,18 +594,12 @@ class Scenario:
         The action should be an instance of the Action class.
         See the documentation of the Action class for details.
 
-        Some actions, such as moving a unit, may result in
-        yet more actions being performed, like a capital
-        spawning if a province loses its capital tile
-        or is split up. These additional actions are handled
-        within this method as well, and they are returned
-        so that a comprehensive list of all actions performed
-        as a result of this action can be obtained.
+        This method ONLY applies the exact action specified and does not
+        generate any consequence actions. Consequence actions must be
+        generated separately and applied in the correct order.
         """
         if not isinstance(action, Action):
             raise ValueError("Invalid action type.")
-        
-        consequenceActions = []
         
         if action.actionType == "moveUnit":
             # Extract the coordinates
@@ -631,13 +612,7 @@ class Scenario:
             
             movingUnit = initTile.unit
             
-            # Check if this move involves capturing a tile
-            isCaptureMove = False
-            if finalTile.owner is not None and initTile.owner is not None:
-                if finalTile.owner.faction != initTile.owner.faction:
-                    isCaptureMove = True
-        
-            # Check if this is a soldier merge (same faction soldiers on same tile)
+            # Check if this is a soldier merge
             isMergeMove = False
             if (finalTile.owner == initTile.owner and 
                 finalTile.unit is not None and 
@@ -668,43 +643,7 @@ class Scenario:
                 # the tree belongs to your own province
                 if finalTile.owner == initTile.owner:
                     finalTile.owner.resources += action.data["incomeFromMove"]
-            
-            # Handle tile capture if needed
-            if isCaptureMove:
-                # Get the conquering province (the province that owns the unit)
-                conqueringProvince = initTile.owner
                 
-                # Get the province that's losing a tile
-                losingProvince = finalTile.owner
-                
-                # Remove the tile from the losing province and add to conquering province
-                captureActions = losingProvince.removeTile(finalTile, conqueringProvince)
-                
-                # Apply each capture-related action
-                for captureAction in captureActions:
-                    # Apply the action
-                    moreConsequences = self.applyAction(captureAction)
-                    # Add this action and any further consequences to our list
-                    consequenceActions.append(captureAction)
-                    consequenceActions.extend(moreConsequences)
-
-            # If the final tile has no province, then we only need to add
-            # the tile to the conquering province without removing it from anywhere
-            elif finalTile.owner is None:
-                # Get the conquering province (the province that owns the unit)
-                conqueringProvince = initTile.owner
-
-                # Add the tile to the conquering province
-                captureActions = conqueringProvince.addTile(finalTile)
-
-                # Apply each capture-related action
-                for captureAction in captureActions:
-                    # Apply the action
-                    moreConsequences = self.applyAction(captureAction)
-                    # Add this action and any further consequences to our list
-                    consequenceActions.append(captureAction)
-                    consequenceActions.extend(moreConsequences)
-                    
         elif action.actionType == "tileChange":
             row, col = action.data["hexCoordinates"]
             tile = self.mapData[row][col]
@@ -720,6 +659,7 @@ class Scenario:
                     tile.owner.tiles.remove(tile)
                 # Now we can set the new owner
                 tile.owner = action.data["newTileState"]["owner"]
+                
                 if tile.owner is not None and tile not in tile.owner.tiles:
                     tile.owner.tiles.append(tile)
 
@@ -737,13 +677,11 @@ class Scenario:
                 
             # Update resources if this action has a cost
             if action.data["costOfAction"] != 0:
-                faction = None
                 if provinceDoingAction:
                     provinceDoingAction.resources -= action.data["costOfAction"]
                 else:
                     faction = self.getFactionToPlay()
                     if faction:
-                        # Find the province that should be changed
                         for province in faction.provinces:
                             if tile in province.tiles:
                                 province.resources -= action.data["costOfAction"]
@@ -788,6 +726,3 @@ class Scenario:
             
             # Update the province's active status
             province.active = newActiveState
-        
-        # Return all the consequence actions so they can be tracked
-        return consequenceActions
