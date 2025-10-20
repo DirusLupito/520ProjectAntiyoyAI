@@ -1,9 +1,6 @@
 class Action:
     """
-    Represents an invertible action that mutates the game state,
-    and specifically the state of a Scenario's tiles. 
-    So this won't affect something like a Province or faction directly,
-    but rather the HexTiles that make up that Province or are owned by that faction.
+    Represents an invertible action that mutates the game state.
     In order to maintain invertibility, actions need to store
     more information that one might initially think.
 
@@ -54,11 +51,16 @@ class Action:
       - New state of the affected tile
       - Previous state of the affected tile
       - Cost of the action (in case of refunds on undo)
+
+    PROVINCE CHANGES:
+    - Requires:
+      - Faction involved
+      - Province involved
+      - Initial and/or final state of the province (depending on action)
     """
     def __init__(self, actionType, data, isDirectConsequenceOfAnotherAction=False):
         self.actionType = actionType  # String representing the type of action
         self.data = data              # Dictionary holding all relevant data
-        self.isDirectConsequenceOfAnotherAction = isDirectConsequenceOfAnotherAction
         # While the structure of data depends on actionType,
         # it should either be:
         # For "moveUnit" actions:
@@ -83,8 +85,39 @@ class Action:
         #      either "unit" or "owner", and their previous values,
         #     "costOfAction": <amount> as an integer
         # }
-        # The only things that can change as the result of an action are the unit on
-        # a tile, and/or the owner of a tile.
+        # For "provinceCreate" actions:
+        # {
+        #     "faction": <faction>,
+        #     "province": <province>,
+        #     "initialTiles": [<tiles>] Initial tiles to populate the province with
+        # }
+        # 
+        # For "provinceDelete" actions:
+        # {
+        #     "faction": <faction>,
+        #     "province": <province>,
+        #     "provinceState": { Full state for restoration
+        #         "tiles": [<tiles>],
+        #         "resources": <amount>,
+        #         "active": <boolean>
+        #     }
+        # }
+        # 
+        # For "provinceResourceChange" actions:
+        # {
+        #     "province": <province>,
+        #     "previousResources": <amount>,
+        #     "newResources": <amount>
+        # }
+        #
+        # For "provinceActivationChange" actions:
+        # {
+        #     "province": <province>,
+        #     "previousActiveState": <boolean>,
+        #     "newActiveState": <boolean>
+        # }
+        self.isDirectConsequenceOfAnotherAction = isDirectConsequenceOfAnotherAction
+        
     def invert(self):
         """
         Returns the inverse of this action.
@@ -93,6 +126,7 @@ class Action:
         this action was applied.
         The inverse of an inverse action should be the original action.
         """
+        # Handles inversions for unit movement actions
         if self.actionType == "moveUnit":
             invertedData = {
                 "initialHexCoordinates": self.data["finalHexCoordinates"],
@@ -102,6 +136,7 @@ class Action:
                 "incomeFromMove": -self.data["incomeFromMove"]
             }
             return Action("moveUnit", invertedData)
+        # Handles inversions for tile change actions
         elif self.actionType == "tileChange":
             invertedData = {
                 "hexCoordinates": self.data["hexCoordinates"],
@@ -110,5 +145,46 @@ class Action:
                 "costOfAction": -self.data["costOfAction"]
             }
             return Action("tileChange", invertedData)
+        
+        # Handles inversions for province actions
+        elif self.actionType == "provinceCreate":
+            # Inverting province creation is deletion
+            invertedData = {
+                "faction": self.data["faction"],
+                "province": self.data["province"],
+                "provinceState": {
+                    "tiles": self.data["province"].tiles.copy(),
+                    "resources": self.data["province"].resources,
+                    "active": self.data["province"].active
+                }
+            }
+            return Action("provinceDelete", invertedData)
+            
+        elif self.actionType == "provinceDelete":
+            # Inverting province deletion is restoration
+            invertedData = {
+                "faction": self.data["faction"],
+                "province": self.data["province"]
+            }
+            return Action("provinceCreate", invertedData)
+            
+        elif self.actionType == "provinceResourceChange":
+            # Swap previous and new resource amounts
+            invertedData = {
+                "province": self.data["province"],
+                "previousResources": self.data["newResources"],
+                "newResources": self.data["previousResources"]
+            }
+            return Action("provinceResourceChange", invertedData)
+            
+        elif self.actionType == "provinceActivationChange":
+            # Swap previous and new active states
+            invertedData = {
+                "province": self.data["province"],
+                "previousActiveState": self.data["newActiveState"],
+                "newActiveState": self.data["previousActiveState"]
+            }
+            return Action("provinceActivationChange", invertedData)
+        
         else:
             raise ValueError(f"Unknown action type: {self.actionType}")

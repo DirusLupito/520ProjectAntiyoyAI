@@ -703,6 +703,10 @@ class Scenario:
                 tile.unit = action.data["newTileState"]["unit"]
             
             if "owner" in action.data["newTileState"]:
+                # First, if the tile had a previous owner, remove the tile from that province
+                if tile.owner is not None and tile in tile.owner.tiles:
+                    tile.owner.tiles.remove(tile)
+                # Now we can set the new owner
                 tile.owner = action.data["newTileState"]["owner"]
 
             # Special case: If a soldier is built on top of a tree,
@@ -723,11 +727,51 @@ class Scenario:
                 if not faction:
                     faction = self.getFactionToPlay()
                 if faction:
-                    # Find the province that should be charged
+                    # Find the province that should be changed
                     for province in faction.provinces:
                         if tile in province.tiles:
                             province.resources -= action.data["costOfAction"]
                             break
     
+        elif action.actionType == "provinceCreate":
+            faction = action.data["faction"]
+            province = action.data["province"]
+            
+            # Add the province to the faction
+            if province not in faction.provinces:
+                faction.provinces.append(province)
+                
+            # If initial tiles were specified, assign them to this province
+            if "initialTiles" in action.data:
+                for tile in action.data["initialTiles"]:
+                    if tile not in province.tiles:
+                        province.tiles.append(tile)
+                        tile.owner = province
+                        # Also set mapData tiles at the tile's coordinates
+                        # to match this tile in order to keep consistency
+                        self.mapData[tile.row][tile.col] = tile
+        
+        elif action.actionType == "provinceDelete":
+            faction = action.data["faction"]
+            province = action.data["province"]
+            
+            # Remove the province from the faction
+            if province in faction.provinces:
+                faction.provinces.remove(province)
+        
+        elif action.actionType == "provinceResourceChange":
+            province = action.data["province"]
+            newResources = action.data["newResources"]
+            
+            # Update the province's resources
+            province.resources = newResources
+        
+        elif action.actionType == "provinceActivationChange":
+            province = action.data["province"]
+            newActiveState = action.data["newActiveState"]
+            
+            # Update the province's active status
+            province.active = newActiveState
+        
         # Return all the consequence actions so they can be tracked
         return consequenceActions
