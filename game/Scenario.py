@@ -288,7 +288,7 @@ class Scenario:
             currentTile = self.mapData[currentRow][currentCol]
 
             # Iterate over neighbors
-            for neighborIndex, neighbor in enumerate(currentTile.neighbors):
+            for _, neighbor in enumerate(currentTile.neighbors):
                 if neighbor is None or neighbor.isWater:  # Skip water tiles and out-of-bound neighbors
                     continue
 
@@ -302,7 +302,42 @@ class Scenario:
                 visited.add((neighborRow, neighborCol))
                 queue.append((neighborRow, neighborCol, distance + 1))
 
-        return validTiles
+        # Finally, remove all friendly tiles which have other soldiers with an incompatible tier
+        # on them, or structures on them except for trees. 
+        # Also remove neutral and enemy tiles which either posess a unit with too high defense power
+        # or are adjacent to a tile owned by the same province which has a unit with too high defense power.
+        filteredTiles = []
+        for row, col in validTiles:
+            tile = self.mapData[row][col]
+            if tile.owner == soldierProvince:
+                # Friendly tile
+                if tile.unit is None or isinstance(tile.unit, Tree):
+                    filteredTiles.append((row, col))
+                elif isinstance(tile.unit, Soldier):
+                    movingSoldier = startTile.unit
+                    if movingSoldier is not None and (movingSoldier.tier + tile.unit.tier) <= 4:
+                        filteredTiles.append((row, col))
+                # Structures block movement
+            else:
+                # Neutral or enemy tile
+                blocked = False
+                if tile.unit is not None:
+                    if tile.unit.defensePower > startTile.unit.attackPower:
+                        blocked = True
+                if not blocked:
+                    for neighbor in tile.neighbors:
+                        if neighbor is not None and neighbor.owner == tile.owner and neighbor.unit is not None:
+                            if neighbor.unit.defensePower > startTile.unit.attackPower:
+                                blocked = True
+                                break
+                if not blocked:
+                    filteredTiles.append((row, col))
+
+        # And remove the tile the soldier is currently on
+        if (startRow, startCol) in filteredTiles:
+            filteredTiles.remove((startRow, startCol))
+
+        return filteredTiles
 
 
     def moveUnit(self, initialHexRow, initialHexCol, finalHexRow, finalHexCol):
@@ -635,7 +670,10 @@ class Scenario:
                 finalTile.unit = movingUnit
                 initTile.unit = None
             
-            movingUnit.canMove = False  # Mark the unit as having moved this turn
+            # Mark as having moved if it could move, 
+            # otherwise we're inverting some previous move
+            # and so we toggle the canMove state
+            movingUnit.canMove = not movingUnit.canMove 
 
             # Handle income from chopping trees
             if action.data["incomeFromMove"] != 0 and initTile.owner:
