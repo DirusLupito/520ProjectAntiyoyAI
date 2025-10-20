@@ -186,8 +186,8 @@ class Scenario:
                         detailStr = "~~~"
                     else:
                         unitStr = hexTile.unit.unitType if hexTile.unit is not None else "   "
-                        ownerStr = hexTile.owner.faction.color[0] if hexTile.owner is not None else "N"
-                        detailStr = f"{unitStr[:2]}{ownerStr}"
+                        ownerStr = hexTile.owner.faction.color[0] if hexTile.owner is not None else " "
+                        detailStr = f"{unitStr[0]}{unitStr[-1]}{ownerStr}"
                     line1 += f"/{detailStr}\\"
                     if col + 1 < len(self.mapData[row]):
                         line1 += "___"
@@ -205,8 +205,8 @@ class Scenario:
                         detailStr = "~~~"
                     else:
                         unitStr = hexTile.unit.unitType if hexTile.unit is not None else "   "
-                        ownerStr = hexTile.owner.faction.color[0] if hexTile.owner is not None else "N"
-                        detailStr = f"{unitStr[:2]}{ownerStr}"
+                        ownerStr = hexTile.owner.faction.color[0] if hexTile.owner is not None else " "
+                        detailStr = f"{unitStr[0]}{unitStr[-1]}{ownerStr}"
                     if col == 1:
                         line2 += "\\"
                     line2 += f"___/{detailStr}\\"
@@ -531,6 +531,7 @@ class Scenario:
         """
         Builds a unit of the specified type on the given tile.
         Returns an Action instance representing this tile change,
+        as well as all actions consequent to this action,
         or raises an error if the build is invalid.
 
         Delegates validation of whether the unit can be built
@@ -585,8 +586,18 @@ class Scenario:
             "previousTileState": previousTileState,
             "costOfAction": costOfAction
         }
+        actions = [Action(actionType="tileChange", data=actionData)]
 
-        return Action(actionType="tileChange", data=actionData)
+        # If we're building a soldier on a tile controlled by another province,
+        # we need to handle the tile capture as well
+        if tile.owner is not None and tile.owner != province:
+            captureActions = tile.owner.removeTile(tile, province)
+            actions.extend(captureActions)
+        # If we're building on a neutral tile, we need to add the tile to our province
+        elif tile.owner is None:
+            addActions = province.addTile(tile)
+            actions.extend(addActions)
+        return actions
         
 
     def applyAction(self, action, provinceDoingAction=None):
@@ -703,17 +714,21 @@ class Scenario:
                 tile.unit = action.data["newTileState"]["unit"]
             
             if "owner" in action.data["newTileState"]:
-                # First, if the tile had a previous owner, remove the tile from that province
-                if tile.owner is not None and tile in tile.owner.tiles:
+                # First, if the tile had a previous owner different from the new owner,
+                # remove the tile from that province
+                if tile.owner is not None and tile in tile.owner.tiles and tile.owner != action.data["newTileState"]["owner"]:
                     tile.owner.tiles.remove(tile)
                 # Now we can set the new owner
                 tile.owner = action.data["newTileState"]["owner"]
+                if tile.owner is not None and tile not in tile.owner.tiles:
+                    tile.owner.tiles.append(tile)
 
             # Special case: If a soldier is built on top of a tree,
             # or if a soldier is built on top of a tile not owned by
             # the province passed in, we need to mark the soldier as having moved
             # for this turn.
-            if (isinstance(action.data["previousTileState"]["unit"], Tree) and 
+            if ("unit" in action.data["newTileState"] and
+                isinstance(action.data["previousTileState"]["unit"], Tree) and 
                 isinstance(tile.unit, Soldier)):
                 tile.unit.canMove = False
             elif (action.data["previousTileState"]["owner"] != action.data["newTileState"]["owner"] and
@@ -722,16 +737,17 @@ class Scenario:
                 
             # Update resources if this action has a cost
             if action.data["costOfAction"] != 0:
-                # faction = self.getFactionToPlay()
-                faction = provinceDoingAction.faction if provinceDoingAction else None
-                if not faction:
+                faction = None
+                if provinceDoingAction:
+                    provinceDoingAction.resources -= action.data["costOfAction"]
+                else:
                     faction = self.getFactionToPlay()
-                if faction:
-                    # Find the province that should be changed
-                    for province in faction.provinces:
-                        if tile in province.tiles:
-                            province.resources -= action.data["costOfAction"]
-                            break
+                    if faction:
+                        # Find the province that should be changed
+                        for province in faction.provinces:
+                            if tile in province.tiles:
+                                province.resources -= action.data["costOfAction"]
+                                break
     
         elif action.actionType == "provinceCreate":
             faction = action.data["faction"]
