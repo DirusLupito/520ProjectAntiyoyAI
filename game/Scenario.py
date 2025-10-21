@@ -108,12 +108,17 @@ class Scenario:
         Alternative method to print the board.
         This version prints such that no two hexagons share an ASCII line.
         For example, this would represent a 2x3 grid:
-             ___       ___
-            /   \ ___ /   \
-            \___//   \\___/
-            /‾‾‾\\___//‾‾‾\
-            \___//‾‾‾\\___/
-                 \___/
+            
+           /‾‾‾‾‾‾‾\           /‾‾‾‾‾‾‾\
+          /         \         /         \
+          \         //‾‾‾‾‾‾‾\\         /
+           \_______//         \\_______/
+           /‾‾‾‾‾‾‾\\         //‾‾‾‾‾‾‾\
+          /         \\_______//         \
+          \         //‾‾‾‾‾‾‾\\         /
+           \_______//         \\_______/
+                    \         /
+                     \_______/
         Uses an approach where first the string is formulated as a 2D array of characters,
         which is filled in by calculating where each hexagon / each hexagon's ASCII symbols
         should go, and then printing the resulting 2D array of characters.
@@ -124,72 +129,138 @@ class Scenario:
             return
         
         # Determine dimensions of the character grid
-        # Each hexagon is 5 characters wide and 4 characters tall
+        # Each hexagon is 11 characters wide and 4 characters tall
         # We also pad the grid with 4 spaces on the left
-        # and 1 space on the bottom
+        # and 1 space on the bottom and 1 on the top
+        print()
         num_rows = len(self.mapData)
         num_cols = max(len(row) for row in self.mapData) if num_rows > 0 else 0
-        grid_width = num_cols * 5 + 4
-        grid_height = num_rows * 4 + 1
+        grid_width = num_cols * 11 + 4
+        grid_height = num_rows * 4 + 2
         char_grid = [[' ' for _ in range(grid_width)] for _ in range(grid_height)]
         # Now that we have the character grid, fill it in with hexagons
         for r in range(num_rows):
             for c in range(len(self.mapData[r])):
                 # ASCII representation will depend on where the hexagon is located
                 if c % 2 == 0:
-                    if r == 0:
-                        top_left_x = c * 5 + 4
-                        top_left_y = r * 4
-                        char_grid[top_left_y][top_left_x + 1] = '_'
-                        char_grid[top_left_y][top_left_x + 2] = '_'
-                        char_grid[top_left_y][top_left_x + 3] = '_'
-                        char_grid[top_left_y + 1][top_left_x] = '/'
-                        char_grid[top_left_y + 1][top_left_x + 4] = '\\'
-                        char_grid[top_left_y + 2][top_left_x] = '\\'
-                        char_grid[top_left_y + 2][top_left_x + 4] = '/'
-                        char_grid[top_left_y + 2][top_left_x + 1] = '_'
-                        char_grid[top_left_y + 2][top_left_x + 2] = '_'
-                        char_grid[top_left_y + 2][top_left_x + 3] = '_'
+                    top_left_x = c * 10 + 4
+                    top_left_y = r * 4
+                    char_grid[top_left_y][top_left_x + 1] = '/'
+                    char_grid[top_left_y][top_left_x + 2] = '‾'
+                    char_grid[top_left_y][top_left_x + 3] = '‾'
+                    char_grid[top_left_y][top_left_x + 4] = '‾'
+                    char_grid[top_left_y][top_left_x + 5] = '‾'
+                    char_grid[top_left_y][top_left_x + 6] = '‾'
+                    char_grid[top_left_y][top_left_x + 7] = '‾'
+                    char_grid[top_left_y][top_left_x + 8] = '‾'
+                    char_grid[top_left_y][top_left_x + 9] = '\\'
+                    char_grid[top_left_y + 1][top_left_x] = '/'
+                    char_grid[top_left_y + 1][top_left_x + 10] = '\\'
+                    char_grid[top_left_y + 2][top_left_x] = '\\'
+                    char_grid[top_left_y + 2][top_left_x + 10] = '/'
+                    char_grid[top_left_y + 3][top_left_x + 1] = '\\'
+                    char_grid[top_left_y + 3][top_left_x + 2] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 3] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 4] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 5] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 6] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 7] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 8] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 9] = '/'
+                    # We fill the inside of the hexagon with the coordinates
+                    # and a detail string giving info about the tile
+                    coordStr = f"{r},{c}"
+                    detailStr = ""
+                    hexTile = self.mapData[r][c]
+                    if hexTile.isWater:
+                        detailStr = "~" * 9
                     else:
-                        top_left_x = c * 5 + 4
-                        top_left_y = r * 4 - 1
-                        char_grid[top_left_y][top_left_x + 1] = '‾'
-                        char_grid[top_left_y][top_left_x + 2] = '‾'
-                        char_grid[top_left_y][top_left_x + 3] = '‾'
-                        char_grid[top_left_y][top_left_x] = '/'
-                        char_grid[top_left_y][top_left_x + 4] = '\\'
-                        char_grid[top_left_y + 1][top_left_x] = '\\'
-                        char_grid[top_left_y + 1][top_left_x + 4] = '/'
-                        char_grid[top_left_y + 1][top_left_x + 1] = '_'
-                        char_grid[top_left_y + 1][top_left_x + 2] = '_'
-                        char_grid[top_left_y + 1][top_left_x + 3] = '_'
+                        unitStr = hexTile.unit.unitType if hexTile.unit is not None else ""
+                        ownerStr = hexTile.owner.faction.color[0] if hexTile.owner is not None else ""
+                        # Format: first and last letter of unit type + first letter of owner color
+                        # If unitStr is non-empty. Otherwise, leave that part blank.
+                        # If ownerStr is empty, leave that part blank too.
+                        if unitStr and ownerStr:
+                            detailStr = f"{unitStr[0]}{unitStr[-1]}{ownerStr}"
+                        elif unitStr:
+                            detailStr = f"{unitStr[0]}{unitStr[-1]}"
+                        elif ownerStr:
+                            detailStr = f"{ownerStr}"
+                        else:
+                            detailStr = ""
+
+                    # 9 spaces above are for the coordinates
+                    # 9 spaces below are for the detail string
+                    # We try to center both strings
+                    # Odd length can be perfectly centered, even length
+                    # is left-biased centered
+                    # If the strings are too long, they overflow and overwrite parts of the hexagon,
+                    # so we truncate them if needed
+                    coordStr = coordStr[:9]
+                    detailStr = detailStr[:9]
+                    coordStartX = top_left_x + 1 + (9 - len(coordStr)) // 2
+                    detailStartX = top_left_x + 1 + (9 - len(detailStr)) // 2
+                    char_grid[top_left_y + 1][coordStartX:coordStartX + len(coordStr)] = list(coordStr)
+                    char_grid[top_left_y + 2][detailStartX:detailStartX + len(detailStr)] = list(detailStr)
                 else:
-                    if r == 0:
-                        top_left_x = c * 5 + 4
-                        top_left_y = r * 4 + 1
-                        char_grid[top_left_y][top_left_x + 1] = '_'
-                        char_grid[top_left_y][top_left_x + 2] = '_'
-                        char_grid[top_left_y][top_left_x + 3] = '_'
-                        char_grid[top_left_y + 1][top_left_x] = '/'
-                        char_grid[top_left_y + 1][top_left_x + 4] = '\\'
-                        char_grid[top_left_y + 2][top_left_x] = '\\'
-                        char_grid[top_left_y + 2][top_left_x + 4] = '/'
-                        char_grid[top_left_y + 2][top_left_x + 1] = '_'
-                        char_grid[top_left_y + 2][top_left_x + 2] = '_'
-                        char_grid[top_left_y + 2][top_left_x + 3] = '_'
+                    top_left_x = c * 10 + 4
+                    top_left_y = r * 4 + 2
+                    char_grid[top_left_y][top_left_x + 1] = '/'
+                    char_grid[top_left_y][top_left_x + 2] = '‾'
+                    char_grid[top_left_y][top_left_x + 3] = '‾'
+                    char_grid[top_left_y][top_left_x + 4] = '‾'
+                    char_grid[top_left_y][top_left_x + 5] = '‾'
+                    char_grid[top_left_y][top_left_x + 6] = '‾'
+                    char_grid[top_left_y][top_left_x + 7] = '‾'
+                    char_grid[top_left_y][top_left_x + 8] = '‾'
+                    char_grid[top_left_y][top_left_x + 9] = '\\'
+                    char_grid[top_left_y + 1][top_left_x] = '/'
+                    char_grid[top_left_y + 1][top_left_x + 10] = '\\'
+                    char_grid[top_left_y + 2][top_left_x] = '\\'
+                    char_grid[top_left_y + 2][top_left_x + 10] = '/'
+                    char_grid[top_left_y + 3][top_left_x + 1] = '\\'
+                    char_grid[top_left_y + 3][top_left_x + 2] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 3] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 4] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 5] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 6] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 7] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 8] = '_'
+                    char_grid[top_left_y + 3][top_left_x + 9] = '/'
+                    # We fill the inside of the hexagon with the coordinates
+                    # and a detail string giving info about the tile
+                    coordStr = f"{r},{c}"
+                    detailStr = ""
+                    hexTile = self.mapData[r][c]
+                    if hexTile.isWater:
+                        detailStr = "~" * 9
                     else:
-                        top_left_x = c * 5 + 4
-                        top_left_y = r * 4
-                        char_grid[top_left_y][top_left_x + 1] = '‾'
-                        char_grid[top_left_y][top_left_x + 2] = '‾'
-                        char_grid[top_left_y][top_left_x + 3] = '‾'
-                        char_grid[top_left_y][top_left_x] = '/'
-                        char_grid[top_left_y][top_left_x + 4] = '\\'
-                        char_grid[top_left_y + 1][top_left_x] = '\\'
-                        char_grid[top_left_y + 1][top_left_x + 4] = '/'
-                        char_grid[top_left_y + 1][top_left_x + 1] = '_'
-                        char_grid[top_left_y + 1][top_left_x + 2] = '_'
-                        char_grid[top_left_y + 1][top_left_x + 3] = '_'
+                        unitStr = hexTile.unit.unitType if hexTile.unit is not None else ""
+                        ownerStr = hexTile.owner.faction.color[0] if hexTile.owner is not None else ""
+                        # Format: first and last letter of unit type + first letter of owner color
+                        # If unitStr is non-empty. Otherwise, leave that part blank.
+                        # If ownerStr is empty, leave that part blank too.
+                        if unitStr and ownerStr:
+                            detailStr = f"{unitStr[0]}{unitStr[-1]}{ownerStr}"
+                        elif unitStr:
+                            detailStr = f"{unitStr[0]}{unitStr[-1]}"
+                        elif ownerStr:
+                            detailStr = f"{ownerStr}"
+                        else:
+                            detailStr = ""
+                    # 9 spaces above are for the coordinates
+                    # 9 spaces below are for the detail string
+                    # We try to center both strings
+                    # Odd length can be perfectly centered, even length
+                    # is left-biased centered
+                    # If the strings are too long, they overflow and overwrite parts of the hexagon,
+                    # so we truncate them if needed
+                    coordStr = coordStr[:9]
+                    detailStr = detailStr[:9]
+                    coordStartX = top_left_x + 1 + (9 - len(coordStr)) // 2
+                    detailStartX = top_left_x + 1 + (9 - len(detailStr)) // 2
+                    char_grid[top_left_y + 1][coordStartX:coordStartX + len(coordStr)] = list(coordStr)
+                    char_grid[top_left_y + 2][detailStartX:detailStartX + len(detailStr)] = list(detailStr)
         # Print the character grid
         for row in char_grid:
             print("".join(row))
