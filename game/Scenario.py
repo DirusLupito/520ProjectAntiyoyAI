@@ -101,9 +101,8 @@ class Scenario:
         Can be changed depending on how we want to visualize the map.
         """
         self.printMap()
-        self.printMapWithDetails()
 
-    def printMap2(self):
+    def printMap(self):
         """
         Alternative method to print the board.
         This version prints such that no two hexagons share an ASCII line.
@@ -122,7 +121,10 @@ class Scenario:
         Uses an approach where first the string is formulated as a 2D array of characters,
         which is filled in by calculating where each hexagon / each hexagon's ASCII symbols
         should go, and then printing the resulting 2D array of characters.
-        Used the nonstandard '‾' character to represent the top of hexagons
+        Used the nonstandard '‾' character to represent the top of hexagons.
+        
+        The inner part of each hexagon contains the coordinates of the hexagon
+        and a detail string representing the tile's unit and owner.
         """
         if not self.mapData:
             print("Empty map")
@@ -133,50 +135,83 @@ class Scenario:
         # We also pad the grid with 4 spaces on the left
         # and 1 space on the bottom and 1 on the top
         print()
-        num_rows = len(self.mapData)
-        num_cols = max(len(row) for row in self.mapData) if num_rows > 0 else 0
-        grid_width = num_cols * 11 + 4
-        grid_height = num_rows * 4 + 2
-        char_grid = [[' ' for _ in range(grid_width)] for _ in range(grid_height)]
+        numRows = len(self.mapData)
+        numCols = max(len(row) for row in self.mapData) if numRows > 0 else 0
+        gridWidth = numCols * 11 + 4
+        gridHeight = numRows * 4 + 2
+        charGrid = [[' ' for _ in range(gridWidth)] for _ in range(gridHeight)]
+        # The color grid holds either empty strings or ANSI color codes for each character
+        # in the charGrid, to color the printed output accordingly.
+        colorGrid = [['' for _ in range(gridWidth)] for _ in range(gridHeight)]
         # Now that we have the character grid, fill it in with hexagons
-        for r in range(num_rows):
+        for r in range(numRows):
             for c in range(len(self.mapData[r])):
                 # ASCII representation will depend on where the hexagon is located
+                # We need to get the faction color for the owner of the hex tile,
+                # or use \e[0;94m for water (blue), or no color for unowned land
+                hexTile = self.mapData[r][c]
+                charColorStr = ""
+                if hexTile.owner is not None:
+                    charColorStr = hexTile.owner.faction.getFactionColorString()
+                elif hexTile.isWater:
+                    charColorStr = "\033[94m"  # Blue for water
+                # Now we can fill in the ASCII representation of the hexagon
                 if c % 2 == 0:
-                    top_left_x = c * 10 + 4
-                    top_left_y = r * 4
-                    char_grid[top_left_y][top_left_x + 1] = '/'
-                    char_grid[top_left_y][top_left_x + 2] = '‾'
-                    char_grid[top_left_y][top_left_x + 3] = '‾'
-                    char_grid[top_left_y][top_left_x + 4] = '‾'
-                    char_grid[top_left_y][top_left_x + 5] = '‾'
-                    char_grid[top_left_y][top_left_x + 6] = '‾'
-                    char_grid[top_left_y][top_left_x + 7] = '‾'
-                    char_grid[top_left_y][top_left_x + 8] = '‾'
-                    char_grid[top_left_y][top_left_x + 9] = '\\'
-                    char_grid[top_left_y + 1][top_left_x] = '/'
-                    char_grid[top_left_y + 1][top_left_x + 10] = '\\'
-                    char_grid[top_left_y + 2][top_left_x] = '\\'
-                    char_grid[top_left_y + 2][top_left_x + 10] = '/'
-                    char_grid[top_left_y + 3][top_left_x + 1] = '\\'
-                    char_grid[top_left_y + 3][top_left_x + 2] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 3] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 4] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 5] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 6] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 7] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 8] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 9] = '/'
+                    topLeftX = c * 10 + 4
+                    topLeftY = r * 4
+                    charGrid[topLeftY][topLeftX + 1] = '/'
+                    colorGrid[topLeftY][topLeftX + 1] = charColorStr
+                    charGrid[topLeftY][topLeftX + 2] = '‾'
+                    colorGrid[topLeftY][topLeftX + 2] = charColorStr
+                    charGrid[topLeftY][topLeftX + 3] = '‾'
+                    colorGrid[topLeftY][topLeftX + 3] = charColorStr
+                    charGrid[topLeftY][topLeftX + 4] = '‾'
+                    colorGrid[topLeftY][topLeftX + 4] = charColorStr
+                    charGrid[topLeftY][topLeftX + 5] = '‾'
+                    colorGrid[topLeftY][topLeftX + 5] = charColorStr
+                    charGrid[topLeftY][topLeftX + 6] = '‾'
+                    colorGrid[topLeftY][topLeftX + 6] = charColorStr
+                    charGrid[topLeftY][topLeftX + 7] = '‾'
+                    colorGrid[topLeftY][topLeftX + 7] = charColorStr
+                    charGrid[topLeftY][topLeftX + 8] = '‾'
+                    colorGrid[topLeftY][topLeftX + 8] = charColorStr
+                    charGrid[topLeftY][topLeftX + 9] = '\\'
+                    colorGrid[topLeftY][topLeftX + 9] = charColorStr
+                    charGrid[topLeftY + 1][topLeftX] = '/'
+                    colorGrid[topLeftY + 1][topLeftX] = charColorStr
+                    charGrid[topLeftY + 1][topLeftX + 10] = '\\'
+                    colorGrid[topLeftY + 1][topLeftX + 10] = charColorStr
+                    charGrid[topLeftY + 2][topLeftX] = '\\'
+                    colorGrid[topLeftY + 2][topLeftX] = charColorStr
+                    charGrid[topLeftY + 2][topLeftX + 10] = '/'
+                    colorGrid[topLeftY + 2][topLeftX + 10] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 1] = '\\'
+                    colorGrid[topLeftY + 3][topLeftX + 1] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 2] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 2] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 3] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 3] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 4] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 4] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 5] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 5] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 6] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 6] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 7] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 7] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 8] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 8] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 9] = '/'
+                    colorGrid[topLeftY + 3][topLeftX + 9] = charColorStr
                     # We fill the inside of the hexagon with the coordinates
                     # and a detail string giving info about the tile
                     coordStr = f"{r},{c}"
                     detailStr = ""
-                    hexTile = self.mapData[r][c]
                     if hexTile.isWater:
                         detailStr = "~" * 9
                     else:
                         unitStr = hexTile.unit.unitType if hexTile.unit is not None else ""
-                        ownerStr = hexTile.owner.faction.color[0] if hexTile.owner is not None else ""
+                        ownerStr = hexTile.owner.faction.name[0] if hexTile.owner is not None else ""
                         # Format: first and last letter of unit type + first letter of owner color
                         # If unitStr is non-empty. Otherwise, leave that part blank.
                         # If ownerStr is empty, leave that part blank too.
@@ -198,45 +233,74 @@ class Scenario:
                     # so we truncate them if needed
                     coordStr = coordStr[:9]
                     detailStr = detailStr[:9]
-                    coordStartX = top_left_x + 1 + (9 - len(coordStr)) // 2
-                    detailStartX = top_left_x + 1 + (9 - len(detailStr)) // 2
-                    char_grid[top_left_y + 1][coordStartX:coordStartX + len(coordStr)] = list(coordStr)
-                    char_grid[top_left_y + 2][detailStartX:detailStartX + len(detailStr)] = list(detailStr)
+                    coordStartX = topLeftX + 1 + (9 - len(coordStr)) // 2
+                    detailStartX = topLeftX + 1 + (9 - len(detailStr)) // 2
+                    charGrid[topLeftY + 1][coordStartX:coordStartX + len(coordStr)] = list(coordStr)
+                    charGrid[topLeftY + 2][detailStartX:detailStartX + len(detailStr)] = list(detailStr)
+                    # The setting of the colorGrid is much easier, 
+                    # we just mark these 9 + 9 = 18 characters with the color string
+                    # Upper
+                    for i in range(len(coordStr)):
+                        colorGrid[topLeftY + 1][coordStartX + i] = charColorStr
+                    # Lower
+                    for i in range(len(detailStr)):
+                        colorGrid[topLeftY + 2][detailStartX + i] = charColorStr
                 else:
-                    top_left_x = c * 10 + 4
-                    top_left_y = r * 4 + 2
-                    char_grid[top_left_y][top_left_x + 1] = '/'
-                    char_grid[top_left_y][top_left_x + 2] = '‾'
-                    char_grid[top_left_y][top_left_x + 3] = '‾'
-                    char_grid[top_left_y][top_left_x + 4] = '‾'
-                    char_grid[top_left_y][top_left_x + 5] = '‾'
-                    char_grid[top_left_y][top_left_x + 6] = '‾'
-                    char_grid[top_left_y][top_left_x + 7] = '‾'
-                    char_grid[top_left_y][top_left_x + 8] = '‾'
-                    char_grid[top_left_y][top_left_x + 9] = '\\'
-                    char_grid[top_left_y + 1][top_left_x] = '/'
-                    char_grid[top_left_y + 1][top_left_x + 10] = '\\'
-                    char_grid[top_left_y + 2][top_left_x] = '\\'
-                    char_grid[top_left_y + 2][top_left_x + 10] = '/'
-                    char_grid[top_left_y + 3][top_left_x + 1] = '\\'
-                    char_grid[top_left_y + 3][top_left_x + 2] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 3] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 4] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 5] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 6] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 7] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 8] = '_'
-                    char_grid[top_left_y + 3][top_left_x + 9] = '/'
+                    topLeftX = c * 10 + 4
+                    topLeftY = r * 4 + 2
+                    charGrid[topLeftY][topLeftX + 1] = '/'
+                    colorGrid[topLeftY][topLeftX + 1] = charColorStr
+                    charGrid[topLeftY][topLeftX + 2] = '‾'
+                    colorGrid[topLeftY][topLeftX + 2] = charColorStr
+                    charGrid[topLeftY][topLeftX + 3] = '‾'
+                    colorGrid[topLeftY][topLeftX + 3] = charColorStr
+                    charGrid[topLeftY][topLeftX + 4] = '‾'
+                    colorGrid[topLeftY][topLeftX + 4] = charColorStr
+                    charGrid[topLeftY][topLeftX + 5] = '‾'
+                    colorGrid[topLeftY][topLeftX + 5] = charColorStr
+                    charGrid[topLeftY][topLeftX + 6] = '‾'
+                    colorGrid[topLeftY][topLeftX + 6] = charColorStr
+                    charGrid[topLeftY][topLeftX + 7] = '‾'
+                    colorGrid[topLeftY][topLeftX + 7] = charColorStr
+                    charGrid[topLeftY][topLeftX + 8] = '‾'
+                    colorGrid[topLeftY][topLeftX + 8] = charColorStr
+                    charGrid[topLeftY][topLeftX + 9] = '\\'
+                    colorGrid[topLeftY][topLeftX + 9] = charColorStr
+                    charGrid[topLeftY + 1][topLeftX] = '/'
+                    colorGrid[topLeftY + 1][topLeftX] = charColorStr
+                    charGrid[topLeftY + 1][topLeftX + 10] = '\\'
+                    colorGrid[topLeftY + 1][topLeftX + 10] = charColorStr
+                    charGrid[topLeftY + 2][topLeftX] = '\\'
+                    colorGrid[topLeftY + 2][topLeftX] = charColorStr
+                    charGrid[topLeftY + 2][topLeftX + 10] = '/'
+                    colorGrid[topLeftY + 2][topLeftX + 10] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 1] = '\\'
+                    colorGrid[topLeftY + 3][topLeftX + 1] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 2] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 2] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 3] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 3] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 4] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 4] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 5] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 5] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 6] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 6] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 7] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 7] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 8] = '_'
+                    colorGrid[topLeftY + 3][topLeftX + 8] = charColorStr
+                    charGrid[topLeftY + 3][topLeftX + 9] = '/'
+                    colorGrid[topLeftY + 3][topLeftX + 9] = charColorStr
                     # We fill the inside of the hexagon with the coordinates
                     # and a detail string giving info about the tile
                     coordStr = f"{r},{c}"
                     detailStr = ""
-                    hexTile = self.mapData[r][c]
                     if hexTile.isWater:
                         detailStr = "~" * 9
                     else:
                         unitStr = hexTile.unit.unitType if hexTile.unit is not None else ""
-                        ownerStr = hexTile.owner.faction.color[0] if hexTile.owner is not None else ""
+                        ownerStr = hexTile.owner.faction.name[0] if hexTile.owner is not None else ""
                         # Format: first and last letter of unit type + first letter of owner color
                         # If unitStr is non-empty. Otherwise, leave that part blank.
                         # If ownerStr is empty, leave that part blank too.
@@ -257,146 +321,31 @@ class Scenario:
                     # so we truncate them if needed
                     coordStr = coordStr[:9]
                     detailStr = detailStr[:9]
-                    coordStartX = top_left_x + 1 + (9 - len(coordStr)) // 2
-                    detailStartX = top_left_x + 1 + (9 - len(detailStr)) // 2
-                    char_grid[top_left_y + 1][coordStartX:coordStartX + len(coordStr)] = list(coordStr)
-                    char_grid[top_left_y + 2][detailStartX:detailStartX + len(detailStr)] = list(detailStr)
+                    coordStartX = topLeftX + 1 + (9 - len(coordStr)) // 2
+                    detailStartX = topLeftX + 1 + (9 - len(detailStr)) // 2
+                    charGrid[topLeftY + 1][coordStartX:coordStartX + len(coordStr)] = list(coordStr)
+                    charGrid[topLeftY + 2][detailStartX:detailStartX + len(detailStr)] = list(detailStr)
+                    # The setting of the colorGrid is much easier, 
+                    # we just mark these 9 + 9 = 18 characters with the color string
+                    # Upper
+                    for i in range(len(coordStr)):
+                        colorGrid[topLeftY + 1][coordStartX + i] = charColorStr
+                    # Lower
+                    for i in range(len(detailStr)):
+                        colorGrid[topLeftY + 2][detailStartX + i] = charColorStr
+                        
         # Print the character grid
-        for row in char_grid:
-            print("".join(row))
-
-
-    def printMap(self):
-        """
-        Prints the board state as an ASCII art picture
-        where each hex tile has its coordinates shown.
-        For example, the following would represent a 2x5 grid:
-             ___     ___     ___
-            /0,0\___/0,2\___/0,4\
-            \___/0,1\___/0,3\___/
-            /1,0\___/1,2\___/1,4\
-            \___/1,1\___/1,3\___/
-                \___/   \___/
-        """
-        if not self.mapData:
-            print("Empty map")
-            return
-
-        # Determine dimensions
-        num_rows = len(self.mapData)
-        num_cols = max(len(row) for row in self.mapData) if num_rows > 0 else 0
-
-        # Print the top line
-        print("     ", end="")
-        for col in range(0, num_cols, 2):
-            print("___     ", end="")
-        print()
-
-            
-
-        # Print the hexagonal grid
-        for row in range(num_rows):
-            # Top half of even columns and connections to odd columns
-            line1 = "    "
-            for col in range(num_cols):
-                if col % 2 == 0:  # Even column
-                    line1 += f"/{row},{col}\\"
-                    if col + 1 < len(self.mapData[row]):
-                        line1 += "___"
-                    if row > 0 and col == num_cols - 2:
-                        line1 += "/"
-            print(line1)
-
-            # Bottom half of hexagons
-            line2 = "    "
-            for col in range(num_cols):
-                if col % 2 == 1:  # Odd column
-                    if col == 1:
-                        line2 += "\\"
-                    line2 += f"___/{row},{col}\\"
-                    if col == num_cols - 2:
-                        line2 += "___/"
-                # Exception for the 1 column case
-                elif num_cols == 1:
-                    line2 += "\\___/"
-            print(line2)
-
-        # Print the bottom line
-        print("        ", end="")
-        for col in range(1, num_cols, 2):
-            print("\\___/   ", end="")
-        print()
-
-    def printMapWithDetails(self):
-        """
-        Prints the board state as an ASCII art picture
-        where each hex tile has the unit on the tile and the color of the faction
-        that controls the tile shown, or "~~~" for water tiles.
-        """
-        if not self.mapData:
-            print("Empty map")
-            return
-
-        # Determine dimensions
-        num_rows = len(self.mapData)
-        num_cols = max(len(row) for row in self.mapData) if num_rows > 0 else 0
-
-        # Print the top line
-        print("     ", end="")
-        for col in range(0, num_cols, 2):
-            print("___     ", end="")
-        print()
-
-            
-
-        # Print the hexagonal grid
-        for row in range(num_rows):
-            # Top half of even columns and connections to odd columns
-            line1 = "    "
-            for col in range(num_cols):
-                if col % 2 == 0:  # Even column
-                    hexTile = self.mapData[row][col]
-                    detailStr = ""
-                    if hexTile.isWater:
-                        detailStr = "~~~"
-                    else:
-                        unitStr = hexTile.unit.unitType if hexTile.unit is not None else "   "
-                        ownerStr = hexTile.owner.faction.color[0] if hexTile.owner is not None else " "
-                        detailStr = f"{unitStr[0]}{unitStr[-1]}{ownerStr}"
-                    line1 += f"/{detailStr}\\"
-                    if col + 1 < len(self.mapData[row]):
-                        line1 += "___"
-                    if row > 0 and col == num_cols - 2:
-                        line1 += "/"
-            print(line1)
-
-            # Bottom half of hexagons
-            line2 = "    "
-            for col in range(num_cols):
-                if col % 2 == 1:  # Odd column
-                    hexTile = self.mapData[row][col]
-                    detailStr = ""
-                    if hexTile.isWater:
-                        detailStr = "~~~"
-                    else:
-                        unitStr = hexTile.unit.unitType if hexTile.unit is not None else "   "
-                        ownerStr = hexTile.owner.faction.color[0] if hexTile.owner is not None else " "
-                        detailStr = f"{unitStr[0]}{unitStr[-1]}{ownerStr}"
-                    if col == 1:
-                        line2 += "\\"
-                    line2 += f"___/{detailStr}\\"
-                    if col == num_cols - 2:
-                        line2 += "___/"
-                # Exception for the 1 column case
-                elif num_cols == 1:
-                    line2 += "\\___/"
-            print(line2)
-
-        # Print the bottom line
-        print("        ", end="")
-        for col in range(1, num_cols, 2):
-            print("\\___/   ", end="")
-        print()
+        resetCode = '\033[0m'
+        for row in charGrid:
+            # print("".join(row))
+            for i in range(len(row)):
+                char = row[i]
+                colorStr = colorGrid[charGrid.index(row)][i]
+                if colorStr:
+                    print(f"{colorStr}{char}{resetCode}", end="")
+                else:
+                    print(char, end="")
+            print(resetCode)
 
     def getAllTilesWithinMovementRange(self, startRow, startCol):
         """
@@ -652,9 +601,9 @@ class Scenario:
 
                 if can_build_farm and province.resources >= 12:
                     # Calculate farm cost based on existing farms
-                    farm_count = sum(1 for t in province.tiles if t.unit is not None and t.unit.unitType == "farm")
-                    farm_cost = 12 + farm_count * 2
-                    if province.resources >= farm_cost:
+                    farmCount = sum(1 for t in province.tiles if t.unit is not None and t.unit.unitType == "farm")
+                    farmCost = 12 + farmCount * 2
+                    if province.resources >= farmCost:
                         buildable_units.append("farm")
 
                 if province.resources >= 15:
@@ -736,8 +685,8 @@ class Scenario:
             tier = int(unitType[-1])
             unit = Soldier(tier=tier, owner=province.faction)
         elif unitType == "farm":
-            farm_count = sum(1 for t in province.tiles if t.unit is not None and t.unit.unitType == "farm")
-            unit = Structure(structureType="farm", owner=province.faction, numFarms=farm_count)
+            farmCount = sum(1 for t in province.tiles if t.unit is not None and t.unit.unitType == "farm")
+            unit = Structure(structureType="farm", owner=province.faction, numFarms=farmCount)
         elif unitType == "tower1":
             unit = Structure(structureType="tower1", owner=province.faction)
         elif unitType == "tower2":
