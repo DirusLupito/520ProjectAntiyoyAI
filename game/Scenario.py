@@ -103,6 +103,98 @@ class Scenario:
         self.printMap()
         self.printMapWithDetails()
 
+    def printMap2(self):
+        """
+        Alternative method to print the board.
+        This version prints such that no two hexagons share an ASCII line.
+        For example, this would represent a 2x3 grid:
+             ___       ___
+            /   \ ___ /   \
+            \___//   \\___/
+            /‾‾‾\\___//‾‾‾\
+            \___//‾‾‾\\___/
+                 \___/
+        Uses an approach where first the string is formulated as a 2D array of characters,
+        which is filled in by calculating where each hexagon / each hexagon's ASCII symbols
+        should go, and then printing the resulting 2D array of characters.
+        Used the nonstandard '‾' character to represent the top of hexagons
+        """
+        if not self.mapData:
+            print("Empty map")
+            return
+        
+        # Determine dimensions of the character grid
+        # Each hexagon is 5 characters wide and 4 characters tall
+        # We also pad the grid with 4 spaces on the left
+        # and 1 space on the bottom
+        num_rows = len(self.mapData)
+        num_cols = max(len(row) for row in self.mapData) if num_rows > 0 else 0
+        grid_width = num_cols * 5 + 4
+        grid_height = num_rows * 4 + 1
+        char_grid = [[' ' for _ in range(grid_width)] for _ in range(grid_height)]
+        # Now that we have the character grid, fill it in with hexagons
+        for r in range(num_rows):
+            for c in range(len(self.mapData[r])):
+                # ASCII representation will depend on where the hexagon is located
+                if c % 2 == 0:
+                    if r == 0:
+                        top_left_x = c * 5 + 4
+                        top_left_y = r * 4
+                        char_grid[top_left_y][top_left_x + 1] = '_'
+                        char_grid[top_left_y][top_left_x + 2] = '_'
+                        char_grid[top_left_y][top_left_x + 3] = '_'
+                        char_grid[top_left_y + 1][top_left_x] = '/'
+                        char_grid[top_left_y + 1][top_left_x + 4] = '\\'
+                        char_grid[top_left_y + 2][top_left_x] = '\\'
+                        char_grid[top_left_y + 2][top_left_x + 4] = '/'
+                        char_grid[top_left_y + 2][top_left_x + 1] = '_'
+                        char_grid[top_left_y + 2][top_left_x + 2] = '_'
+                        char_grid[top_left_y + 2][top_left_x + 3] = '_'
+                    else:
+                        top_left_x = c * 5 + 4
+                        top_left_y = r * 4 - 1
+                        char_grid[top_left_y][top_left_x + 1] = '‾'
+                        char_grid[top_left_y][top_left_x + 2] = '‾'
+                        char_grid[top_left_y][top_left_x + 3] = '‾'
+                        char_grid[top_left_y][top_left_x] = '/'
+                        char_grid[top_left_y][top_left_x + 4] = '\\'
+                        char_grid[top_left_y + 1][top_left_x] = '\\'
+                        char_grid[top_left_y + 1][top_left_x + 4] = '/'
+                        char_grid[top_left_y + 1][top_left_x + 1] = '_'
+                        char_grid[top_left_y + 1][top_left_x + 2] = '_'
+                        char_grid[top_left_y + 1][top_left_x + 3] = '_'
+                else:
+                    if r == 0:
+                        top_left_x = c * 5 + 4
+                        top_left_y = r * 4 + 1
+                        char_grid[top_left_y][top_left_x + 1] = '_'
+                        char_grid[top_left_y][top_left_x + 2] = '_'
+                        char_grid[top_left_y][top_left_x + 3] = '_'
+                        char_grid[top_left_y + 1][top_left_x] = '/'
+                        char_grid[top_left_y + 1][top_left_x + 4] = '\\'
+                        char_grid[top_left_y + 2][top_left_x] = '\\'
+                        char_grid[top_left_y + 2][top_left_x + 4] = '/'
+                        char_grid[top_left_y + 2][top_left_x + 1] = '_'
+                        char_grid[top_left_y + 2][top_left_x + 2] = '_'
+                        char_grid[top_left_y + 2][top_left_x + 3] = '_'
+                    else:
+                        top_left_x = c * 5 + 4
+                        top_left_y = r * 4
+                        char_grid[top_left_y][top_left_x + 1] = '‾'
+                        char_grid[top_left_y][top_left_x + 2] = '‾'
+                        char_grid[top_left_y][top_left_x + 3] = '‾'
+                        char_grid[top_left_y][top_left_x] = '/'
+                        char_grid[top_left_y][top_left_x + 4] = '\\'
+                        char_grid[top_left_y + 1][top_left_x] = '\\'
+                        char_grid[top_left_y + 1][top_left_x + 4] = '/'
+                        char_grid[top_left_y + 1][top_left_x + 1] = '_'
+                        char_grid[top_left_y + 1][top_left_x + 2] = '_'
+                        char_grid[top_left_y + 1][top_left_x + 3] = '_'
+        # Print the character grid
+        for row in char_grid:
+            print("".join(row))
+
+
     def printMap(self):
         """
         Prints the board state as an ASCII art picture
