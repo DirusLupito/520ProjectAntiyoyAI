@@ -751,7 +751,7 @@ class Scenario:
             "owner": province
         }
 
-        # Create and return the action
+        # Create the main action
         actionData = {
             "hexCoordinates": (row, col),
             "newTileState": newTileState,
@@ -762,6 +762,10 @@ class Scenario:
 
         # If we're building a soldier on a tile controlled by another province,
         # we need to handle the tile capture as well
+        # We need to simulate the cost deduction before capturing,
+        # in case a merger happens
+        # TODO: do this more cleanly
+        province.resources -= costOfAction
         if tile.owner is not None and tile.owner != province:
             captureActions = tile.owner.removeTile(tile, province)
             actions.extend(captureActions)
@@ -769,6 +773,9 @@ class Scenario:
         elif tile.owner is None:
             addActions = province.addTile(tile)
             actions.extend(addActions)
+            
+        # Reset province resources to original value before returning
+        province.resources += costOfAction
         return actions
         
 
