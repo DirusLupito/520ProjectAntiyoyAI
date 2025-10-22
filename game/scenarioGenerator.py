@@ -21,8 +21,8 @@ def generateRandomScenario(dimension, targetNumberOfLandTiles, factions, initial
     # Validate inputs
     if len(factions) >= targetNumberOfLandTiles / 2:
         raise ValueError("Number of factions must be less than half the target number of land tiles")
-    if targetNumberOfLandTiles >= dimension * dimension:
-        raise ValueError("Target number of land tiles must be less than the square of dimension")
+    if targetNumberOfLandTiles > dimension * dimension:
+        raise ValueError("Target number of land tiles must be less or equal to than the square of dimension")
     if len(factions) * initialProvinceSize > targetNumberOfLandTiles:
         raise ValueError("Not enough land tiles to allocate initial provinces for all factions")
     if initialProvinceSize < 2:
