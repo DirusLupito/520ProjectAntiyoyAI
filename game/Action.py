@@ -70,9 +70,18 @@ class Action:
         #     "finalHexCoordinates": (x2, y2) with integer indices correponding 
         #      to where the final HexTile object is in mapData in the Scenario,
         #     "previousInitialHexState": <previous state> as a map between
-        #      some key, either "unit" or "owner", and their previous values,
+        #      some key, either "unit" or "owner", and their previous values
+        #      which gives the state of the initial hex before the move,
         #     "previousFinalHexState": <previous state> as a map between
-        #      some key, either "unit" or "owner", and their previous values,
+        #      some key, either "unit" or "owner", and their previous values
+        #      which gives the state of the final hex before the move,
+        #     "resultantInitialHexState": <resultant state> as a map between
+        #      some key, either "unit" or "owner", and their resultant values
+        #      which gives the state of the initial hex after the move,
+        #     "resultantFinalHexState": <resultant state> as a map between
+        #      some key, either "unit" or "owner", and their resultant values
+        #      which gives the state of the final hex after the move,
+        #     "unitMoved": <unit> which is the unit that was moved (or merged),
         #     "incomeFromMove": <amount> as an integer
         # }
         # For "tileChange" actions:
@@ -129,10 +138,13 @@ class Action:
         # Handles inversions for unit movement actions
         if self.actionType == "moveUnit":
             invertedData = {
-                "initialHexCoordinates": self.data["finalHexCoordinates"],
-                "finalHexCoordinates": self.data["initialHexCoordinates"],
-                "previousInitialHexState": self.data["previousFinalHexState"],
-                "previousFinalHexState": self.data["previousInitialHexState"],
+                "initialHexCoordinates": self.data["initialHexCoordinates"],
+                "finalHexCoordinates": self.data["finalHexCoordinates"],
+                "previousInitialHexState": self.data["resultantInitialHexState"],
+                "previousFinalHexState": self.data["resultantFinalHexState"],
+                "resultantInitialHexState": self.data["previousInitialHexState"],
+                "resultantFinalHexState": self.data["previousFinalHexState"],
+                "unitMoved": self.data["unitMoved"],
                 "incomeFromMove": -self.data["incomeFromMove"]
             }
             return Action("moveUnit", invertedData)
@@ -188,3 +200,6 @@ class Action:
         
         else:
             raise ValueError(f"Unknown action type: {self.actionType}")
+        
+    def __str__(self):
+        return f"Action(type={self.actionType}, data={self.data})"

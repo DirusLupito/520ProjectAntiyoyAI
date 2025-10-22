@@ -499,8 +499,16 @@ class Scenario:
         if isinstance(finalTile.unit, Tree) and finalTile.owner == initialTile.owner:
             incomeFromMove = 3  # Income from tree
         
+        # Check if this is a soldier merge
+        resultantUnit = unitToMove
+        if (finalTile.owner == initialTile.owner and
+            finalTile.unit is not None and
+            isinstance(finalTile.unit, Soldier) and
+            isinstance(unitToMove, Soldier)):
+            resultantUnit = Soldier(unitToMove.tier + finalTile.unit.tier)
+        
         previousInitialHexState = {
-            "unit": initialTile.unit,
+            "unit": unitToMove,
             "owner": initialTile.owner
         }
         previousFinalHexState = {
@@ -508,11 +516,24 @@ class Scenario:
             "owner": finalTile.owner
         }
         
+        resultantInitialHexState = {
+            "unit": None,
+            "owner": initialTile.owner
+        }
+
+        resultantFinalHexState = {
+            "unit": resultantUnit,
+            "owner": initialTile.owner
+        }
+
         moveAction = Action("moveUnit", {
             "initialHexCoordinates": (initialHexRow, initialHexCol),
             "finalHexCoordinates": (finalHexRow, finalHexCol),
             "previousInitialHexState": previousInitialHexState,
             "previousFinalHexState": previousFinalHexState,
+            "resultantInitialHexState": resultantInitialHexState,
+            "resultantFinalHexState": resultantFinalHexState,
+            "unitMoved": unitToMove,
             "incomeFromMove": incomeFromMove
         })
         
@@ -762,35 +783,27 @@ class Scenario:
             initTile = self.mapData[initRow][initCol]
             finalTile = self.mapData[finalRow][finalCol]
             
-            movingUnit = initTile.unit
+            # Basically this is like two tile changes:
+            # The initial tile gets turned into whatever resultantInitialHexState says
+            # The final tile gets turned into whatever resultantFinalHexState says
+
+            # Update initial tile
+            if "unit" in action.data["resultantInitialHexState"]:
+                initTile.unit = action.data["resultantInitialHexState"]["unit"]
+            if "owner" in action.data["resultantInitialHexState"]:
+                initTile.owner = action.data["resultantInitialHexState"]["owner"]
+
+            # Update final tile
+            if "unit" in action.data["resultantFinalHexState"]:
+                finalTile.unit = action.data["resultantFinalHexState"]["unit"]
+            if "owner" in action.data["resultantFinalHexState"]:
+                finalTile.owner = action.data["resultantFinalHexState"]["owner"]
             
-            # Check if this is a soldier merge
-            isMergeMove = False
-            if (finalTile.owner == initTile.owner and 
-                finalTile.unit is not None and 
-                isinstance(finalTile.unit, Soldier) and 
-                isinstance(movingUnit, Soldier)):
-                isMergeMove = True
-                
-            # Handle soldier merging
-            if isMergeMove:
-                # Calculate the new tier (sum of both tiers)
-                newTier = movingUnit.tier + finalTile.unit.tier
-                
-                # Create the new, higher-tier soldier on the destination tile
-                finalTile.unit = Soldier(tier=newTier, owner=movingUnit.owner)
-                
-                # Clear the source tile
-                initTile.unit = None
-            else:
-                # Standard unit movement
-                finalTile.unit = movingUnit
-                initTile.unit = None
-            
-            # Mark as having moved if it could move, 
-            # otherwise we're inverting some previous move
-            # and so we toggle the canMove state
-            movingUnit.canMove = not movingUnit.canMove 
+            # We simply invert the canMove status of the unit moved
+            # This way we both mark units who have moved as unable to move,
+            # and undo that status when inverting the action
+            if action.data["unitMoved"] is not None:
+                action.data["unitMoved"].canMove = not action.data["unitMoved"].canMove
 
             # Handle income from chopping trees
             if action.data["incomeFromMove"] != 0 and initTile.owner:
@@ -826,7 +839,8 @@ class Scenario:
                 isinstance(action.data["previousTileState"]["unit"], Tree) and 
                 isinstance(tile.unit, Soldier)):
                 tile.unit.canMove = False
-            elif (action.data["previousTileState"]["owner"] != action.data["newTileState"]["owner"] and
+            elif ("owner" in action.data["newTileState"] and
+                  action.data["previousTileState"]["owner"] != action.data["newTileState"]["owner"] and
                   isinstance(tile.unit, Soldier)):
                 tile.unit.canMove = False
                 
