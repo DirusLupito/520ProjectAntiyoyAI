@@ -86,7 +86,7 @@ class Scenario:
         """
         Advances the turn to the next faction in the list.
         Loops back to the first faction after the last one.
-        Updates all provinces of the faction whose turn just ended.
+        Performs pre and post turn updates as needed.
         """
         if len(self.factions) == 0:
             return
@@ -94,6 +94,9 @@ class Scenario:
         for province in currentFaction.provinces:
             province.updateAfterTurn()
         self.indexOfFactionToPlay = (self.indexOfFactionToPlay + 1) % len(self.factions)
+        currentFaction = self.getFactionToPlay()
+        for province in currentFaction.provinces:
+            province.updateBeforeTurn()
 
     def displayMap(self):
         """
@@ -677,7 +680,7 @@ class Scenario:
             # Add soldier tiers that can capture this tile
             for tier in range(1, 5):
                 attackPower = tier
-                if attackPower > maxDefensePower and province.resources >= tier * 10:
+                if attackPower >= maxDefensePower and province.resources >= tier * 10:
                     buildableUnits.append(f"soldierTier{tier}")
 
         return buildableUnits
@@ -701,33 +704,42 @@ class Scenario:
 
         tile = self.mapData[row][col]
 
-        # Create the appropriate unit object based on unitType
+        # Calculate cost of action
+        # Done here in case a merge happens,
+        # which would change the unit object used for cost calculation
+        tempUnit = None
         if unitType.startswith("soldier"):
             tier = int(unitType[-1]) # Tier is always the last character for soldier types
-            # Check if a soldier is already present for merging
-            if isinstance(tile.unit, Soldier):
+            tempUnit = Soldier(tier=tier, owner=province.faction)
+        elif unitType == "farm":
+            farmCount = sum(1 for t in province.tiles if t.unit is not None and t.unit.unitType == "farm")
+            tempUnit = Structure(structureType="farm", owner=province.faction, numFarms=farmCount)
+        elif unitType == "tower1":
+            tempUnit = Structure(structureType="tower1", owner=province.faction)
+        elif unitType == "tower2":
+            tempUnit = Structure(structureType="tower2", owner=province.faction)
+        else:
+            # Shouldn't be reachable due to prior validation
+            raise ValueError(f"Unknown unit type: {unitType}")
+        costOfAction = tempUnit.cost
+
+        unit = None
+        # Handle a merge if building a soldier on top of another soldier
+        if tempUnit is not None and isinstance(tempUnit, Soldier):
+            tier = tempUnit.tier
+            if isinstance(tile.unit, Soldier) and tile.unit.owner == province.faction:
                 # No need for error checking here, as it's already validated
                 # in getBuildableUnitsOnTile
                 tier = tile.unit.tier + tier
             unit = Soldier(tier=tier, owner=province.faction)
-        elif unitType == "farm":
-            farmCount = sum(1 for t in province.tiles if t.unit is not None and t.unit.unitType == "farm")
-            unit = Structure(structureType="farm", owner=province.faction, numFarms=farmCount)
-        elif unitType == "tower1":
-            unit = Structure(structureType="tower1", owner=province.faction)
-        elif unitType == "tower2":
-            unit = Structure(structureType="tower2", owner=province.faction)
         else:
-            raise ValueError(f"Unknown unit type: {unitType}")
+            unit = tempUnit
 
         # Prepare previous state for inversion
         previousTileState = {
             "unit": tile.unit,
             "owner": tile.owner
         }
-
-        # Calculate cost of action
-        costOfAction = unit.cost
 
         # Special cases for cost adjustment
         if isinstance(tile.unit, Tree) and isinstance(unit, Soldier) and tile.owner == province:
@@ -791,13 +803,25 @@ class Scenario:
             if "unit" in action.data["resultantInitialHexState"]:
                 initTile.unit = action.data["resultantInitialHexState"]["unit"]
             if "owner" in action.data["resultantInitialHexState"]:
+                # Before updating the tile, we also need to check if
+                # the owner is changing, and if so, update the new and old province's tile lists
+                if initTile.owner is not None and initTile in initTile.owner.tiles:
+                    initTile.owner.tiles.remove(initTile)
                 initTile.owner = action.data["resultantInitialHexState"]["owner"]
+                if initTile.owner is not None and initTile not in initTile.owner.tiles:
+                    initTile.owner.tiles.append(initTile)
 
             # Update final tile
             if "unit" in action.data["resultantFinalHexState"]:
                 finalTile.unit = action.data["resultantFinalHexState"]["unit"]
             if "owner" in action.data["resultantFinalHexState"]:
+                # Before updating the tile, we also need to check if
+                # the owner is changing, and if so, update the province's tile list
+                if finalTile.owner is not None and finalTile in finalTile.owner.tiles:
+                    finalTile.owner.tiles.remove(finalTile)
                 finalTile.owner = action.data["resultantFinalHexState"]["owner"]
+                if finalTile.owner is not None and finalTile not in finalTile.owner.tiles:
+                    finalTile.owner.tiles.append(finalTile)
             
             # We simply invert the canMove status of the unit moved
             # This way we both mark units who have moved as unable to move,
@@ -870,8 +894,11 @@ class Scenario:
                     if tile not in province.tiles:
                         province.tiles.append(tile)
                         tile.owner = province
-                        # Also set mapData tiles at the tile's coordinates
-                        # to match this tile in order to keep consistency
+                        # Check the old tile owner and remove the tile from their list if needed
+                        oldTile = self.mapData[tile.row][tile.col]
+                        if oldTile.owner is not None and oldTile in oldTile.owner.tiles and oldTile.owner != province:
+                            oldTile.owner.tiles.remove(oldTile)
+                        # Now we can update the map's version of the tile to match
                         self.mapData[tile.row][tile.col] = tile
         
         elif action.actionType == "provinceDelete":

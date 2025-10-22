@@ -73,7 +73,9 @@ def main():
         scenario.displayMap()
         
         # Initialize turn variables
-        actions = []  # Track actions for potential undo
+        # Track actions and their associated selected province for undo functionality
+        # Actions stores a list of tuples of (action, provinceAtTimeOfAction)
+        actions = [] 
         selectedProvince = None
         selectedUnit = None
         selectedUnitPosition = None
@@ -100,7 +102,7 @@ def main():
             else:
                 # Display selected province info
                 provinceIndex = activeProvinces.index(selectedProvince) + 1 if selectedProvince in activeProvinces else "N/A"
-                print(f"\nSelected Province {provinceIndex}: {len(selectedProvince.tiles)} tiles, {selectedProvince.resources} resources")
+                print(f"\nSelected Province {provinceIndex}: {len(selectedProvince.tiles)} tiles, {selectedProvince.resources} resources, income {selectedProvince.computeIncome()}.")   
                 
                 if selectedUnit:
                     row, col = selectedUnitPosition
@@ -138,12 +140,15 @@ def main():
                     else:
                         # Find the last non-consequence action
                         i = len(actions) - 1
-                        while i >= 0 and actions[i].isDirectConsequenceOfAnotherAction:
+                        while i >= 0 and actions[i][0].isDirectConsequenceOfAnotherAction:
                             i -= 1
                         
                         # Apply inverses in reverse order
                         for j in range(len(actions) - 1, i - 1, -1):
-                            scenario.applyAction(actions[j].invert(), selectedProvince)
+                            # scenario.applyAction(actions[j].invert(), selectedProvince)
+                            actionToInvert = actions[j][0]
+                            provinceAtTimeOfAction = actions[j][1]
+                            scenario.applyAction(actionToInvert.invert(), provinceAtTimeOfAction)
                         
                         # Remove the undone actions
                         actions = actions[:i]
@@ -214,7 +219,8 @@ def main():
                             scenario.applyAction(action, selectedProvince)
                         
                         # Add actions to history
-                        actions.extend(moveActions)
+                        for action in moveActions:
+                            actions.append((action, selectedProvince))
                         
                         print(f"Moved unit from ({selectedUnitPosition[0]}, {selectedUnitPosition[1]}) to ({targetRow}, {targetCol})")
                         
@@ -274,7 +280,8 @@ def main():
                                 scenario.applyAction(action, selectedProvince)
                             
                             # Add actions to history
-                            actions.extend(buildActions)
+                            for action in buildActions:
+                                actions.append((action, selectedProvince))
                             print(f"Built {unitType} at ({row}, {col}).")
                     except (ValueError, IndexError):
                         print("Invalid coordinates. Use 'build <row>,<col>' or 'build <row>,<col> <unitType>'")
