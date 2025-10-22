@@ -355,6 +355,14 @@ class Province:
             "newActiveState": mainGroup if len(mainGroup) >= 2 else False
         }, isDirectConsequenceOfAnotherAction=True)
         actions.append(activationAction)
+
+        # Ensure the main group still has a capital
+        # Handles edge case where the tile removed
+        # to cause the split had the capital on it
+        capitalExists = any(tile.unit is not None and tile.unit.unitType == "capital" for tile in mainGroup)
+        if not capitalExists:
+            _, capitalActions = self.placeCapital(mainGroup)
+            actions.extend(capitalActions)
         
         # Create new provinces for other groups
         for group in otherGroups:
@@ -378,8 +386,42 @@ class Province:
                 actions.append(tileAction)
             
             # Create actions to place a capital in the new province
-            _, capitalActions = newProvince.placeCapital(group)
-            actions.extend(capitalActions)
+            # if the group has two or more tiles
+            # _, capitalActions = newProvince.placeCapital(group)
+            if len(group) >= 2:
+                _, capitalActions = newProvince.placeCapital(group)
+                actions.extend(capitalActions)
+            # If the group has exactly one tile and its unit is a capital,
+            # turn that into a tree
+            # If the single tile unit is any other structure, delete it.
+            # And if it's some other unit (tree or soldier), leave it alone.
+            elif len(group) == 1:
+                singleTile = group[0]
+                unitTypesToDelete = ["farm", "tower1", "tower2"]
+                if singleTile.unit is not None and singleTile.unit.unitType == "capital":
+                    previousState = {"unit": singleTile.unit}
+                    newState = {"unit": Tree(owner=self.faction)}
+                    
+                    treeAction = Action("tileChange", {
+                        "hexCoordinates": (singleTile.row, singleTile.col),
+                        "newTileState": newState,
+                        "previousTileState": previousState,
+                        "costOfAction": 0
+                    }, isDirectConsequenceOfAnotherAction=True)
+                    
+                    actions.append(treeAction)
+                elif singleTile.unit is not None and singleTile.unit.unitType in unitTypesToDelete:
+                    previousState = {"unit": singleTile.unit}
+                    newState = {"unit": None}
+                    
+                    deleteAction = Action("tileChange", {
+                        "hexCoordinates": (singleTile.row, singleTile.col),
+                        "newTileState": newState,
+                        "previousTileState": previousState,
+                        "costOfAction": 0
+                    }, isDirectConsequenceOfAnotherAction=True)
+                    
+                    actions.append(deleteAction)
         
         return actions
     
@@ -432,6 +474,43 @@ class Province:
             if tile.unit is not None:
                 income -= tile.unit.upkeep  # Subtract upkeep (negative upkeep adds resources)
         return income
+    
+    def updateBeforeTurn(self):
+        """
+        Updates the province before a turn.
+        Currently, this is identical to updateAfterTurn,
+        except for when it is called and for the fact
+        that it will not actually change the resources,
+        instead using a temporary variable to hold the new resources.
+        Also, it will not make trees grow.
+        """
+        income = self.computeIncome()
+        temporaryResources = self.resources + income
+
+        if temporaryResources < 0:
+            temporaryResources = 0
+
+        # Inactivity check here so that soldiers still die on inactive provinces
+        if not self.active:
+            temporaryResources = 0
+
+        # Turn all preexisting gravestones into normal trees
+        # Done before turning soldiers into gravestones to avoid 
+        # immediate conversion back to normal trees
+        for tile in self.tiles:
+            if tile.unit is not None and tile.unit.unitType == "gravestone":
+                tile.unit = Tree(owner=self.faction)
+
+        if temporaryResources == 0:
+            # All soldier units become gravestones
+            for tile in self.tiles:
+                if tile.unit is not None and tile.unit.unitType.startswith("soldier"):
+                    tile.unit = Tree(isGravestone=True, owner=self.faction)
+        
+        # Reset soldier units to be able to move again next turn
+        for tile in self.tiles:
+            if tile.unit is not None and tile.unit.unitType.startswith("soldier"):
+                tile.unit.canMove = True
     
     def updateAfterTurn(self):
         """
