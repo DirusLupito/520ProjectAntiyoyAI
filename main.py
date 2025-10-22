@@ -2,7 +2,6 @@
 from game.Scenario import Scenario
 from game.scenarioGenerator import generateRandomScenario
 from game.world.factions.Faction import Faction
-import pdb
 
 def getIntegerInput(prompt, minValue=None, maxValue=None):
     """Helper function to get valid integer input from the user."""
@@ -248,7 +247,21 @@ def main():
                             else:
                                 print(f"No units can be built at ({row}, {col}).")
                         elif len(parts) >= 3:  # Building a unit
-                            unitType = cmdUpper.split()[2]  # Preserve original casing for unit type (IMPORTANT)
+                            # Maps shorthand to full unit types
+                            # if user used shorthand, convert it
+                            shorthandMap = {
+                                "s1": "soldierTier1",
+                                "s2": "soldierTier2",
+                                "s3": "soldierTier3",
+                                "s4": "soldierTier4",
+                                "fm": "farm",
+                                "t1": "tower1",
+                                "t2": "tower2",
+                            }
+                            if parts[2] in shorthandMap:
+                                unitType = shorthandMap[parts[2]]
+                            else:
+                                unitType = cmdUpper.split()[2]  # Preserve original casing for unit type (IMPORTANT)
                             buildable = scenario.getBuildableUnitsOnTile(row, col, selectedProvince)
 
                             if unitType not in buildable:
