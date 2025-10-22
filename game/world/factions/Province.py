@@ -295,7 +295,7 @@ class Province:
         # Check if province will still be contiguous after removal
         # Need to simulate tile removal to find contiguous groups
         remainingTiles = [t for t in self.tiles if t != tile]
-        contiguousGroups = self._findContiguousGroupsForTiles(remainingTiles)
+        contiguousGroups = self._findContiguousGroups(remainingTiles)
         
         # If there's only one group, the province will still be contiguous
         if len(contiguousGroups) == 1:
@@ -315,8 +315,8 @@ class Province:
             # Check if capital will be removed
             if tile.unit is not None and tile.unit.unitType == "capital":
                 # Create actions to place a new capital
-                _, capital_actions = self.placeCapital(remainingTiles)
-                actions.extend(capital_actions)
+                _, capitalActions = self.placeCapital(remainingTiles)
+                actions.extend(capitalActions)
                 
             return actions
             
@@ -378,18 +378,18 @@ class Province:
                 actions.append(tileAction)
             
             # Create actions to place a capital in the new province
-            _, capital_actions = newProvince.placeCapital(group)
-            actions.extend(capital_actions)
+            _, capitalActions = newProvince.placeCapital(group)
+            actions.extend(capitalActions)
         
         return actions
     
-    def findContiguousGroups(self):
+    def _findContiguousGroups(self, tiles):
         """
-        Find all contiguous groups of tiles in this province using BFS.
+        Find all contiguous groups of tiles in the provided list of tiles.
         Returns a list of lists, where each inner list is a group of contiguous tiles.
         """
         contiguousGroups = []
-        unvisited = set(self.tiles)
+        unvisited = set(tiles)
 
         while unvisited:
             # Start a new contiguous group

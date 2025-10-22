@@ -32,7 +32,7 @@ def main():
     print("\n--- Game Setup ---")
     dimension = getIntegerInput("Enter map dimension (recommended <=10): ", minValue=2)
     
-    maxLandTiles = dimension * dimension - 1
+    maxLandTiles = dimension * dimension
     targetNumberOfLandTiles = getIntegerInput(f"Enter target number of land tiles (min 4, max {maxLandTiles}): ",
                                               minValue=4, maxValue=maxLandTiles)
     
