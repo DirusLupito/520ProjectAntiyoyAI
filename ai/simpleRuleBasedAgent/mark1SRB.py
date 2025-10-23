@@ -36,6 +36,13 @@ def playTurn(scenario, faction):
         A list of (Action, province) tuples to be executed.
     """
     allActions = []
+
+    # Find all unclaimed tiles on the map
+    unclaimedTiles = [
+        tile for row in scenario.mapData for tile in row 
+        if not tile.isWater and tile.owner is not None
+        and tile.owner.faction != faction
+    ]
     
     # Rule 1: Unit Movement
     # Create a copy of movable units to iterate over, as we will modify their state
@@ -44,18 +51,12 @@ def playTurn(scenario, faction):
         for tile in province.tiles:
             if tile.unit and tile.unit.canMove and tile.unit.unitType.startswith("soldier"):
                 movableUnits.append((tile, province))
-
-    # Find all unclaimed tiles on the map
-    unclaimedTiles = [
-        tile for row in scenario.mapData for tile in row 
-        if not tile.isWater and tile.owner != faction
-    ]
     
     # Find frontier tiles (unclaimed tiles adjacent to our territory)
     frontierTiles = {
         neighbor for province in faction.provinces for tile in province.tiles 
         for neighbor in tile.neighbors 
-        if neighbor and not neighbor.isWater and neighbor.owner != faction
+        if neighbor and not neighbor.isWater and (neighbor.owner is None or neighbor.owner.faction != faction)
     }
 
     for unitTile, province in movableUnits:
@@ -72,7 +73,7 @@ def playTurn(scenario, faction):
             targetTile = random.choice(immediateTargets)
         elif frontierTiles:
             # If no immediate targets, find path to the closest frontier tile
-            path = findPathToClosestTile(unitTile, frontierTiles, scenario.mapData)
+            path = findPathToClosestTile(unitTile, frontierTiles)
             if path and len(path) > 1:
                 # Find the furthest tile we can reach along the path
                 for i in range(len(path) - 1, 0, -1):
@@ -99,7 +100,8 @@ def playTurn(scenario, faction):
             # Find potential build locations: unclaimed tiles adjacent to this province
             buildLocations = {
                 neighbor for tile in province.tiles for neighbor in tile.neighbors
-                if neighbor and not neighbor.isWater and neighbor.owner != faction
+                if neighbor and not neighbor.isWater 
+                and (neighbor.owner is None or neighbor.owner.faction != faction)
             }
 
             bestTarget = None
