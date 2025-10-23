@@ -2,6 +2,13 @@
 from game.Scenario import Scenario
 from game.scenarioGenerator import generateRandomScenario
 from game.world.factions.Faction import Faction
+from ai.simpleRuleBasedAgent.mark1SRB import playTurn as mark1SRBPlayTurn
+import pdb
+
+# A mapping from AI type strings to their playTurn functions
+aiImplementations = {
+    "mark1srb": mark1SRBPlayTurn
+}
 
 def getIntegerInput(prompt, minValue=None, maxValue=None):
     """Helper function to get valid integer input from the user."""
@@ -37,15 +44,24 @@ def main():
     
     maxFactions = targetNumberOfLandTiles // 2 - 1
     numFactions = getIntegerInput(f"Enter number of factions (max {maxFactions}): ", 
-                                   minValue=2, maxValue=maxFactions)
-    
+                                   minValue=1, maxValue=maxFactions)
     initialProvinceSize = getIntegerInput("Enter initial province size (recommended 2-6): ", minValue=2, maxValue=maxLandTiles // numFactions)
     
     factions = []
     for i in range(numFactions):
         name = input(f"Enter name for Faction {i+1}: ")
         color = input(f"Enter color for Faction {i+1} (e.g. Red, Blue, Green): ")
-        factions.append(Faction(name=name, color=color))
+        
+        playerType = ""
+        while playerType not in ["human", "ai"]:
+            playerType = input(f"Is Faction {i+1} controlled by a 'human' or 'ai'? ").lower()
+
+        aiType = None
+        if playerType == "ai":
+            while aiType not in aiImplementations:
+                aiType = input(f"Enter AI type for Faction {i+1} (e.g. 'mark1srb'): ").lower()
+
+        factions.append(Faction(name=name, color=color, playerType=playerType, aiType=aiType))
     
     randomSeed = getIntegerInput("Enter random seed (any number): ")
     
@@ -68,6 +84,34 @@ def main():
         
         currentFaction = scenario.getFactionToPlay()
         print(f"\n===== {currentFaction.name}'s Turn ({currentFaction.color}) =====")
+
+        # Handles AI player's turn
+        if currentFaction.playerType == "ai":
+            scenario.displayMap()
+            print(f"{currentFaction.name} (AI) is thinking...")
+            
+            # Get the AI's chosen actions
+            aiFunction = aiImplementations[currentFaction.aiType]
+            aiActions = aiFunction(scenario, currentFaction)
+            
+            # Apply all actions returned by the AI
+            if not aiActions:
+                print(f"{currentFaction.name} (AI) chose to do nothing.")
+            else:
+                print(f"{currentFaction.name} (AI) is performing {len(aiActions)} actions...")
+                for action, province in aiActions:
+                    try:
+                        scenario.applyAction(action, province)
+                        # debug
+                        # print(f"  - {action.actionType} on province {province.faction.name}")
+                    except Exception as e:
+                        print(f"AI generated an invalid action, skipping. Error: {e}")
+            
+            # End AI's turn
+            scenario.advanceTurn()
+            continue # Skip to the next iteration of the main game loop
+
+        # Handles human player's turn
         
         # Display map at the start of turn
         scenario.displayMap()
