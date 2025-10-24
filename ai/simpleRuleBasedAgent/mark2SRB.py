@@ -27,7 +27,7 @@ from ai.utils.commonAIUtilityFunctions import getAllMovableUnitTilesInProvince
 from ai.utils.commonAIUtilityFunctions import getFrontierTiles
 from ai.utils.commonAIUtilityFunctions import getTilesInProvinceWhichContainGivenUnitTypes
 from ai.utils.commonAIUtilityFunctions import getTilesWhichUnitCanBeBuiltOnGivenTiles
-import pdb
+from ai.utils.commonAIUtilityFunctions import getSubsetOfTilesWithMatchingDefenseRating
 
 def playTurn(scenario, faction):
     """
@@ -84,7 +84,12 @@ def playTurn(scenario, faction):
         soldierTilesToAvoid = set(getTilesInProvinceWhichContainGivenUnitTypes(province, ["soldierTier1", "soldierTier2", "soldierTier3", "soldierTier4"]))
 
         for unitTile, _ in movableUnits:
-            path = findPathToClosestTileAvoidingGivenTiles(unitTile, validTargets, soldierTilesToAvoid)
+            # In addition to avoiding soldier tiles,
+            # we also need to avoid tiles with a defense rating higher than 
+            # the attackPower of the unit on unitTile.
+            ratingTest = lambda defenseRating: defenseRating > unitTile.unit.attackPower
+            frontierTilesWithTooHighDefense = getSubsetOfTilesWithMatchingDefenseRating(frontierTiles, ratingTest)
+            path = findPathToClosestTileAvoidingGivenTiles(unitTile, validTargets, soldierTilesToAvoid.union(frontierTilesWithTooHighDefense))
             if path and len(path) > 1:
                 # Find the furthest tile we can reach along the path
                 movementRange = scenario.getAllTilesWithinMovementRange(unitTile.row, unitTile.col)

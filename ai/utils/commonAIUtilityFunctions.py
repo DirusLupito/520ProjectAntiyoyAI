@@ -231,3 +231,23 @@ def getDefenseRatingOfTile(tile):
                 defenseRating = max(defenseRating, neighbor.unit.defensePower)
 
     return defenseRating
+
+def getSubsetOfTilesWithMatchingDefenseRating(tiles, rating):
+    """
+    Filters a list of tiles to only those whose defense rating
+    satisfies the given rating function.
+
+    Args:
+        tiles: A list of HexTile objects to filter.
+        rating: A function (probably a lambda) that takes an integer defense rating
+                and returns True if the tile should be included.
+
+    Returns:
+        A list of HexTile objects whose defense rating satisfies the rating function.
+    """
+    matchingTiles = []
+    for tile in tiles:
+        defenseRating = getDefenseRatingOfTile(tile)
+        if rating(defenseRating):
+            matchingTiles.append(tile)
+    return matchingTiles
