@@ -477,6 +477,11 @@ class Scenario:
         # Validate presence of a mobile unit
         if initialTile.unit is None or not initialTile.unit.canMove:
             raise ValueError("No mobile unit at the initial hex to move.")
+        
+        # Validate that the initial tile has an owner
+        # and that the owner is active
+        if initialTile.owner is None or not initialTile.owner.active:
+            raise ValueError("Initial hex does not belong to an active province.")
             
         unitToMove = initialTile.unit
         
@@ -592,6 +597,10 @@ class Scenario:
         # Validate coordinates
         if not (0 <= row < len(self.mapData)) or not (0 <= col < len(self.mapData[row])):
             return buildableUnits  # Empty list if coordinates are invalid
+        
+        # Validate that the province is not none and is active
+        if province is None or not province.active:
+            return buildableUnits
 
         tile = self.mapData[row][col]
 

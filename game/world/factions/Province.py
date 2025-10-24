@@ -269,6 +269,12 @@ class Province:
             return actions
         
         # Handle province with 1 tile after removal - mark as inactive and reset the treasury
+        # We also need to handle potential unit modifications here
+        # The consequences in question:
+        # A group province which has exactly one tile who has a capital unit
+        # must have that capital turned into a tree
+        # If the single tile unit is any other structure, delete it.
+        # And if it's some other unit (tree or soldier), leave it alone.
         if len(self.tiles) == 2 and tile in self.tiles:
             # After removing this tile, the province will have 1 tile
             # Create action to mark province as inactive
@@ -286,6 +292,34 @@ class Province:
                 "newResources": 0
             }, isDirectConsequenceOfAnotherAction=True)
             actions.append(resourceAction)
+
+            # Create unit modification action if needed
+            remainingTile = next(t for t in self.tiles if t != tile)
+            unitTypesToDelete = ["farm", "tower1", "tower2"]
+            if remainingTile.unit is not None and remainingTile.unit.unitType == "capital":
+                previousState = {"unit": remainingTile.unit}
+                newState = {"unit": Tree(owner=self.faction)}
+                
+                treeAction = Action("tileChange", {
+                    "hexCoordinates": (remainingTile.row, remainingTile.col),
+                    "newTileState": newState,
+                    "previousTileState": previousState,
+                    "costOfAction": 0
+                }, isDirectConsequenceOfAnotherAction=True)
+                
+                actions.append(treeAction)
+            elif remainingTile.unit is not None and remainingTile.unit.unitType in unitTypesToDelete:
+                previousState = {"unit": remainingTile.unit}
+                newState = {"unit": None}
+                
+                deleteAction = Action("tileChange", {
+                    "hexCoordinates": (remainingTile.row, remainingTile.col),
+                    "newTileState": newState,
+                    "previousTileState": previousState,
+                    "costOfAction": 0
+                }, isDirectConsequenceOfAnotherAction=True)
+                
+                actions.append(deleteAction)
             
             # Create actions for conquering province to add the tile
             conquerActions = conqueringProvince.addTile(tile)
@@ -357,10 +391,11 @@ class Province:
         actions.append(activationAction)
 
         # Ensure the main group still has a capital
+        # if it has 2 or more tiles 
         # Handles edge case where the tile removed
         # to cause the split had the capital on it
         capitalExists = any(tile.unit is not None and tile.unit.unitType == "capital" for tile in mainGroup)
-        if not capitalExists:
+        if not capitalExists and len(mainGroup) >= 2:
             _, capitalActions = self.placeCapital(mainGroup)
             actions.extend(capitalActions)
         
@@ -387,10 +422,16 @@ class Province:
             
             # Create actions to place a capital in the new province
             # if the group has two or more tiles
-            # _, capitalActions = newProvince.placeCapital(group)
             if len(group) >= 2:
-                _, capitalActions = newProvince.placeCapital(group)
-                actions.extend(capitalActions)
+                # If the province has two or more tiles,
+                # it needs a capital
+                # Let's first check if it already has the old capital
+                # of the province being split
+                capitalExists = any(tile.unit is not None and tile.unit.unitType == "capital" for tile in group)
+                if not capitalExists:
+                    # If not, we need to place a new capital
+                    _, capitalActions = newProvince.placeCapital(group)
+                    actions.extend(capitalActions)
             # If the group has exactly one tile and its unit is a capital,
             # turn that into a tree
             # If the single tile unit is any other structure, delete it.

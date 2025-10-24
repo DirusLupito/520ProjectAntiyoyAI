@@ -5,6 +5,9 @@ class Faction:
     """
     def __init__(self, name=None, color=None, provinces=None, playerType="human", aiType=None):
         self.name = name  # String, Name of the faction
+        # "" and None for name become " "
+        if not self.name:
+            self.name = " "
         self.color = color  # String, Color of the faction (e.g. 'red', 'blue', etc.)
         self.provinces = provinces if provinces is not None else []  # List of Province instances controlled by the faction
         self.playerType = playerType  # String, Type of the player, either 'human' or 'AI'

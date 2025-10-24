@@ -250,7 +250,7 @@ def _distributeTilesToFactions(landTiles, factions, initialProvinceSize):
         # Make sure the province has at least 2 tiles to be active
         if len(province.tiles) >= 2:
             province.active = True
-            # Use the existing placeCapital method to select a good tile and create the action
+            # We use the existing placeCapital method to select a good tile
             capitalTile, _ = province.placeCapital(province.tiles)
             # Actually place the capital without using the action
             capitalTile.unit = Structure(structureType="capital", owner=province.faction)
