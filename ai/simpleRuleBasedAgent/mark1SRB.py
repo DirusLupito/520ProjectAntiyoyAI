@@ -45,7 +45,12 @@ def playTurn(scenario, faction):
     ]
     
     # Rule 1: Unit Movement
-    # Create a copy of movable units to iterate over, as we will modify their state
+    # Let's get all the movable soldier units for this faction
+    # Notice how we iterate through all provinces, rather than through
+    # all active provinces. This is because the code here is bad.
+    # Sure, it "should" work because the rest of the code "should"
+    # prevent moving from inactive provinces, but still.
+    # DO NOT COPY THIS STYLE IN OTHER AIs!!!!!!!!!!!!!!!!!!!!!
     movableUnits = []
     for province in faction.provinces:
         for tile in province.tiles:
@@ -95,6 +100,11 @@ def playTurn(scenario, faction):
                 pass
 
     # Rule 2: Unit Building
+    # Notice how we iterate through all provinces, rather than through
+    # all active provinces. This is because the code here is bad.
+    # Sure, it "should" work because the rest of the code "should"
+    # prevent building from inactive provinces, but still.
+    # DO NOT COPY THIS STYLE IN OTHER AIs!!!!!!!!!!!!!!!!!!!!!
     for province in faction.provinces:
         if province.resources >= 10: # Cost of soldierTier1
             # Find potential build locations: unclaimed tiles adjacent to this province
