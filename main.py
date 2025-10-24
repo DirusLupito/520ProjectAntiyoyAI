@@ -5,7 +5,7 @@ from game.world.factions.Faction import Faction
 from ai.doNothingAgent import playTurn as doNothingPlayTurn
 from ai.simpleRuleBasedAgent.mark1SRB import playTurn as mark1SRBPlayTurn
 from ai.simpleRuleBasedAgent.mark2SRB import playTurn as mark2SRBPlayTurn
-
+import pdb
 
 # A mapping from AI type strings to their playTurn functions
 aiImplementations = {
@@ -119,7 +119,9 @@ def main():
             
             # End AI's turn
             scenario.advanceTurn()
-            input("Press Enter to continue...")
+            debugInput = input("Press Enter to continue, b to break into debugger... ")
+            if debugInput.lower() == "b":
+                pdb.set_trace()
             continue # Skip to the next iteration of the main game loop
 
         # Handles human player's turn
