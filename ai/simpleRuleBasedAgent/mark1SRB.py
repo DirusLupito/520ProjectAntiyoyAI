@@ -21,8 +21,10 @@ hostile unit defense level).
 """
 
 import random
-from collections import deque
 from ai.utils.commonAIUtilityFunctions import findPathToClosestTile
+from ai.utils.commonAIUtilityFunctions import getAllUncontrolledTiles
+from ai.utils.commonAIUtilityFunctions import getAllMovableUnitTilesInProvince
+from ai.utils.commonAIUtilityFunctions import getFrontierTiles
 
 def playTurn(scenario, faction):
     """
@@ -38,11 +40,7 @@ def playTurn(scenario, faction):
     allActions = []
 
     # Find all unclaimed tiles on the map
-    unclaimedTiles = [
-        tile for row in scenario.mapData for tile in row 
-        if not tile.isWater and tile.owner is not None
-        and tile.owner.faction != faction
-    ]
+    unclaimedTiles = getAllUncontrolledTiles(scenario, faction)
     
     # Rule 1: Unit Movement
     # Let's get all the movable soldier units for this faction
@@ -53,16 +51,13 @@ def playTurn(scenario, faction):
     # DO NOT COPY THIS STYLE IN OTHER AIs!!!!!!!!!!!!!!!!!!!!!
     movableUnits = []
     for province in faction.provinces:
-        for tile in province.tiles:
-            if tile.unit and tile.unit.canMove and tile.unit.unitType.startswith("soldier"):
-                movableUnits.append((tile, province))
-    
+        units = getAllMovableUnitTilesInProvince(province)
+        movableUnits.extend(units)
+
     # Find frontier tiles (unclaimed tiles adjacent to our territory)
-    frontierTiles = {
-        neighbor for province in faction.provinces for tile in province.tiles 
-        for neighbor in tile.neighbors 
-        if neighbor and not neighbor.isWater and (neighbor.owner is None or neighbor.owner.faction != faction)
-    }
+    frontierTiles = []
+    for province in faction.provinces:
+        frontierTiles.extend(getFrontierTiles(province))
 
     for unitTile, province in movableUnits:
         # Get all possible moves for the current unit
