@@ -2,13 +2,16 @@
 from game.Scenario import Scenario
 from game.scenarioGenerator import generateRandomScenario
 from game.world.factions.Faction import Faction
-from ai.simpleRuleBasedAgent.mark1SRB import playTurn as mark1SRBPlayTurn
 from ai.doNothingAgent import playTurn as doNothingPlayTurn
+from ai.simpleRuleBasedAgent.mark1SRB import playTurn as mark1SRBPlayTurn
+from ai.simpleRuleBasedAgent.mark2SRB import playTurn as mark2SRBPlayTurn
+
 
 # A mapping from AI type strings to their playTurn functions
 aiImplementations = {
     "donothing": doNothingPlayTurn,
-    "mark1srb": mark1SRBPlayTurn
+    "mark1srb": mark1SRBPlayTurn,
+    "mark2srb": mark2SRBPlayTurn
 }
 
 def getIntegerInput(prompt, minValue=None, maxValue=None):
@@ -54,8 +57,11 @@ def main():
         color = input(f"Enter color for Faction {i+1} (e.g. Red, Blue, Green): ")
         
         playerType = ""
-        while playerType not in ["human", "ai"]:
-            playerType = input(f"Is Faction {i+1} controlled by a 'human' or 'ai'? ").lower()
+        while playerType not in ["h", "a"]:
+            playerType = input(f"Is Faction {i+1} controlled by a (h)uman or (a)i? ").lower()
+            if playerType not in ["h", "a"]:
+                print("Please enter 'h' for human or 'a' for ai.")
+        playerType = "human" if playerType == "h" else "ai"
 
         aiType = None
         if playerType == "ai":
