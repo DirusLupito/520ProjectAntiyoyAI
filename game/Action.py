@@ -125,6 +125,8 @@ class Action:
         #     "previousActiveState": <boolean>,
         #     "newActiveState": <boolean>
         # }
+
+        # Indicates if this action was a direct consequence of another action
         self.isDirectConsequenceOfAnotherAction = isDirectConsequenceOfAnotherAction
         
     def invert(self):

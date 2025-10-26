@@ -2,6 +2,7 @@
 from game.Scenario import Scenario
 from game.scenarioGenerator import generateRandomScenario
 from game.world.factions.Faction import Faction
+from game.replays.Replay import Replay
 from ai.doNothingAgent import playTurn as doNothingPlayTurn
 from ai.simpleRuleBasedAgent.mark1SRB import playTurn as mark1SRBPlayTurn
 from ai.simpleRuleBasedAgent.mark2SRB import playTurn as mark2SRBPlayTurn
@@ -29,6 +30,36 @@ def getIntegerInput(prompt, minValue=None, maxValue=None):
         except ValueError:
             print("Please enter a valid integer.")
 
+def promptYesNo(promptText):
+    """Helper function to prompt the user for a yes/no response."""
+    while True:
+        choice = input(promptText).strip().lower()
+        if choice in ("y", "yes"):
+            return True
+        if choice in ("n", "no"):
+            return False
+        print("Please enter 'y' or 'n'.")
+
+
+def offerSavedReplayView():
+    """
+    Helper function which handles both prompting the user to watch a saved replay
+    and loading/playing the replay if they choose to do so.
+    """
+    while True:
+        watch = input("Watch a saved replay? (y/n): ").strip().lower()
+        if watch in ("n", "no"):
+            return
+        if watch in ("y", "yes"):
+            path = input("Enter replay file path: ").strip()
+            try:
+                replay = Replay.loadFromFile(path)
+                replay.playInteractive()
+            except Exception as exc:
+                print(f"Failed to play replay: {exc}")
+        else:
+            print("Please enter 'y' or 'n'.")
+
 def main():
     """
     Main function to run the Antiyoy AI project.
@@ -38,6 +69,8 @@ def main():
     """
     print("===== ASCIIyoy =====")
     print("An ASCII-based implementation of the Antiyoy strategy game.")
+
+    offerSavedReplayView()
     
     print("\n--- Game Setup ---")
     dimension = getIntegerInput("Enter map dimension (recommended <=10): ", minValue=2)
@@ -75,9 +108,26 @@ def main():
     
     randomSeed = getIntegerInput("Enter random seed (any number): ")
     
+    replayMetadata = {
+        "dimension": dimension,
+        "targetLandTiles": targetNumberOfLandTiles,
+        "initialProvinceSize": initialProvinceSize,
+        "randomSeed": randomSeed,
+        "factions": [
+            {
+                "name": faction.name,
+                "color": faction.color,
+                "playerType": faction.playerType,
+                "aiType": faction.aiType
+            }
+            for faction in factions
+        ]
+    }
+
     # Generate scenario
     print("\nGenerating map...")
     scenario = generateRandomScenario(dimension, targetNumberOfLandTiles, factions, initialProvinceSize, randomSeed)
+    replay = Replay.fromScenario(scenario, metadata=replayMetadata)
     
     # Game loop
     gameOver = False
@@ -103,6 +153,7 @@ def main():
             # Get the AI's chosen actions
             aiFunction = aiImplementations[currentFaction.aiType]
             aiActions = aiFunction(scenario, currentFaction)
+            appliedActions = []
             
             # Apply all actions returned by the AI
             if not aiActions:
@@ -112,13 +163,17 @@ def main():
                 for action, province in aiActions:
                     try:
                         scenario.applyAction(action, province)
+                        appliedActions.append((action, province))
                         # debug
                         # print(f"  - {action.actionType} on province {province.faction.name}")
                     except Exception as e:
                         print(f"AI generated an invalid action, skipping. Error: {e}")
             
             # End AI's turn
-            scenario.advanceTurn()
+            turnAdvanceActions = scenario.advanceTurn()
+            turnActionsForReplay = list(appliedActions)
+            turnActionsForReplay.extend(turnAdvanceActions)
+            replay.recordTurn(scenario, currentFaction, turnActionsForReplay)
             debugInput = input("Press Enter to continue, b to break into debugger... ")
             if debugInput.lower() == "b":
                 pdb.set_trace()
@@ -351,9 +406,12 @@ def main():
             except Exception as e:
                 print(f"Error: {str(e)}")
         
-        # End of turn - advance to next player
-        scenario.advanceTurn()
-    
+        # End of turn - advance to next player and apply turn advancement actions
+        turnAdvanceActions = scenario.advanceTurn()
+        turnActionsForReplay = list(actions)
+        turnActionsForReplay.extend(turnAdvanceActions)
+        replay.recordTurn(scenario, currentFaction, turnActionsForReplay)
+
     # Game over
     print("\n===== Game Over =====")
     
@@ -371,6 +429,20 @@ def main():
     
     # Final map display
     scenario.displayMap()
+
+    if replay.hasTurns() and promptYesNo("Watch the replay of this game now? (y/n): "):
+        try:
+            replay.playInteractive()
+        except Exception as exc:
+            print(f"Failed to play replay: {exc}")
+
+    if promptYesNo("Save this game's replay to a file? (y/n): "):
+        path = input("Enter file path to save replay: ").strip()
+        try:
+            replay.saveToFile(path)
+            print(f"Replay saved to {path} with file extension .ayrf.")
+        except Exception as exc:
+            print(f"Failed to save replay: {exc}")
 
 if __name__ == "__main__":
     main()
