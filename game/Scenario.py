@@ -84,19 +84,31 @@ class Scenario:
     
     def advanceTurn(self):
         """
-        Advances the turn to the next faction in the list.
-        Loops back to the first faction after the last one.
-        Performs pre and post turn updates as needed.
+        Updates the current faction to play and loops back to the first faction after the last one.
+        Advances the turn to the next faction and returns all the actions needed to perform
+        the various mutations of game state that occur at the start and end of a faction's turn.
+        The returned list contains (Action, Province) tuples applied during the advance.
         """
+        turnAdvanceActions = []
         if len(self.factions) == 0:
-            return
+            return turnAdvanceActions
+
         currentFaction = self.getFactionToPlay()
-        for province in currentFaction.provinces:
-            province.updateAfterTurn()
+        if currentFaction:
+            for province in list(currentFaction.provinces):
+                for action, provinceContext in province.updateAfterTurn():
+                    self.applyAction(action, provinceContext)
+                    turnAdvanceActions.append((action, provinceContext))
+
         self.indexOfFactionToPlay = (self.indexOfFactionToPlay + 1) % len(self.factions)
         currentFaction = self.getFactionToPlay()
-        for province in currentFaction.provinces:
-            province.updateBeforeTurn()
+        if currentFaction:
+            for province in list(currentFaction.provinces):
+                for action, provinceContext in province.updateBeforeTurn():
+                    self.applyAction(action, provinceContext)
+                    turnAdvanceActions.append((action, provinceContext))
+
+        return turnAdvanceActions
 
     def displayMap(self):
         """
@@ -121,6 +133,7 @@ class Scenario:
            \_______//         \\_______/
                     \         /
                      \_______/
+
         Uses an approach where first the string is formulated as a 2D array of characters,
         which is filled in by calculating where each hexagon / each hexagon's ASCII symbols
         should go, and then printing the resulting 2D array of characters.

@@ -1,8 +1,8 @@
 from game.world.HexTile import HexTile
 from game.world.factions.Faction import Faction
-from game.world.units.Unit import Unit
 from game.world.units.Structure import Structure
 from game.world.units.Tree import Tree
+from game.world.units.Soldier import Soldier
 from game.Action import Action
 import random
 
@@ -38,6 +38,45 @@ class Province:
             self.active = True  # Province is active if it has 2 or more tiles
         self.resources = resources  # Integer, Resources in the province's treasury
         self.faction = faction  # Faction that controls the province
+
+    def _createTileChangeAction(self, tile, newUnit=None, newOwner=None):
+        """
+        Used to create a tile change action for changing
+        the unit and/or owner of a tile.
+        Especially helpful for representing unit starvation
+        and tree growth.
+        Actions are said to be direct consequences of other actions
+        even though they're really just the aftermath of turn-end processing
+        for the sake of fast forwarding through these actions if looking
+        for ones directly caused by player input.
+
+        Args:
+            tile (HexTile): The tile to change.
+            newUnit (Unit or None): The new unit to place on the tile, or None to leave unchanged.
+            newOwner (Province or None): The new owner province for the tile, or None to leave unchanged.
+
+        Returns:
+            Action: The action representing the tile change.
+        """
+        previousState = {
+            "unit": tile.unit,
+            "owner": tile.owner
+        }
+
+        newState = {}
+
+        if newUnit is not None:
+            newState["unit"] = newUnit
+
+        if newOwner is not None:
+            newState["owner"] = newOwner
+
+        return Action("tileChange", {
+            "hexCoordinates": (tile.row, tile.col),
+            "newTileState": newState,
+            "previousTileState": previousState,
+            "costOfAction": 0
+        }, isDirectConsequenceOfAnotherAction=True)
 
     def placeCapital(self, tiles):
         """
@@ -386,7 +425,7 @@ class Province:
         activationAction = Action("provinceActivationChange", {
             "province": self,
             "previousActiveState": self.active,
-            "newActiveState": mainGroup if len(mainGroup) >= 2 else False
+            "newActiveState": len(mainGroup) >= 2
         }, isDirectConsequenceOfAnotherAction=True)
         actions.append(activationAction)
 
@@ -518,44 +557,61 @@ class Province:
     
     def updateBeforeTurn(self):
         """
-        Updates the province before a turn.
+        Generates actions to update the province before a turn.
         Currently, this is identical to updateAfterTurn,
         except for when it is called and for the fact
         that it will not actually change the resources,
         instead using a temporary variable to hold the new resources.
         Also, it will not make trees grow.
         """
+        actions = []
         income = self.computeIncome()
         temporaryResources = self.resources + income
 
         if temporaryResources < 0:
             temporaryResources = 0
 
-        # Inactivity check here so that soldiers still die on inactive provinces
+         # Inactivity check here so that soldiers still die on inactive provinces
         if not self.active:
             temporaryResources = 0
 
         # Turn all preexisting gravestones into normal trees
         # Done before turning soldiers into gravestones to avoid 
         # immediate conversion back to normal trees
+        futureUnits = {tile: tile.unit for tile in self.tiles}
+
+        # All prexisting gravestones turn into normal trees
         for tile in self.tiles:
-            if tile.unit is not None and tile.unit.unitType == "gravestone":
-                tile.unit = Tree(owner=self.faction)
+            unit = futureUnits[tile]
+            if unit is not None and unit.unitType == "gravestone":
+                newUnit = Tree(owner=self.faction)
+                actions.append((self._createTileChangeAction(tile, newUnit=newUnit), tile.owner))
+                futureUnits[tile] = newUnit
 
         if temporaryResources == 0:
             # All soldier units become gravestones
             for tile in self.tiles:
-                if tile.unit is not None and tile.unit.unitType.startswith("soldier"):
-                    tile.unit = Tree(isGravestone=True, owner=self.faction)
-        
+                unit = futureUnits[tile]
+                if unit is not None and unit.unitType.startswith("soldier"):
+                    newUnit = Tree(isGravestone=True, owner=self.faction)
+                    actions.append((self._createTileChangeAction(tile, newUnit=newUnit), tile.owner))
+                    futureUnits[tile] = newUnit
+
         # Reset soldier units to be able to move again next turn
         for tile in self.tiles:
-            if tile.unit is not None and tile.unit.unitType.startswith("soldier"):
-                tile.unit.canMove = True
+            unit = futureUnits[tile]
+            if unit is not None and unit.unitType.startswith("soldier") and not unit.canMove:
+                tier = unit.tier if isinstance(unit, Soldier) else int(unit.unitType[-1])
+                newUnit = Soldier(tier=tier, owner=self.faction)
+                newUnit.canMove = True
+                actions.append((self._createTileChangeAction(tile, newUnit=newUnit), tile.owner))
+                futureUnits[tile] = newUnit
+
+        return actions
     
     def updateAfterTurn(self):
         """
-        Updates the province after a turn.
+        Generates actions to update the province after a turn.
         This involves computing the income and updating the resources.
         If the province is inactive, its resources remain at 0.
         If the province has soldier units, they are reset to be able to move again next turn.
@@ -564,51 +620,90 @@ class Province:
         All prexisting gravestones turn into normal trees.
         All trees randomly grow onto empty adjacent tiles regardless of province ownership.
         """
+        actions = []
         income = self.computeIncome()
-        self.resources += income
-        
-        if self.resources < 0:
-            self.resources = 0
+        newResources = self.resources + income
 
+        if newResources < 0:
+            newResources = 0
+        
         # Inactivity check here so that soldiers still die on inactive provinces
         if not self.active:
-            self.resources = 0
-        
+            newResources = 0
+
+        if newResources != self.resources:
+            actions.append((Action("provinceResourceChange", {
+                "province": self,
+                "previousResources": self.resources,
+                "newResources": newResources
+            }, isDirectConsequenceOfAnotherAction=True), self))
+
         # Turn all preexisting gravestones into normal trees
         # Done before turning soldiers into gravestones to avoid 
         # immediate conversion back to normal trees
+        futureUnits = {tile: tile.unit for tile in self.tiles}
+
+        # All prexisting gravestones turn into normal trees
         for tile in self.tiles:
-            if tile.unit is not None and tile.unit.unitType == "gravestone":
-                tile.unit = Tree(owner=self.faction)
-        
-        if self.resources == 0:
+            unit = futureUnits[tile]
+            if unit is not None and unit.unitType == "gravestone":
+                newUnit = Tree(owner=self.faction)
+                actions.append((self._createTileChangeAction(tile, newUnit=newUnit), tile.owner))
+                futureUnits[tile] = newUnit
+
+        if newResources == 0:
             # All soldier units become gravestones
             for tile in self.tiles:
-                if tile.unit is not None and tile.unit.unitType.startswith("soldier"):
-                    tile.unit = Tree(isGravestone=True, owner=self.faction)
-        
+                unit = futureUnits[tile]
+                if unit is not None and unit.unitType.startswith("soldier"):
+                    newUnit = Tree(isGravestone=True, owner=self.faction)
+                    actions.append((self._createTileChangeAction(tile, newUnit=newUnit), tile.owner))
+                    futureUnits[tile] = newUnit
+
         # Reset soldier units to be able to move again next turn
         for tile in self.tiles:
-            if tile.unit is not None and tile.unit.unitType.startswith("soldier"):
-                tile.unit.canMove = True
+            unit = futureUnits[tile]
+            if unit is not None and unit.unitType.startswith("soldier") and not unit.canMove:
+                tier = unit.tier if isinstance(unit, Soldier) else int(unit.unitType[-1])
+                newUnit = Soldier(tier=tier, owner=self.faction)
+                newUnit.canMove = True
+                actions.append((self._createTileChangeAction(tile, newUnit=newUnit), tile.owner))
+                futureUnits[tile] = newUnit
 
         # Handle random tree growth
-        self._growTrees()
+        actions.extend(self._growTrees(futureUnits))
 
-    def _growTrees(self):
+        return actions
+
+    def _growTrees(self, futureUnits):
         """
-        Handles random tree growth.
+        Generates tree growth actions.
+
+        Each tree in the province has a 20% chance to grow a new tree
+        on each adjacent tile that is not water, and does not already have a unit.
+
+        Args:
+            futureUnits (dict): A mapping of HexTile to Unit representing the
+                                state of units after other updates have been applied.
+
+        Returns:
+            list: A list of actions representing tree growth.
         """
+        actions = []
         for tile in self.tiles:
-            if tile.unit is not None and tile.unit.unitType == "tree":
+            currentUnit = futureUnits.get(tile, tile.unit)
+            if currentUnit is not None and currentUnit.unitType == "tree":
                 for neighbor in tile.neighbors:
-                    if (neighbor is not None and 
-                        neighbor.owner is not None and 
-                        neighbor.owner.faction == self.faction and 
-                        neighbor.unit is None and 
-                        not neighbor.isWater):
-                        if random.random() < 0.2:  # 20% chance to grow a tree
-                            neighbor.unit = Tree(owner=self.faction)
+                    if neighbor is None or neighbor.isWater:
+                        continue
+                    prospectiveUnit = futureUnits.get(neighbor, neighbor.unit)
+                    if (prospectiveUnit is None):
+                        if random.random() < 0.2:
+                            newUnit = Tree(owner=self.faction)
+                            action = self._createTileChangeAction(neighbor, newUnit=newUnit)
+                            actions.append((action, neighbor.owner))
+                            futureUnits[neighbor] = newUnit
+        return actions
 
     # def __eq__(self, other):
     #     if not isinstance(other, Province):
