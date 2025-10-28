@@ -216,9 +216,14 @@ def _distributeTilesToFactions(landTiles, factions, initialProvinceSize):
     # Take turns adding tiles to each province until all tiles are assigned
     # or until all provinces reach initialProvinceSize
     while availableTiles and any(frontiers) and any(len(province.tiles) < initialProvinceSize for province in provinces):
+        madeProgress = False  # Track if we added any tiles this round
+        
         for i, province in enumerate(provinces):
             if not frontiers[i] or len(province.tiles) >= initialProvinceSize:
                 continue  # Skip if this province has no more frontier or has reached initial size limit
+            
+            # Clean up frontier by removing tiles no longer available
+            frontiers[i] = [tile for tile in frontiers[i] if tile in availableTiles]
             
             # Pick a random tile from the frontier
             if len(frontiers[i]) == 0:
@@ -235,6 +240,7 @@ def _distributeTilesToFactions(landTiles, factions, initialProvinceSize):
             province.tiles.append(tile)
             tile.owner = province
             availableTiles.remove(tile)
+            madeProgress = True
 
             # Add new neighbors to frontier
             for neighbor in tile.neighbors:
@@ -244,7 +250,11 @@ def _distributeTilesToFactions(landTiles, factions, initialProvinceSize):
             # Break if no more tiles available
             if not availableTiles:
                 break
-            
+        
+        # If we went through all provinces without adding any tiles, break to avoid infinite loop
+        if not madeProgress:
+            break
+    
     # Place capitals
     for province in provinces:
         # Make sure the province has at least 2 tiles to be active
