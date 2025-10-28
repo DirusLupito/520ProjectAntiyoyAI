@@ -373,8 +373,8 @@ class AITournamentRunner:
             # We use Pool to manage a fixed number of worker processes that each pull tasks
             # from the queue, execute them, and return results.
             # imap_unordered is chosen over map because it returns results as soon as they're ready
-            # (not waiting for all games to finish), allowing us to process outcomes incrementally
-            # and provide progress feedback. The unordered nature is fine since we store outcomes
+            # (not waiting for all games to finish), allowing us to immediately write replay files.
+            # The unordered nature is fine since we store outcomes
             # by gameIndex rather than relying on result order.
             context = multiprocessing.get_context("spawn")
             with context.Pool(processes=self.parallelWorkerCount) as pool:
