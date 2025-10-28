@@ -1,19 +1,9 @@
 # Starting point of the Antiyoy AI project program
-from game.Scenario import Scenario
 from game.scenarioGenerator import generateRandomScenario
 from game.world.factions.Faction import Faction
 from game.replays.Replay import Replay
-from ai.doNothingAgent import playTurn as doNothingPlayTurn
-from ai.simpleRuleBasedAgent.mark1SRB import playTurn as mark1SRBPlayTurn
-from ai.simpleRuleBasedAgent.mark2SRB import playTurn as mark2SRBPlayTurn
+from ai.AIPersonality import AIPersonality
 import pdb
-
-# A mapping from AI type strings to their playTurn functions
-aiImplementations = {
-    "donothing": doNothingPlayTurn,
-    "mark1srb": mark1SRBPlayTurn,
-    "mark2srb": mark2SRBPlayTurn
-}
 
 def getIntegerInput(prompt, minValue=None, maxValue=None):
     """Helper function to get valid integer input from the user."""
@@ -98,9 +88,9 @@ def main():
 
         aiType = None
         if playerType == "ai":
-            while aiType not in aiImplementations:
+            while aiType not in AIPersonality.implementedAIs:
                 print("Available AI types:")
-                for aiKey in aiImplementations.keys():
+                for aiKey in AIPersonality.implementedAIs.keys():
                     print(f"  - {aiKey}")
                 aiType = input(f"Enter AI type for Faction {i+1}: ").lower()
 
@@ -151,7 +141,7 @@ def main():
             print(f"{currentFaction.name} (AI) is thinking...")
             
             # Get the AI's chosen actions
-            aiFunction = aiImplementations[currentFaction.aiType]
+            aiFunction = AIPersonality.implementedAIs[currentFaction.aiType]
             aiActions = aiFunction(scenario, currentFaction)
             appliedActions = []
             
