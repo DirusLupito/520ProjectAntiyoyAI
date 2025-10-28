@@ -12,6 +12,7 @@ class AITournamentConfig:
     - The map dimension, target land tiles, and initial province size
     - The seed picking strategy to use
     - Whether to record replays, display games, and track statistics
+    - How many workers should run games in parallel
     """
 
     def __init__(
@@ -24,7 +25,8 @@ class AITournamentConfig:
         seedPicker: TournamentSeedPicker,
         recordReplays: bool = False,
         displayGames: bool = False,
-        trackStatistics: bool = False
+        trackStatistics: bool = False,
+        parallelWorkerCount: int = 1
     ) -> None:
         """
         Initializes a new AITournamentConfig with the given parameters.
@@ -39,11 +41,21 @@ class AITournamentConfig:
             recordReplays (bool): Whether to record replays of each game. Defaults to False.
             displayGames (bool): Whether to display each game as it is played. Defaults to False.
             trackStatistics (bool): Whether to track detailed statistics for each game. Defaults to False.
+            parallelWorkerCount (int): Number of workers that should play games in parallel. Defaults to 1.
         """
+
         if roundCount <= 0:
             raise ValueError("Round count must be positive.")
+        
         if len(personalities) < 2:
             raise ValueError("At least two personalities are required for a tournament.")
+        
+        if parallelWorkerCount <= 0:
+            raise ValueError("Parallel worker count must be at least 1.")
+        
+        if parallelWorkerCount > 1 and displayGames:
+            raise ValueError("Displaying games is not supported when using multiple parallel workers.")
+        
         self.personalities = personalities
         self.roundCount = roundCount
         self.dimension = dimension
@@ -53,3 +65,4 @@ class AITournamentConfig:
         self.recordReplays = recordReplays
         self.displayGames = displayGames
         self.trackStatistics = trackStatistics
+        self.parallelWorkerCount = parallelWorkerCount

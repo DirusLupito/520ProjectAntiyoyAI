@@ -304,4 +304,40 @@ class TournamentStatisticsRecorder:
             with open(path, "w", newline="", encoding="utf-8") as csvFile:
                 writer = csv.writer(csvFile)
                 writer.writerow(self.headers)
-                writer.writerows(rows)
+                # Sort rows by GameNumber (column 0) and TurnNumber (column 1) before writing
+                # in order to ensure proper ordering of the data (as it may have been recorded out of order
+                # due to the nature of parallel execution).
+                sortedRows = sorted(
+                    rows,
+                    key=lambda row: (
+                        int(row[0]) if row and row[0].isdigit() else 0,
+                        int(row[1]) if row and len(row) > 1 and row[1].isdigit() else 0
+                    )
+                )
+                writer.writerows(sortedRows)
+
+    def appendRows(self, rowsByPersonality: Dict[str, List[List[str]]]) -> None:
+        """
+        Appends pre-recorded statistic rows to this recorder.
+
+        Args:
+            rowsByPersonality: Mapping from personality name to lists of statistic rows.
+        """
+        for name, rows in rowsByPersonality.items():
+            if not rows:
+                continue
+            if name not in self.rowsByPersonality:
+                self.rowsByPersonality[name] = []
+            self.rowsByPersonality[name].extend(rows)
+
+    def exportRows(self) -> Dict[str, List[List[str]]]:
+        """
+        Exports the recorded statistic rows for external aggregation.
+
+        Returns:
+            A mapping from personality name to copied rows of statistics.
+        """
+        exported: Dict[str, List[List[str]]] = {}
+        for name, rows in self.rowsByPersonality.items():
+            exported[name] = [list(row) for row in rows]
+        return exported
