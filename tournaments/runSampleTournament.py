@@ -5,7 +5,7 @@ from ai.AIPersonality import AIPersonality
 from tournaments.AITournamentConfig import AITournamentConfig
 from tournaments.TournamentSeedPicker import TournamentSeedPicker
 from tournaments.TournamentRunner import AITournamentRunner
-
+import time
 
 def runSampleTournament() -> None:
     """
@@ -51,6 +51,8 @@ def runSampleTournament() -> None:
     # recordReplays (bool): Whether to record replays of each game. Defaults to False.
     # displayGames (bool): Whether to display each game as it is played. Defaults to False.
     # trackStatistics (bool): Whether to track detailed statistics for each game. Defaults to False.
+    # parallelWorkerCount (int): The number of parallel workers to use for running games. Defaults to 1.
+    # If parallelWorkerCount > 1, games will be run in parallel using multiple processes. Displaying games is not supported in parallel mode.
     config = AITournamentConfig(
         personalities=personalities,
         roundCount=50,
@@ -60,14 +62,20 @@ def runSampleTournament() -> None:
         seedPicker=seedPicker,
         recordReplays=True,
         displayGames=False,
-        trackStatistics=True
+        trackStatistics=True,
+        # I recommend using a parallel worker count equal to the number 
+        # of physical CPU cores on your machine for best performance
+        parallelWorkerCount=4
     )
 
     # You must instantiate the runner with a config object
     runner = AITournamentRunner(config)
 
     # To actually run the tournament, just call runTournament()
+    start_time = time.perf_counter()
     runner.runTournament()
+    end_time = time.perf_counter()
+    print(f"Tournament completed in {end_time - start_time:.2f} seconds.")
 
 
 if __name__ == "__main__":
