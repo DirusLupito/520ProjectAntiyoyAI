@@ -1,4 +1,19 @@
 class Unit:
+
+    # List of known unit types in the game
+    knownTypes = [
+        "soldierTier1",
+        "soldierTier2",
+        "soldierTier3",
+        "soldierTier4",
+        "capital",
+        "tower1",
+        "tower2",
+        "farm",
+        "tree",
+        "gravestone"
+    ]
+
     """
     Abstract base class for all units in the game.
     A unit can be a soldier, a tree, or a building.

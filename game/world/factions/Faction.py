@@ -1,4 +1,24 @@
 class Faction:
+
+    # Mapping of color names to ANSI escape codes for terminal text coloring
+    colorCodesMap = {
+        'black': '\033[90m',  # Alternative black code
+        'red': '\033[31m',
+        'green': '\033[32m',
+        'yellow': '\033[33m',
+        'blue': '\033[34m',
+        'magenta': '\033[35m',
+        'cyan': '\033[36m',
+        'white': '\033[37m',
+        'black2': '\033[30m\033[47m',   # Regular black with white background for distinction
+        'red2': '\033[31m\033[47m',     # Regular red with white background for distinction
+        'green2': '\033[32m\033[47m',   # Regular green with white background for distinction
+        'yellow2': '\033[33m\033[47m',  # Regular yellow with white background for distinction
+        'blue2': '\033[34m\033[47m',    # Regular blue with white background for distinction
+        'magenta2': '\033[35m\033[47m', # Regular magenta with white background for distinction
+        'cyan2': '\033[36m\033[47m'     # Regular cyan with white background for distinction
+    }
+
     """
     Represents a faction in the game.
     A faction has a name, a color, and list of provinces it controls,
@@ -20,13 +40,4 @@ class Faction:
         If the faction's color does not map to a known ANSI code, this 
         will instead return an empty string.
         """
-        colorCodes = {
-            'red': '\033[31m',
-            'green': '\033[32m',
-            'yellow': '\033[33m',
-            'blue': '\033[34m',
-            'magenta': '\033[35m',
-            'cyan': '\033[36m',
-            'white': '\033[37m'
-        }
-        return colorCodes.get(self.color.lower(), '')
+        return Faction.colorCodesMap.get(self.color.lower(), '')

@@ -3,3 +3,6 @@
 *__pycache__*
 # No replay files
 *.ayrf
+# No tournament result files
+*tournamentStats*
+*tournamentReplays*
