@@ -38,14 +38,15 @@ def buildFactionsForPersonalities(personalityTuples: List[Tuple[str, str]]) -> L
     return factions
 
 
-def _execute_game(
+def _executeGame(
     scenario,
     factions: List[Faction],
     replay: Optional[Replay],
     gameNumber: int,
     seed: Optional[int],
     displayGames: bool,
-    statisticsRecorder: Optional[TournamentStatisticsRecorder]
+    statisticsRecorder: Optional[TournamentStatisticsRecorder],
+    maxTurns: Optional[int]
 ) -> GameOutcome:
     """
     Runs a single game and returns the resulting outcome.
@@ -60,6 +61,7 @@ def _execute_game(
         seed (Optional[int]): The seed used for the game's scenario generation.
         displayGames (bool): Whether to display each turn of the game.
         statisticsRecorder (Optional[TournamentStatisticsRecorder]): The statistics recorder, if applicable.
+        maxTurns (Optional[int]): The maximum number of turns before declaring a draw.
 
     Returns:
         GameOutcome: The outcome of the game, including winner and number of turns played.
@@ -75,6 +77,10 @@ def _execute_game(
         activeFactions = [faction for faction in factions if any(province.active for province in faction.provinces)]
 
         if len(activeFactions) <= 1:
+            break
+
+        # If we have both a maxTurns limit and we've reached it, end the game
+        if maxTurns is not None and maxTurns > 0 and turnCounter >= maxTurns:
             break
 
         currentFaction = scenario.getFactionToPlay()
@@ -152,6 +158,10 @@ def _execute_game(
             winnerFaction = faction
             break
 
+    # If we reached maxTurns without a winner, it's actually a draw
+    if maxTurns is not None and maxTurns > 0 and turnCounter >= maxTurns:
+        winnerFaction = None
+
     # If we are displaying games, remember to show the final map and winner info
     if displayGames:
         print("\n===== Game Over =====")
@@ -167,6 +177,105 @@ def _execute_game(
         seed,
         turnCounter
     )
+
+def runGameTaskWorker(task: Dict[str, object]) -> Tuple[int, GameOutcome, Optional[Dict[str, List[List[str]]]]]:
+    """
+    Executes a tournament game inside a worker process.
+    This function is intended to be called by worker processes
+    when running games in parallel as part of a tournament.
+    It is otherwise unreferenced.
+
+    Args:
+        task (Dict[str, object]): A dictionary containing the game index, seed, and configuration.
+
+    Returns:
+        Tuple[int, GameOutcome, Optional[Dict[str, List[List[str]]]]]: A tuple containing the game index, the game outcome, and optional statistics rows.
+    """
+
+    # We're a worker, let's figure out our job
+    # What's the game index of the game we're running?
+    gameIndex = int(task["gameIndex"])
+
+    # What's the seed for this game? If we're using a fixed or sequential or pool of seeds,
+    # we need to be able to respect that rather than just picking a random seed as if the 
+    # seed picker were random
+    seed = task["seed"]
+
+    # We'll figure out the rest of the scenario's details from the config
+    config = task["config"]
+
+    # Set up the factions for this game
+    # with descriptive names and colors
+    personalityTuples: List[Tuple[str, str]] = list(config["personalities"])
+    factions = buildFactionsForPersonalities(personalityTuples)
+
+    # We have everything we need, let's generate the scenario for this game
+    scenario = generateRandomScenario(
+        config["dimension"],
+        config["targetLandTiles"],
+        factions,
+        config["initialProvinceSize"],
+        randomSeed=seed
+    )
+
+    # If applicable, set up the replay for this game as well
+    replay: Optional[Replay] = None
+    if config["recordReplays"]:
+        metadata = {
+            "dimension": config["dimension"],
+            "targetLandTiles": config["targetLandTiles"],
+            "initialProvinceSize": config["initialProvinceSize"],
+            "seed": seed,
+            "factions": [
+                {
+                    "name": faction.name,
+                    "color": faction.color,
+                    "aiType": faction.aiType
+                }
+                for faction in factions
+            ]
+        }
+        replay = Replay.fromScenario(scenario, metadata=metadata)
+
+    # If applicable, set up the statistics recorder for this game as well
+    statsRecorder: Optional[TournamentStatisticsRecorder] = None
+    statsRows: Optional[Dict[str, List[List[str]]]] = None
+    if config["trackStatistics"] and config["statisticsDirectory"] is not None:
+        personalities = [AIPersonality(name, aiType) for name, aiType in personalityTuples]
+        statsRecorder = TournamentStatisticsRecorder(personalities, config["statisticsDirectory"])
+        statsRecorder.recordInitialState(factions, gameIndex + 1, seed)
+
+    # Now we can delegate to the shared game execution function
+    # _executeGame which handles the actual game loop
+    # as this must be done sequentially for each game
+    # (while the overall tournament can be parallelized,
+    # individual games are basically atomic units that must be run from start to finish
+    # sequentially).
+    outcome = _executeGame(
+        scenario,
+        factions,
+        replay,
+        # Remember that gameIndex is 0-based but gameNumber is 1-based
+        gameIndex + 1,
+        seed,
+        False,
+        statsRecorder,
+        config.get("maxTurns", None)
+    )
+
+    # If applicable, save the replay to disk now that the game is complete
+    if config["recordReplays"] and replay is not None and config["replayDirectory"] is not None:
+        fileName = f"game{gameIndex + 1}.ayrf"
+        replayPath = os.path.join(config["replayDirectory"], fileName)
+        replay.saveToFile(replayPath)
+
+    # If applicable, export the statistics rows for this game
+    if statsRecorder is not None:
+        statsRows = statsRecorder.exportRows()
+
+    # This worker is now done, return the outcome and any statistics rows
+    return gameIndex, outcome, statsRows
+
 
 class AITournamentRunner:
     """
@@ -203,7 +312,13 @@ class AITournamentRunner:
         """
 
         self.config = config
+
+        # How many parallel workers to use for running games
         self.parallelWorkerCount = config.parallelWorkerCount
+
+        # How many turns can elapse in a single round before declaring a draw
+        # 0 or None means no turn limit
+        self.maxTurns = config.maxTurns
 
         # Even though config should have already validated this,
         # we double check here to be safe
@@ -301,7 +416,8 @@ class AITournamentRunner:
                     gameIndex + 1,
                     seed,
                     self.statisticsRecorder,
-                    self.displayGamesEnabled
+                    self.displayGamesEnabled,
+                    self.maxTurns
                 )
 
                 # Track the outcome and record replay/statistics if applicable
@@ -341,7 +457,8 @@ class AITournamentRunner:
                 "replayDirectory": self.replayDirectory,
                 "trackStatistics": self.config.trackStatistics,
                 "statisticsDirectory": self.statisticsDirectory,
-                "personalities": [(personality.displayName, personality.aiType) for personality in self.config.personalities]
+                "personalities": [(personality.displayName, personality.aiType) for personality in self.config.personalities],
+                "maxTurns": self.maxTurns
             }
 
             # Build the list of tasks for each game
@@ -435,11 +552,12 @@ class AITournamentRunner:
         gameNumber: int,
         seed: Optional[int],
         statisticsRecorder: Optional[TournamentStatisticsRecorder],
-        displayGames: bool
+        displayGames: bool,
+        maxTurns: Optional[int]
     ) -> GameOutcome:
         """
         Runs a single tournament game and returns its outcome.
-        We delegate to the shared _execute_game function
+        We delegate to the shared _executeGame function
         which is used by both the main tournament runner
         and the worker processes when running games in parallel.
 
@@ -451,19 +569,21 @@ class AITournamentRunner:
             seed (Optional[int]): The seed used for the game's scenario generation.
             statisticsRecorder (Optional[TournamentStatisticsRecorder]): The statistics recorder, if applicable.
             displayGames (bool): Whether to display each turn of the game.
+            maxTurns (Optional[int]): The maximum number of turns before declaring a draw.
 
         Returns:
             GameOutcome: The outcome of the game, including winner and number of turns played.
         """
 
-        return _execute_game(
+        return _executeGame(
             scenario,
             factions,
             replay,
             gameNumber,
             seed,
             displayGames,
-            statisticsRecorder
+            statisticsRecorder,
+            maxTurns
         )
 
     def _displaySummary(
@@ -490,16 +610,39 @@ class AITournamentRunner:
         # the user would have to scroll back up to see the overall results and configuration details
         # This way, the few lines dedicated to the summary are at the end of the output, making them easier to find
         totalGames = len(outcomes)
-        for index, outcome in enumerate(outcomes):
-            seed = outcome.seed if outcome.seed is not None else "random"
-            if outcome.winnerName is None:
-                print(f"Game {index + 1} Winner: None, seed {seed}, {outcome.numberOfTurns} total turns played.")
-            else:
-                print(f"Game {index + 1} Winner: {outcome.winnerName} ({outcome.winnerColor}), seed {seed}, {outcome.numberOfTurns} total turns played.")
+
+        # In cases where the total number of games is too big to fit in even the most generous console,
+        # we instead save the per-game results to a tournamentResults text file
+        if totalGames > 9000:
+            print(f"\nThe tournament consisted of {totalGames} games, which is too many to display all at once.")
+            dateStamp = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+            fileName = f"{dateStamp}-tournamentResults.txt"
+            with open(fileName, "w") as resultFile:
+                for index, outcome in enumerate(outcomes):
+                    seed = outcome.seed if outcome.seed is not None else "random"
+                    if outcome.winnerName is None:
+                        resultFile.write(f"Game {index + 1} Winner: None, seed {seed}, {outcome.numberOfTurns} total turns played.\n")
+                    else:
+                        resultFile.write(f"Game {index + 1} Winner: {outcome.winnerName} ({outcome.winnerColor}), seed {seed}, {outcome.numberOfTurns} total turns played.\n")
+            print(f"Per-game results saved to {fileName}.")
+        else:
+            for index, outcome in enumerate(outcomes):
+                seed = outcome.seed if outcome.seed is not None else "random"
+                if outcome.winnerName is None:
+                    print(f"Game {index + 1} Winner: None, seed {seed}, {outcome.numberOfTurns} total turns played.")
+                else:
+                    print(f"Game {index + 1} Winner: {outcome.winnerName} ({outcome.winnerColor}), seed {seed}, {outcome.numberOfTurns} total turns played.")
+
+        # Let's figure out the average number of turns played per game
+        # Will give a good sense of how long it took for the AIs to be able to defeat each other
+        # on the given map size and land tile count on average
+        totalTurns = sum(outcome.numberOfTurns for outcome in outcomes)
+        averageTurns = totalTurns / totalGames if totalGames > 0 else 0.0
+        print(f"\nAverage number of turns played per game: {averageTurns:.2f}")
 
         # A description of the tournament configuration
         description = (
-            f"Game played on {self.config.dimension}x{self.config.dimension} grid with "
+            f"Game played on {self.config.dimension}x{self.config.dimension} grid with a turn limit of {self.maxTurns if self.maxTurns and self.maxTurns > 0 else 'no limit'}, "
             f"{self.config.targetLandTiles} land tiles, {len(self.config.personalities)} factions, "
             f"initial province size of {self.config.initialProvinceSize}, and {self.config.seedPicker.describe()}."
         )
@@ -517,101 +660,3 @@ class AITournamentRunner:
             wins = winsByPersonality[personality.displayName]
             percentage = (wins / totalGames) * 100 if totalGames > 0 else 0.0
             print(f"{personality.displayName} won {percentage:.1f}% of the time")
-
-
-def runGameTaskWorker(task: Dict[str, object]) -> Tuple[int, GameOutcome, Optional[Dict[str, List[List[str]]]]]:
-    """
-    Executes a tournament game inside a worker process.
-    This function is intended to be called by worker processes
-    when running games in parallel as part of a tournament.
-    It is otherwise unreferenced.
-
-    Args:
-        task (Dict[str, object]): A dictionary containing the game index, seed, and configuration.
-
-    Returns:
-        Tuple[int, GameOutcome, Optional[Dict[str, List[List[str]]]]]: A tuple containing the game index, the game outcome, and optional statistics rows.
-    """
-
-    # We're a worker, let's figure out our job
-    # What's the game index of the game we're running?
-    gameIndex = int(task["gameIndex"])
-
-    # What's the seed for this game? If we're using a fixed or sequential or pool of seeds,
-    # we need to be able to respect that rather than just picking a random seed as if the 
-    # seed picker were random
-    seed = task["seed"]
-
-    # We'll figure out the rest of the scenario's details from the config
-    config = task["config"]
-
-    # Set up the factions for this game
-    # with descriptive names and colors
-    personalityTuples: List[Tuple[str, str]] = list(config["personalities"])
-    factions = buildFactionsForPersonalities(personalityTuples)
-
-    # We have everything we need, let's generate the scenario for this game
-    scenario = generateRandomScenario(
-        config["dimension"],
-        config["targetLandTiles"],
-        factions,
-        config["initialProvinceSize"],
-        randomSeed=seed
-    )
-
-    # If applicable, set up the replay for this game as well
-    replay: Optional[Replay] = None
-    if config["recordReplays"]:
-        metadata = {
-            "dimension": config["dimension"],
-            "targetLandTiles": config["targetLandTiles"],
-            "initialProvinceSize": config["initialProvinceSize"],
-            "seed": seed,
-            "factions": [
-                {
-                    "name": faction.name,
-                    "color": faction.color,
-                    "aiType": faction.aiType
-                }
-                for faction in factions
-            ]
-        }
-        replay = Replay.fromScenario(scenario, metadata=metadata)
-
-    # If applicable, set up the statistics recorder for this game as well
-    statsRecorder: Optional[TournamentStatisticsRecorder] = None
-    statsRows: Optional[Dict[str, List[List[str]]]] = None
-    if config["trackStatistics"] and config["statisticsDirectory"] is not None:
-        personalities = [AIPersonality(name, aiType) for name, aiType in personalityTuples]
-        statsRecorder = TournamentStatisticsRecorder(personalities, config["statisticsDirectory"])
-        statsRecorder.recordInitialState(factions, gameIndex + 1, seed)
-
-    # Now we can delegate to the shared game execution function
-    # _execute_game which handles the actual game loop
-    # as this must be done sequentially for each game
-    # (while the overall tournament can be parallelized,
-    # individual games are basically atomic units that must be run from start to finish
-    # sequentially).
-    outcome = _execute_game(
-        scenario,
-        factions,
-        replay,
-        # Remember that gameIndex is 0-based but gameNumber is 1-based
-        gameIndex + 1,
-        seed,
-        False,
-        statsRecorder
-    )
-
-    # If applicable, save the replay to disk now that the game is complete
-    if config["recordReplays"] and replay is not None and config["replayDirectory"] is not None:
-        fileName = f"game{gameIndex + 1}.ayrf"
-        replayPath = os.path.join(config["replayDirectory"], fileName)
-        replay.saveToFile(replayPath)
-
-    # If applicable, export the statistics rows for this game
-    if statsRecorder is not None:
-        statsRows = statsRecorder.exportRows()
-
-    # This worker is now done, return the outcome and any statistics rows
-    return gameIndex, outcome, statsRows
