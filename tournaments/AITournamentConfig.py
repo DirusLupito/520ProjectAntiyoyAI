@@ -13,6 +13,7 @@ class AITournamentConfig:
     - The seed picking strategy to use
     - Whether to record replays, display games, and track statistics
     - How many workers should run games in parallel
+    - The maximum number of turns before a game is declared a draw
     """
 
     def __init__(
@@ -26,7 +27,8 @@ class AITournamentConfig:
         recordReplays: bool = False,
         displayGames: bool = False,
         trackStatistics: bool = False,
-        parallelWorkerCount: int = 1
+        parallelWorkerCount: int = 1,
+        maxTurns: int = 0
     ) -> None:
         """
         Initializes a new AITournamentConfig with the given parameters.
@@ -66,3 +68,4 @@ class AITournamentConfig:
         self.displayGames = displayGames
         self.trackStatistics = trackStatistics
         self.parallelWorkerCount = parallelWorkerCount
+        self.maxTurns = maxTurns

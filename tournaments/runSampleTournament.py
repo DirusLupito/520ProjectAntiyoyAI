@@ -24,8 +24,7 @@ def runSampleTournament() -> None:
     # Just try to give them unique names so you can tell them apart in the results
     personalities = [
         AIPersonality("Mark1SRB", "mark1srb"),
-        AIPersonality("Mark2SRB1", "mark2srb"),
-        AIPersonality("Mark2SRB2", "mark2srb")
+        AIPersonality("Mark2SRB", "mark2srb")
     ]
 
     # Copied from the TournamentSeedPicker documentation
@@ -65,7 +64,9 @@ def runSampleTournament() -> None:
         trackStatistics=True,
         # I recommend using a parallel worker count equal to the number 
         # of physical CPU cores on your machine for best performance
-        parallelWorkerCount=4
+        parallelWorkerCount=4,
+        # If two AIs haven't won in this many turns, declare the game a draw
+        maxTurns=1000
     )
 
     # You must instantiate the runner with a config object
