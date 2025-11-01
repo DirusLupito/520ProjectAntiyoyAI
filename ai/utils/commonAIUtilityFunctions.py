@@ -88,6 +88,70 @@ def getReachableTilesAsObjects(scenario, movementCoordinates):
         tiles.append(scenario.mapData[row][col])
     return tiles
 
+def getMoveTowardsTargetTileAvoidingGivenTiles(startTile, targetTiles, avoidedTiles, scenario):
+    """
+    Find the first step in a path from startTile to the closest tile in targetTiles,
+    ensuring that first step is not in avoidedTiles.
+
+    Args:
+        startTile: The HexTile to start the search from.
+        targetTiles: A set of HexTiles to search for.
+        avoidedTiles: A set of HexTiles to avoid in the path.
+        scenario: The current game Scenario object in which the tiles exist.
+
+    Returns:
+        The HexTile representing the first step towards the target, or None if no path is found.
+    """
+    # We first find the full path from startTile to the closest target tile.
+    # Note that in avoiding given tiles, we might actually alter the closest target tile,
+    # though this should hopefully be both rare and insignificant enough to not matter enough to worry about.
+    path = findPathToClosestTile(startTile, targetTiles)
+    if path is None:
+        # No path found, so no first step can be taken.
+        return None
+    
+    # Now we want to see all the tiles reachable in one turn from the start tile
+    reachableTilesCoords = scenario.getAllTilesWithinMovementRange(startTile.row, startTile.col)
+
+    # Next, we iterate through the path until we find the furthest tile that could
+    # be reached in one turn. We do not yet consider avoided tiles.
+    firstStep = None
+    for tile in path[1:]:  # Skip the start tile itself
+        if (tile.row, tile.col) in reachableTilesCoords:
+            firstStep = tile
+        else:
+            break  # We have gone beyond what can be reached in one turn
+    
+    # If no step could be taken, return None
+    # Should be impossible
+    if firstStep is None:
+        return None
+    
+    # Now we check if the first step is in the avoided tiles
+    if firstStep in avoidedTiles:
+        # If so, lets find the closest tile to the first step
+        # that is in the reachable tiles and not in the avoided tiles
+        # using BFS inside our reachable tiles
+        queue = deque([startTile])
+        visited = {startTile}
+
+        while queue:
+            currentTile = queue.popleft()
+            if currentTile in reachableTilesCoords and currentTile not in avoidedTiles:
+                # If we found a valid tile, return it
+                return currentTile
+
+            for neighbor in currentTile.neighbors:
+                # We only expand to non-water tiles that haven't been visited yet
+                # and which are in the reachable tiles
+                if neighbor and not neighbor.isWater and neighbor not in visited and neighbor in reachableTilesCoords:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+
+    # At this point, every single reachable tile must have been in the avoided tiles,
+    # so there is no valid first step to take.
+    return None
+
 def findPathToClosestTile(startTile, targetTiles):
     """
     Finds the shortest path from a start tile to any of the target tiles using BFS.
@@ -135,8 +199,8 @@ def findPathToClosestTile(startTile, targetTiles):
 
 def findPathToClosestTileAvoidingGivenTiles(startTile, targetTiles, avoidedTiles):
     """
-    Similar to findPathToClosestTile, but ensures no tiles in the path
-    are in the avoidedTiles set.
+    Similar to findPathToClosestTile, but will avoid any tiles in the avoidedTiles set
+    and not expand paths through them.
 
     args:
         startTile: The HexTile to start the search from.
