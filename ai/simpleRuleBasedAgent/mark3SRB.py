@@ -24,9 +24,9 @@ If it needs 2 higher attack power, mark it as needing a double tier upgrade,
 If it need 3 higher attack power, mark it as needing a triple tier upgrade.
 Otherwise at this point if there are still no enemy tiles in range which can be attacked immediately,
 it means there are no enemy tiles in range. Hold this unit in reserve for now.
+We then restart the iteration, because maybe we merged provinces and have more movable units now.
 
 PLAN_RESERVIST_MERGES:
-We then restart the iteration, because maybe we merged provinces and have more movable units now.
 If we go through an entire iteration without moving any units, it is time to move to the next phase.
 For all of the units which needed a single tier upgrade to attack an enemy tile,
 we check if any of its reachable tiles hold a tier 1 soldier unit which is in the reserve list.
@@ -123,14 +123,21 @@ The overall AI is implemented as a state machine, where each iteration of the pr
 is a state, and if nothing changes during that iteration, we move to the next state.
 """
 
-from ai.utils.commonAIUtilityFunctions import findPathToClosestTileAvoidingGivenTiles
+import pdb
+import random
+from ai.utils.commonAIUtilityFunctions import getMoveTowardsTargetTileAvoidingGivenTiles
+from ai.utils.commonAIUtilityFunctions import checkTimeToBankruptProvince
+from ai.utils.commonAIUtilityFunctions import getReachableTilesAsObjects
 from ai.utils.commonAIUtilityFunctions import getAllMovableUnitTilesInProvince
 from ai.utils.commonAIUtilityFunctions import getEnemyTilesInRangeOfTile
 from ai.utils.commonAIUtilityFunctions import getDefenseRatingOfTile
 from ai.utils.commonAIUtilityFunctions import getFrontierTiles
 from ai.utils.commonAIUtilityFunctions import getTilesInProvinceWhichContainGivenUnitTypes
 from ai.utils.commonAIUtilityFunctions import getTilesWhichUnitCanBeBuiltOn
-from ai.utils.commonAIUtilityFunctions import getTilesWhichUnitCanBeBuiltOnGivenTiles
+
+# How many turns worth of income must a province be able to afford
+# after performing a merge in order to be allowed to perform that merge.
+turnsOfIncomeToAffordMerge = 4
 
 def playTurn(scenario, faction):
     """
@@ -186,48 +193,100 @@ def playTurn(scenario, faction):
         # the final state where we are done processing this province.
         while state != FINAL_STATE:
             if state == PLAN_INITIAL_ATTACKS:
-                changed = province.planInitialAttacks(scenario, allActions, upgradeNeeds, reserveTiles, province)
+                changed = planInitialAttacks(scenario, allActions, upgradeNeeds, reserveTiles, province)
                 if not changed:
                     state = PLAN_RESERVIST_MERGES
 
             elif state == PLAN_RESERVIST_MERGES:
-                changed = province.planReservistMerges(scenario, allActions, upgradeNeeds, reserveTiles, province)
+                changed = planReservistMerges(scenario, allActions, upgradeNeeds, reserveTiles, province)
                 if not changed:
                     state = PLAN_CANNIBALIZE_MERGES
+                else:
+                    # If we made changes, we need to reset the upgradeNeeds and reserveTiles
+                    # because the game state has changed and some units may no longer need upgrades
+                    # or may now be in range of enemy tiles.
+                    upgradeNeeds = {1: [], 2: [], 3: []}
+                    reserveTiles = []
+                    # We might also have merged provinces and have more movable units now,
+                    # so we need to go back to the initial attacks state.
+                    state = PLAN_INITIAL_ATTACKS
 
             elif state == PLAN_CANNIBALIZE_MERGES:
-                changed = province.planCannibalizeMerges(scenario, allActions, upgradeNeeds, province)
+                changed = planCannibalizeMerges(scenario, allActions, upgradeNeeds, province)
                 if not changed:
                     state = PLAN_TREE_AND_UNCLAIMED_MOVES
+                else:
+                    # If we made changes, we need to reset the upgradeNeeds and reserveTiles
+                    # because the game state has changed and some units may no longer need upgrades
+                    # or may now be in range of enemy tiles.
+                    upgradeNeeds = {1: [], 2: [], 3: []}
+                    reserveTiles = []
+                    # We might also have merged provinces and have more movable units now,
+                    # so we need to go back to the initial attacks state.
+                    state = PLAN_INITIAL_ATTACKS
 
             elif state == PLAN_TREE_AND_UNCLAIMED_MOVES:
-                changed = province.planTreeAndUnclaimedMoves(scenario, allActions, province)
+                changed = planTreeAndUnclaimedMoves(scenario, allActions, province)
                 if not changed:
                     state = PLAN_BUILD_ON_TREES
+                else:
+                    # If we made changes, we need to reset the upgradeNeeds and reserveTiles
+                    # because the game state has changed and some units may no longer need upgrades
+                    # or may now be in range of enemy tiles.
+                    upgradeNeeds = {1: [], 2: [], 3: []}
+                    reserveTiles = []
+                    # We might also have merged provinces and have more movable units now,
+                    # so we need to go back to the initial attacks state.
+                    state = PLAN_INITIAL_ATTACKS
 
             elif state == PLAN_BUILD_ON_TREES:
-                changed = province.planBuildOnTrees(scenario, allActions, province)
-                if not changed:
-                    state = PLAN_BUILD_ON_UNCLAIMED_FRONTIER
+                planBuildOnTrees(scenario, allActions, province)
+                # The outcome of this state will not cause us to need to repeat any prior states,
+                # so we can just move on to the next state directly.
+                state = PLAN_BUILD_ON_UNCLAIMED_FRONTIER
 
             elif state == PLAN_BUILD_ON_UNCLAIMED_FRONTIER:
-                changed = province.planBuildOnUnclaimedFrontier(scenario, allActions, province)
+                changed = planBuildOnUnclaimedFrontier(scenario, allActions, province)
                 if not changed:
                     state = PLAN_UPGRADE_LEFTOVER_UNITS
+                else:
+                    # If we made changes, we need to reset the upgradeNeeds and reserveTiles
+                    # because the game state has changed and some units may no longer need upgrades
+                    # or may now be in range of enemy tiles.
+                    upgradeNeeds = {1: [], 2: [], 3: []}
+                    reserveTiles = []
+                    # We might also have merged provinces and have more movable units now,
+                    # so we need to go back to the initial attacks state.
+                    state = PLAN_INITIAL_ATTACKS
 
             elif state == PLAN_UPGRADE_LEFTOVER_UNITS:
-                changed = province.planUpgradeLeftoverUnits(scenario, allActions, upgradeNeeds, province)
+                changed = planUpgradeLeftoverUnits(scenario, allActions, upgradeNeeds, province)
                 if not changed:
                     state = PLAN_MOVE_TOWARDS_UNCLAIMED_OR_TREES_OR_ENEMIES
+                else:
+                    # If we made changes, we need to reset the upgradeNeeds and reserveTiles
+                    # because the game state has changed and some units may no longer need upgrades
+                    # or may now be in range of enemy tiles.
+                    upgradeNeeds = {1: [], 2: [], 3: []}
+                    reserveTiles = []
+                    # We might also have merged provinces and have more movable units now,
+                    # so we need to go back to the initial attacks state.
+                    state = PLAN_INITIAL_ATTACKS
 
             elif state == PLAN_MOVE_TOWARDS_UNCLAIMED_OR_TREES_OR_ENEMIES:
-                changed = province.planMoveTowardsUnclaimedOrTreesOrEnemies(scenario, allActions, province)
-                if not changed:
-                    state = PLAN_BUILD_FARMS_WITH_LEFTOVER_RESOURCES
+                changed = planMoveTowardsUnclaimedOrTreesOrEnemies(scenario, allActions, province)
+                # The outcome of this state will not cause us to need to repeat any prior states,
+                # so we can just move on to the next state directly.
+                state = PLAN_BUILD_FARMS_WITH_LEFTOVER_RESOURCES
 
             elif state == PLAN_BUILD_FARMS_WITH_LEFTOVER_RESOURCES:
-                province.planBuildFarmsWithLeftoverResources(scenario, allActions, province)
+                planBuildFarmsWithLeftoverResources(scenario, allActions, province)
+                # The outcome of this state will not cause us to need to repeat any prior states,
+                # so we can just move on to the next state directly.
                 state = FINAL_STATE
+
+        # We have finished processing this province, so we move on to the next one.
+        provinceIndex += 1
 
     # Invert all actions to restore the original scenario state
     for action, province in reversed(allActions):
@@ -251,8 +310,10 @@ def planInitialAttacks(scenario, allActions, upgradeNeeds, reserveTiles, provinc
     """
     changed = False
     movableUnitTiles = getAllMovableUnitTilesInProvince(province)
+    # Note that getAllMovableUnitTilesInProvince returns a tuple of (tile, province),
+    # so we need to unpack it.
 
-    for tile in movableUnitTiles:
+    for tile, _ in movableUnitTiles:
         unit = tile.unit
 
         enemyTilesInRange = getEnemyTilesInRangeOfTile(scenario, tile, province)
@@ -264,13 +325,13 @@ def planInitialAttacks(scenario, allActions, upgradeNeeds, reserveTiles, provinc
             # the enemy tile's defense rating.
             attackableEnemyTiles = []
             for enemyTile in enemyTilesInRange:
-                if unit.attackPower >= getDefenseRatingOfTile(scenario, enemyTile):
+                if unit.attackPower >= getDefenseRatingOfTile(enemyTile):
                     attackableEnemyTiles.append(enemyTile)
 
             if attackableEnemyTiles:
                 # We can attack at least one enemy tile!
                 # Let's pick one at random and attack it.
-                targetTile = scenario.random.choice(attackableEnemyTiles)
+                targetTile = random.choice(attackableEnemyTiles)
                 moveActions = scenario.moveUnit(tile.row, tile.col, targetTile.row, targetTile.col)
                 for moveAction in moveActions:
                     allActions.append((moveAction, province))
@@ -287,7 +348,7 @@ def planInitialAttacks(scenario, allActions, upgradeNeeds, reserveTiles, provinc
                 # Now we check each enemy tile to see what the lowest upgrade needed 
                 # to attack any of them is.
                 for enemyTile in enemyTilesInRange:
-                    defenseRating = getDefenseRatingOfTile(scenario, enemyTile)
+                    defenseRating = getDefenseRatingOfTile(enemyTile)
                     upgradeNeeded = defenseRating - unit.attackPower
                     if upgradeNeeded < minUpgradeNeeded:
                         minUpgradeNeeded = upgradeNeeded
@@ -307,3 +368,446 @@ def planInitialAttacks(scenario, allActions, upgradeNeeds, reserveTiles, provinc
                 reserveTiles.append(tile)
 
     return changed
+
+def planReservistMerges(scenario, allActions, upgradeNeeds, reserveTiles, province):
+    """
+    Plans how to merge appropriate reserve units to units needing upgrades
+    in order to let those units in need of upgrades attack enemy tiles.
+
+    Args:
+        scenario: The current game Scenario object.
+        allActions: The list of all actions to be executed.
+        upgradeNeeds: A dictionary mapping upgrade tiers to lists of tiles needing those upgrades.
+        reserveTiles: A list of tiles containing units held in reserve.
+        province: The Province currently undergoing action planning.
+
+    Returns:
+        A boolean indicating whether any changes were made.
+    """
+    changed = False
+
+    # We will process upgrades in order: first single tier upgrades,
+    # then double tier upgrades, then triple tier upgrades.
+    for upgradeTier in [1, 2, 3]:
+        tilesNeedingUpgrade = upgradeNeeds[upgradeTier]
+        for tileNeedingUpgrade in tilesNeedingUpgrade:
+            # For each unit needing this upgrade, we will check if any
+            # of its reachable tiles contain a reservist unit of the appropriate tier.
+            foundMerge = False
+            # Let's first figure out all the tiles within the movement range of the tile
+            movementRangeTilesCoords = scenario.getAllTilesWithinMovementRange(tileNeedingUpgrade.row, tileNeedingUpgrade.col)
+
+            # Now let's convert those coordinates to HexTile objects
+            movementRangeTiles = getReachableTilesAsObjects(scenario, movementRangeTilesCoords)
+
+            # Now we get the set of reservist tiles which overlap with the movement range tiles
+            overlappingReservistTiles = [tile for tile in reserveTiles if tile in movementRangeTiles]
+
+            # Finally, we filter those overlapping reservist tiles to only include those
+            # which contain a unit of the appropriate tier.
+            appropriateTierReservistTile = None
+            for reservistTile in overlappingReservistTiles:
+                reservistUnit = reservistTile.unit
+                if reservistUnit.unitType == 'soldierTier' + str(upgradeTier):
+                    appropriateTierReservistTile = reservistTile
+                    # We only need one such reservist tile
+                    break
+        
+            # If we found an appropriate tier reservist tile, we can perform the merge.
+            # We must then ensure that the province can afford to perform the merge.
+            # Otherwise, we must reverse the changes.
+            if appropriateTierReservistTile:
+                # We attempt the merge
+                pdb.set_trace()
+                moveActions = scenario.moveUnit(appropriateTierReservistTile.row, appropriateTierReservistTile.col,
+                                                tileNeedingUpgrade.row, tileNeedingUpgrade.col)
+                # Apply the actions immediately to update the scenario state
+                for moveAction in moveActions:
+                    scenario.applyAction(moveAction, province)
+
+                # Now we check if the province can afford the merge
+                timeToBankrupt = checkTimeToBankruptProvince(province)
+                if timeToBankrupt is not None and timeToBankrupt < turnsOfIncomeToAffordMerge:
+                    # The province cannot afford the merge, so we must reverse the actions
+                    for moveAction in reversed(moveActions):
+                        scenario.applyAction(moveAction.invert(), province)
+                    # The merge did not happen
+                else:
+                    # The merge was successful, so this action must be recorded
+                    for moveAction in moveActions:
+                        allActions.append((moveAction, province))
+                    # The attack logic will be handled in the next iteration of the state machine,
+                    # so all we need to do here is mark that something changed, and clean up
+                    # our data structures so that we don't try to reuse the same reservist tile again.
+                    reserveTiles.remove(appropriateTierReservistTile)
+                    changed = True
+                    foundMerge = True
+            
+            # If we didn't find a merge for this unit, we need to re-add it to the upgradeNeeds
+            # for the next upgrade tier.
+            if not foundMerge:
+                if upgradeTier < 3:
+                    upgradeNeeds[upgradeTier + 1].append(tileNeedingUpgrade)
+
+    return changed
+
+def planCannibalizeMerges(scenario, allActions, upgradeNeeds, province):
+    """
+    Plans how to merge any appropriate units to units needing upgrades
+    in order to let those units in need of upgrades attack enemy tiles.
+    Almost identical to planReservistMerges, but does not restrict merges to reservist units.
+
+    Args:
+        scenario: The current game Scenario object.
+        allActions: A list to store all planned actions.
+        upgradeNeeds: A dictionary mapping upgrade tiers to lists of tiles needing upgrades.
+        province: The province that is performing the merges.
+
+    Returns:
+        A boolean indicating whether any changes were made.
+    """
+    changed = False
+
+    # We will process upgrades in order: first single tier upgrades,
+    # then double tier upgrades, then triple tier upgrades.
+    for upgradeTier in [1, 2, 3]:
+        tilesNeedingUpgrade = upgradeNeeds[upgradeTier]
+        for tileNeedingUpgrade in tilesNeedingUpgrade:
+            # For each unit needing this upgrade, we will check if any
+            # of its reachable tiles contain a unit of the appropriate tier.
+            foundMerge = False
+            # Let's first figure out all the tiles within the movement range of the tile
+            movementRangeTilesCoords = scenario.getAllTilesWithinMovementRange(tileNeedingUpgrade.row, tileNeedingUpgrade.col)
+
+            # Now let's convert those coordinates to HexTile objects
+            movementRangeTiles = getReachableTilesAsObjects(scenario, movementRangeTilesCoords)
+
+            # Remove the unit's own tile from the movement range tiles
+            # This is important because otherwise we might try to merge the unit
+            # with itself, which is not allowed.
+            movementRangeTiles = [tile for tile in movementRangeTiles if tile != tileNeedingUpgrade]
+
+            # Here's the only difference from planReservistMerges: Rather than looking for just reservist units
+            # to merge with, we look for any unit of the appropriate tier which is movable.
+            # Iterate through all the movement range tiles to find an appropriate unit.
+            appropriateTierUnit = None
+            for movementRangeTile in movementRangeTiles:
+                if movementRangeTile.unit and movementRangeTile.owner.faction == province.faction and movementRangeTile.unit.canMove:
+                    unit = movementRangeTile.unit
+                    if unit.unitType == 'soldierTier' + str(upgradeTier):
+                        appropriateTierUnit = movementRangeTile
+                        # We only need one such unit
+                        break
+        
+            # If we found an appropriate tier unit, we can perform the merge.
+            # We must then ensure that the province can afford to perform the merge.
+            # Otherwise, we must reverse the changes.
+            if appropriateTierUnit:
+                # We attempt the merge
+                moveActions = scenario.moveUnit(appropriateTierUnit.row, appropriateTierUnit.col,
+                                                tileNeedingUpgrade.row, tileNeedingUpgrade.col)
+                # Apply the actions immediately to update the scenario state
+                for moveAction in moveActions:
+                    scenario.applyAction(moveAction, province)
+
+                # Now we check if the province can afford the merge
+                timeToBankrupt = checkTimeToBankruptProvince(province)
+                if timeToBankrupt is not None and timeToBankrupt < turnsOfIncomeToAffordMerge:
+                    # The province cannot afford the merge, so we must reverse the actions
+                    for moveAction in reversed(moveActions):
+                        scenario.applyAction(moveAction.invert(), province)
+                    # The merge did not happen
+                else:
+                    # The merge was successful, record the action
+                    for moveAction in moveActions:
+                        allActions.append((moveAction, province))
+                    # The attack logic will be handled in the next iteration of the state machine,
+                    # so all we need to do here is mark that something changed.
+                    changed = True
+                    foundMerge = True
+            
+            # If we didn't find a merge for this unit, we need to re-add it to the upgradeNeeds
+            # for the next upgrade tier.
+            if not foundMerge:
+                if upgradeTier < 3:
+                    upgradeNeeds[upgradeTier + 1].append(tileNeedingUpgrade)
+
+    return changed
+
+def planTreeAndUnclaimedMoves(scenario, allActions, province):
+    """
+    Plans moves to get units onto tree tiles or unclaimed tiles,
+    with a priority on tree tiles.
+
+    Args:
+        scenario: The current game Scenario object.
+        allActions: A list to store all planned actions.
+        province: The province that is performing the moves.
+
+    Returns:
+        A boolean indicating whether any changes were made.
+    """
+    changed = False
+    movableUnitTiles = getAllMovableUnitTilesInProvince(province)
+
+    for tile, _ in movableUnitTiles:
+        # First, we check what this unit can reach.
+        reachableTilesCoords = scenario.getAllTilesWithinMovementRange(tile.row, tile.col)
+        reachableTiles = getReachableTilesAsObjects(scenario, reachableTilesCoords)
+
+        # Now we iterate through the reachable tiles, keeping track of the first unclaimed tile
+        # we find in case we don't find any tree tiles.
+        # We prioritize tree tiles over unclaimed tiles, so even if we find an unclaimed tile first,
+        # we keep looking for tree tiles.
+        # If we find a tree tile, we move there immediately. 
+        firstUnclaimedTile = None
+        for reachableTile in reachableTiles:
+            # Let's see if there's a tree tile we can move to.
+            if reachableTile.unit and reachableTile.unit.unitType == 'tree' and reachableTile.owner == province:
+                # We can move to this tree tile to cut down the tree.
+                moveActions = scenario.moveUnit(tile.row, tile.col, reachableTile.row, reachableTile.col)
+                for moveAction in moveActions:
+                    allActions.append((moveAction, province))
+                # Apply the actions immediately to update the scenario state
+                for moveAction in moveActions:
+                    scenario.applyAction(moveAction, province)
+
+                changed = True
+                break  # Move to the next movable unit tile
+            elif reachableTile.owner is None and firstUnclaimedTile is None:
+                # We found an unclaimed tile, but we keep looking for tree tiles.
+                firstUnclaimedTile = reachableTile
+        
+        # If we didn't break out of the loop, it means we didn't find any tree tiles.
+        # If we found an unclaimed tile, we move there.
+        if firstUnclaimedTile:
+            moveActions = scenario.moveUnit(tile.row, tile.col, firstUnclaimedTile.row, firstUnclaimedTile.col)
+            for moveAction in moveActions:
+                allActions.append((moveAction, province))
+            # Apply the actions immediately to update the scenario state
+            for moveAction in moveActions:
+                scenario.applyAction(moveAction, province)
+
+            changed = True
+
+
+    return changed
+
+def planBuildOnTrees(scenario, allActions, province):
+    """
+    Plans building soldierTier1 units on tree tiles owned by the province.
+
+    Args:
+        scenario: The current game Scenario object.
+        allActions: A list to store all planned actions.
+        province: The province that is performing the building.
+
+    Returns:
+        None
+    """
+    treeTiles = getTilesInProvinceWhichContainGivenUnitTypes(province, ["tree"])
+    for treeTile in treeTiles:
+        if province.resources >= 10:
+            buildActions = scenario.buildUnitOnTile(treeTile.row, treeTile.col, "soldierTier1", province)
+            # Apply the actions immediately to update the scenario state
+            for buildAction in buildActions:
+                scenario.applyAction(buildAction, province)
+            
+            # Ensure we can afford to build this unit
+            timeToBankrupt = checkTimeToBankruptProvince(province)
+            if timeToBankrupt is not None and timeToBankrupt < turnsOfIncomeToAffordMerge:
+                # The province cannot afford the soldier, so we must reverse the actions
+                for buildAction in reversed(buildActions):
+                    scenario.applyAction(buildAction.invert(), province)
+                # If we can't build this unit, we stop trying to build more units
+                break
+            else:
+                # The build was successful, so we record the actions
+                for buildAction in buildActions:
+                    allActions.append((buildAction, province))
+
+def planBuildOnUnclaimedFrontier(scenario, allActions, province):
+    """
+    Plans building soldierTier1 units on unclaimed frontier tiles of the province.
+
+    Args:
+        scenario: The current game Scenario object.
+        allActions: A list to store all planned actions.
+        province: The province that is performing the building.
+
+    Returns:
+        A boolean indicating whether any changes were made.
+    """
+    changed = False
+    frontierTiles = getFrontierTiles(province)
+    unclaimedFrontierTiles = [tile for tile in frontierTiles if tile.owner is None]
+
+    for unclaimedTile in unclaimedFrontierTiles:
+        if province.resources >= 10:
+            buildActions = scenario.buildUnitOnTile(unclaimedTile.row, unclaimedTile.col, "soldierTier1", province)
+            # Apply the actions immediately to update the scenario state
+            for buildAction in buildActions:
+                scenario.applyAction(buildAction, province)
+
+            # Ensure we can afford to build this unit
+            timeToBankrupt = checkTimeToBankruptProvince(province)
+            if timeToBankrupt is not None and timeToBankrupt < turnsOfIncomeToAffordMerge:
+                # The province cannot afford the soldier, so we must reverse the actions
+                for buildAction in reversed(buildActions):
+                    scenario.applyAction(buildAction.invert(), province)
+                
+                # If we can't build this unit, we stop trying to build more units
+                break
+            else:
+                # The build was successful, so we mark that something changed
+                # and record the actions
+                for buildAction in buildActions:
+                    allActions.append((buildAction, province))
+                changed = True
+
+    return changed
+
+def planUpgradeLeftoverUnits(scenario, allActions, upgradeNeeds, province):
+    """
+    Plans upgrading leftover units which need upgrades to attack enemy tiles.
+
+    Args:
+        scenario: The current game Scenario object.
+        allActions: A list to store all planned actions.
+        upgradeNeeds: A dictionary mapping upgrade tiers to lists of tiles needing upgrades.
+        province: The province that is performing the upgrades.
+
+    Returns:
+        A boolean indicating whether any changes were made.
+    """
+    changed = False
+
+    # We will process upgrades in order: first single tier upgrades,
+    # then double tier upgrades, then triple tier upgrades.
+    for upgradeTier in [1, 2, 3]:
+        tilesNeedingUpgrade = upgradeNeeds[upgradeTier]
+        for tileNeedingUpgrade in tilesNeedingUpgrade:
+            # Let's attempt to build the necessary soldier to perform the upgrade.
+            unitTypeToBuild = 'soldierTier' + str(upgradeTier)
+            neededResources = 10 * upgradeTier
+            if province.resources >= neededResources:
+                pdb.set_trace()
+                buildActions = scenario.buildUnitOnTile(tileNeedingUpgrade.row, tileNeedingUpgrade.col, unitTypeToBuild, province)
+                # Apply the actions immediately to update the scenario state
+                for buildAction in buildActions:
+                    scenario.applyAction(buildAction, province)
+
+                # Let's ensure we can afford to build this unit
+                timeToBankrupt = checkTimeToBankruptProvince(province)
+                if timeToBankrupt is not None and timeToBankrupt < turnsOfIncomeToAffordMerge:
+                    # The province cannot afford the soldier, so we must reverse the actions
+                    for buildAction in reversed(buildActions):
+                        scenario.applyAction(buildAction.invert(), province)
+                else:
+                    # The build was successful, so we mark that something changed
+                    # and record the actions
+                    for buildAction in buildActions:
+                        allActions.append((buildAction, province))
+                    changed = True
+
+    return changed
+
+def planMoveTowardsUnclaimedOrTreesOrEnemies(scenario, allActions, province):
+    """
+    Plans moves for units towards the closest unclaimed tile, tree tile, or enemy tile,
+    taking care to not accidentally move a unit on top of another unit thereby either
+    causing an exception or an unintended merge.
+
+    Args:
+        scenario: The current game Scenario object.
+        allActions: A list to store all planned actions.
+        province: The province that is performing the moves.
+
+    Returns:
+        A boolean indicating whether any changes were made.
+    """
+    changed = False
+    movableUnitTiles = getAllMovableUnitTilesInProvince(province)
+
+    # We want to avoid moving onto tiles occupied by our own units,
+    # so we build a set of such tiles to avoid.
+    tilesToAvoid = set()
+
+    # We shall populate tilesToAvoid with all tiles in the province
+    # that contain our own units.
+    for tile in province.tiles:
+        if tile.unit:
+            tilesToAvoid.add(tile)
+
+    # Our target tiles will be unclaimed tiles and tree tiles.
+    targetTiles = []
+    treeTiles = getTilesInProvinceWhichContainGivenUnitTypes(province, ["tree"])
+    targetTiles.extend(treeTiles)
+    frontierTiles = getFrontierTiles(province)
+    unclaimedFrontierTiles = [tile for tile in frontierTiles if tile.owner is None]
+    targetTiles.extend(unclaimedFrontierTiles)
+
+    # If targetTiles is empty, there are no unclaimed or tree tiles to move towards.
+    # So that means we must be devoid of trees and only bordering hostile territory.
+    # In this case, we will try to move towards the closest enemy tile.
+    if len(targetTiles) == 0:
+        # We already have frontierTiles computed.
+        # And we know that all frontier tiles are enemy tiles in this case.
+        targetTiles.extend(frontierTiles)
+
+    # If somehow targetTiles is still empty, there is nothing to move towards.
+    # So we can just return.
+    if len(targetTiles) == 0:
+        return changed
+
+    for tile, _ in movableUnitTiles:
+        # We can now just delegate to a helper to find the first move towards the closest target tile,
+        # avoiding tiles occupied by our own units.
+        destinationTile = getMoveTowardsTargetTileAvoidingGivenTiles(tile, targetTiles, tilesToAvoid, scenario)
+
+        # This could be None, meaning there is no valid path to any target tile.
+        if destinationTile:
+            moveActions = scenario.moveUnit(tile.row, tile.col, destinationTile.row, destinationTile.col)
+            for moveAction in moveActions:
+                allActions.append((moveAction, province))
+            # Apply the actions immediately to update the scenario state
+            for moveAction in moveActions:
+                scenario.applyAction(moveAction, province)
+
+            changed = True
+
+    return changed
+
+def planBuildFarmsWithLeftoverResources(scenario, allActions, province):
+    """
+    Plans actions to build farms if possible.
+
+    Args:
+        scenario: The current game Scenario object.
+        allActions: A list to store all planned actions.
+        province: The province that is performing the building.
+
+    Returns:
+        None
+    """
+    # Let's see if we can even build a farm.
+    farmCandidates = getTilesWhichUnitCanBeBuiltOn(scenario, province, "farm")
+    # Keep on building farms while we have candidates
+    while farmCandidates:
+        # We only build one farm at a time since the helper only guarantees
+        # enough resources for a single build.
+        farmTile = random.choice(farmCandidates)
+        # The helper function already ensures we have enough resources to build the farm.
+        buildActions = scenario.buildUnitOnTile(farmTile.row, farmTile.col, "farm", province)
+        # Apply the actions immediately to update the scenario state
+        for buildAction in buildActions:
+            scenario.applyAction(buildAction, province)
+        
+        # Unlike other builds, we don't need to check affordability here,
+        # since farms do not cost upkeep and do not get destroyed when a
+        # province goes bankrupt.
+        for buildAction in buildActions:
+            allActions.append((buildAction, province))
+
+        # Recompute farm candidates for the next iteration
+        farmCandidates = getTilesWhichUnitCanBeBuiltOn(scenario, province, "farm")
