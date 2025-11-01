@@ -92,10 +92,10 @@ def playTurn(scenario, faction):
             path = findPathToClosestTileAvoidingGivenTiles(unitTile, validTargets, soldierTilesToAvoid.union(frontierTilesWithTooHighDefense))
             if path and len(path) > 1:
                 # Find the furthest tile we can reach along the path
-                movementRange = scenario.getAllTilesWithinMovementRange(unitTile.row, unitTile.col)
+                movementRange = scenario.getAllTilesWithinMovementRangeFiltered(unitTile.row, unitTile.col)
                 for i in range(len(path) - 1, 0, -1):
                     step = path[i]
-                    # Remember that scenario.getAllTilesWithinMovementRange(unitTile.row, unitTile.col)
+                    # Remember that scenario.getAllTilesWithinMovementRangeFiltered(unitTile.row, unitTile.col)
                     # returns a list of (row, col) tuples rather than actual tile objects
                     if (step.row, step.col) in movementRange:
                         moveAUnitThisIteration = True

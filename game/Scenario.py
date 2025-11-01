@@ -366,24 +366,16 @@ class Scenario:
     def getAllTilesWithinMovementRange(self, startRow, startCol):
         """
         Returns a list of (row, col) tuples representing all hex tiles
-        that a soldier unit at the given startRow and startCol can move to.
-        
-        Soldiers units have essentially 3 movement rules:
-        1. They cannot move onto water tiles.
-        2. They can only move to tiles controlled by their own province
-           if those tiles are only 4 hex neighbors away or less.
-           That is, only 4 edges away in terms of hex adjacency
-           (can be easily checked with BFS/DFS). 
-           (Also those tiles can't have other units on them unless it's a tree
-           or you're trying to merge certain type of soldiers, but that's handled elsewhere.)
-        3. They can move onto enemy-controlled tiles or neutral tiles
-           if those tiles satisfy
-           a) They are adjacent to a tile controlled by the soldier's province
-              which is at most 3 hex neighbors away from the soldier's starting tile.
-           b) Neither the target tile nor any of the neighboring tiles of the target tile
-              controlled by the same province as the target tile have any units with a
-              unit possessing a defensePower strictly greater than (>) the attackPower
-              of the soldier attempting to move there.
+        that a mobile unit at the given startRow and startCol could move to,
+        provided no other units or structures block movement at the target tiles.
+
+        Args:
+            startRow: The row index of the starting hex tile.
+            startCol: The column index of the starting hex tile.
+
+        Returns:
+            A list of (row, col) tuples representing all reachable hex tiles
+            within movement range.
         """
         # Validate coordinates
         if not (0 <= startRow < len(self.mapData)) or not (0 <= startCol < len(self.mapData[startRow])):
@@ -429,6 +421,39 @@ class Scenario:
                 # Expand only neighbor tiles controlled by the soldier's province
                 visited.add((neighborRow, neighborCol))
                 queue.append((neighborRow, neighborCol, distance + 1))
+
+        return validTiles
+
+    def getAllTilesWithinMovementRangeFiltered(self, startRow, startCol):
+        """
+        Returns a list of (row, col) tuples representing all hex tiles
+        that a soldier unit at the given startRow and startCol can move to.
+        
+        Soldiers units have essentially 3 movement rules:
+        1. They cannot move onto water tiles.
+        2. They can only move to tiles controlled by their own province
+           if those tiles are only 4 hex neighbors away or less.
+           That is, only 4 edges away in terms of hex adjacency
+           (can be easily checked with BFS/DFS). 
+           (Also those tiles can't have other units on them unless it's a tree
+           or you're trying to merge certain type of soldiers, but that's handled elsewhere.)
+        3. They can move onto enemy-controlled tiles or neutral tiles
+           if those tiles satisfy
+           a) They are adjacent to a tile controlled by the soldier's province
+              which is at most 3 hex neighbors away from the soldier's starting tile.
+           b) Neither the target tile nor any of the neighboring tiles of the target tile
+              controlled by the same province as the target tile have any units with a
+              unit possessing a defensePower strictly greater than (>) the attackPower
+              of the soldier attempting to move there.
+        """
+        # Validate coordinates
+        if not (0 <= startRow < len(self.mapData)) or not (0 <= startCol < len(self.mapData[startRow])):
+            raise ValueError("Invalid start hex coordinates.")
+        
+        startTile = self.mapData[startRow][startCol]
+        
+        soldierProvince = startTile.owner
+        validTiles = self.getAllTilesWithinMovementRange(startRow, startCol)
 
         # Finally, remove all friendly tiles which have other soldiers with an incompatible tier
         # on them, or structures on them except for trees. 
@@ -499,7 +524,7 @@ class Scenario:
         unitToMove = initialTile.unit
         
         # Validate movement range
-        validMovementTiles = self.getAllTilesWithinMovementRange(initialHexRow, initialHexCol)
+        validMovementTiles = self.getAllTilesWithinMovementRangeFiltered(initialHexRow, initialHexCol)
         if (finalHexRow, finalHexCol) not in validMovementTiles:
             raise ValueError("Final hex is not a valid movement target for the unit.")
         
