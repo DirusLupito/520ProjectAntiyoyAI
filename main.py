@@ -139,6 +139,9 @@ def main():
         if currentFaction.playerType == "ai":
             scenario.displayMap()
             print(f"{currentFaction.name} (AI) is thinking...")
+            debugInput = input("Press Enter to continue, b to break into debugger... ")
+            if debugInput.lower() == "b":
+                pdb.set_trace()
             
             # Get the AI's chosen actions
             aiFunction = AIPersonality.implementedAIs[currentFaction.aiType]
@@ -164,9 +167,6 @@ def main():
             turnActionsForReplay = list(appliedActions)
             turnActionsForReplay.extend(turnAdvanceActions)
             replay.recordTurn(scenario, currentFaction, turnActionsForReplay)
-            debugInput = input("Press Enter to continue, b to break into debugger... ")
-            if debugInput.lower() == "b":
-                pdb.set_trace()
             continue # Skip to the next iteration of the main game loop
 
         # Handles human player's turn
