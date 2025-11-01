@@ -147,6 +147,9 @@ def getMoveTowardsTargetTileAvoidingGivenTiles(startTile, targetTiles, avoidedTi
                 if neighbor and not neighbor.isWater and neighbor not in visited and neighbor in reachableTilesCoords:
                     visited.add(neighbor)
                     queue.append(neighbor)
+    else:
+        # If the first step is not in the avoided tiles, return it
+        return firstStep
 
     # At this point, every single reachable tile must have been in the avoided tiles,
     # so there is no valid first step to take.
