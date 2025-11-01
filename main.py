@@ -299,7 +299,7 @@ def main():
                 
                 elif cmd == "moves" and selectedUnit:
                     row, col = selectedUnitPosition
-                    validMoves = scenario.getAllTilesWithinMovementRange(row, col)
+                    validMoves = scenario.getAllTilesWithinMovementRangeFiltered(row, col)
                     print("Valid moves:")
                     for moveRow, moveCol in validMoves:
                         if moveRow != row or moveCol != col:  # Don't show current position

@@ -61,7 +61,7 @@ def playTurn(scenario, faction):
 
     for unitTile, province in movableUnits:
         # Get all possible moves for the current unit
-        validMoveCoords = scenario.getAllTilesWithinMovementRange(unitTile.row, unitTile.col)
+        validMoveCoords = scenario.getAllTilesWithinMovementRangeFiltered(unitTile.row, unitTile.col)
         validMoveTiles = [scenario.mapData[r][c] for r, c in validMoveCoords]
 
         # Prefer moving to an unclaimed tile within immediate reach
