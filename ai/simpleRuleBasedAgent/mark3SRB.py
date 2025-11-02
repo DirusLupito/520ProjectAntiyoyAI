@@ -47,6 +47,9 @@ back to only needing a single tier upgrade), and we will now start 'cannibalizin
 any soldier regardless of whether its a reservist or not to perform upgrades.
 Other than the fact we might not be using a reservist, its essentially the same process as before,
 where we try to perform first single tier upgrades, then double tier upgrades, then triple tier upgrades.
+We also ensure that no unit which has already recieved an upgrade in this phase can be itself cannibalized
+since such a unit would already be able to attack an enemy tile, 
+and for cheaper than if it were to be merged again. 
 
 PLAN_TREE_AND_UNCLAIMED_MOVES:
 If we go through an entire iteration without moving any units again, merging a reservist,
@@ -99,6 +102,13 @@ PLAN_BUILD_FARMS_WITH_LEFTOVER_RESOURCES:
 Any unspent resources at the end of all this will be spent to build a farm (must be either beside
 a pre-existing farm or beside the capital) if a farm can be built, or will be saved.
 
+PLAN_BUILD_UNITS_WITH_LEFTOVER_RESOURCES:
+After building farms, we finally attempt to build soldiers on all uncontrolled tiles to conquer them,
+so that we have a way of continuing to expand the military presence of the province even
+if there are no tree tiles or unclaimed tiles left to build on (unlike PLAN_BUILD_ON_UNCLAIMED_FRONTIER
+we do not restrict ourselves to just unclaimed frontier tiles, but rather any unclaimed tile which
+can be built on). If changes are made during this step, we go back to the start of the process.
+
 Now after all this, the next province will be processed in the same way, 
 and then the next province after that, and so on until all provinces have been processed.
 After all provinces have been processed, playTurn is done.
@@ -123,7 +133,6 @@ The overall AI is implemented as a state machine, where each iteration of the pr
 is a state, and if nothing changes during that iteration, we move to the next state.
 """
 
-import pdb
 import random
 from ai.utils.commonAIUtilityFunctions import getMoveTowardsTargetTileAvoidingGivenTiles
 from ai.utils.commonAIUtilityFunctions import checkTimeToBankruptProvince
@@ -162,7 +171,8 @@ def playTurn(scenario, faction):
     PLAN_UPGRADE_LEFTOVER_UNITS = 6
     PLAN_MOVE_TOWARDS_UNCLAIMED_OR_TREES_OR_ENEMIES = 7
     PLAN_BUILD_FARMS_WITH_LEFTOVER_RESOURCES = 8
-    FINAL_STATE = 9
+    PLAN_BUILD_UNITS_WITH_LEFTOVER_RESOURCES = 9
+    FINAL_STATE = 10
 
     provinceIndex = 0
     # We shall iterate through all provinces one by one,
@@ -196,9 +206,18 @@ def playTurn(scenario, faction):
                 changed = planInitialAttacks(scenario, allActions, upgradeNeeds, reserveTiles, province)
                 if not changed:
                     state = PLAN_RESERVIST_MERGES
+                else:
+                    # If we made changes, we need to reset the upgradeNeeds and reserveTiles
+                    # because the game state has changed and some units may no longer need upgrades
+                    # or may now be in range of enemy tiles.
+                    upgradeNeeds = {1: [], 2: [], 3: []}
+                    reserveTiles = []
 
             elif state == PLAN_RESERVIST_MERGES:
-                changed = planReservistMerges(scenario, allActions, upgradeNeeds, reserveTiles, province)
+                # We need to pass in a copy of upgradeNeeds because it may be modified
+                # by planReservistMerges, and we want planCannibalizeMerges to have the original state.
+                upgradeNeedsCopy = {1: list(upgradeNeeds[1]), 2: list(upgradeNeeds[2]), 3: list(upgradeNeeds[3])}
+                changed = planReservistMerges(scenario, allActions, upgradeNeedsCopy, reserveTiles, province)
                 if not changed:
                     state = PLAN_CANNIBALIZE_MERGES
                 else:
@@ -212,7 +231,10 @@ def playTurn(scenario, faction):
                     state = PLAN_INITIAL_ATTACKS
 
             elif state == PLAN_CANNIBALIZE_MERGES:
-                changed = planCannibalizeMerges(scenario, allActions, upgradeNeeds, province)
+                # We again pass in a copy of upgradeNeeds, this time to let planUpgradeLeftoverUnits
+                # have the original state of upgradeNeeds.
+                upgradeNeedsCopy = {1: list(upgradeNeeds[1]), 2: list(upgradeNeeds[2]), 3: list(upgradeNeeds[3])}
+                changed = planCannibalizeMerges(scenario, allActions, upgradeNeedsCopy, province)
                 if not changed:
                     state = PLAN_TREE_AND_UNCLAIMED_MOVES
                 else:
@@ -260,6 +282,10 @@ def playTurn(scenario, faction):
                     state = PLAN_INITIAL_ATTACKS
 
             elif state == PLAN_UPGRADE_LEFTOVER_UNITS:
+                # Note that we do not pass in a copy of upgradeNeeds here,
+                # because there is no further state which uses upgradeNeeds after this one,
+                # unless we loop back to PLAN_INITIAL_ATTACKS, in which case upgradeNeeds
+                # gets reset anyway.
                 changed = planUpgradeLeftoverUnits(scenario, allActions, upgradeNeeds, province)
                 if not changed:
                     state = PLAN_MOVE_TOWARDS_UNCLAIMED_OR_TREES_OR_ENEMIES
@@ -274,7 +300,7 @@ def playTurn(scenario, faction):
                     state = PLAN_INITIAL_ATTACKS
 
             elif state == PLAN_MOVE_TOWARDS_UNCLAIMED_OR_TREES_OR_ENEMIES:
-                changed = planMoveTowardsUnclaimedOrTreesOrEnemies(scenario, allActions, province)
+                planMoveTowardsUnclaimedOrTreesOrEnemies(scenario, allActions, province)
                 # The outcome of this state will not cause us to need to repeat any prior states,
                 # so we can just move on to the next state directly.
                 state = PLAN_BUILD_FARMS_WITH_LEFTOVER_RESOURCES
@@ -283,7 +309,21 @@ def playTurn(scenario, faction):
                 planBuildFarmsWithLeftoverResources(scenario, allActions, province)
                 # The outcome of this state will not cause us to need to repeat any prior states,
                 # so we can just move on to the next state directly.
-                state = FINAL_STATE
+                state = PLAN_BUILD_UNITS_WITH_LEFTOVER_RESOURCES
+
+            elif state == PLAN_BUILD_UNITS_WITH_LEFTOVER_RESOURCES:
+                changed = planBuildUnitsWithLeftoverResources(scenario, allActions, province)
+                if not changed:
+                    state = FINAL_STATE
+                else:
+                    # If we made changes, we need to reset the upgradeNeeds and reserveTiles
+                    # because the game state has changed and some units may no longer need upgrades
+                    # or may now be in range of enemy tiles.
+                    upgradeNeeds = {1: [], 2: [], 3: []}
+                    reserveTiles = []
+                    # We might also have merged provinces and have more movable units now,
+                    # so we need to go back to the initial attacks state.
+                    state = PLAN_INITIAL_ATTACKS
 
         # We have finished processing this province, so we move on to the next one.
         provinceIndex += 1
@@ -418,7 +458,6 @@ def planReservistMerges(scenario, allActions, upgradeNeeds, reserveTiles, provin
             # Otherwise, we must reverse the changes.
             if appropriateTierReservistTile:
                 # We attempt the merge
-                pdb.set_trace()
                 moveActions = scenario.moveUnit(appropriateTierReservistTile.row, appropriateTierReservistTile.col,
                                                 tileNeedingUpgrade.row, tileNeedingUpgrade.col)
                 # Apply the actions immediately to update the scenario state
@@ -444,10 +483,14 @@ def planReservistMerges(scenario, allActions, upgradeNeeds, reserveTiles, provin
                     foundMerge = True
             
             # If we didn't find a merge for this unit, we need to re-add it to the upgradeNeeds
-            # for the next upgrade tier.
+            # for the next upgrade tier, and remove it from the current upgrade tier.
+            # We also need to make sure we don't mark a unit as needing an illegal upgrade tier,
+            # like an soldierTier3 needing a 2 tier upgrade, as this would cause an exception later
+            # on if a soldierTier2 actually tried to merge with that soldierTier3.
             if not foundMerge:
-                if upgradeTier < 3:
+                if tileNeedingUpgrade.unit is not None and upgradeTier + tileNeedingUpgrade.unit.tier < 4:
                     upgradeNeeds[upgradeTier + 1].append(tileNeedingUpgrade)
+                upgradeNeeds[upgradeTier].remove(tileNeedingUpgrade)
 
     return changed
 
@@ -468,6 +511,12 @@ def planCannibalizeMerges(scenario, allActions, upgradeNeeds, province):
     """
     changed = False
 
+    # We need to forbid cannibalizing any units which have already
+    # received an upgrade in this phase, since such units would already
+    # be able to attack an enemy tile, and for cheaper than if they
+    # were to be merged again.
+    alreadyUpgradedTiles = []
+
     # We will process upgrades in order: first single tier upgrades,
     # then double tier upgrades, then triple tier upgrades.
     for upgradeTier in [1, 2, 3]:
@@ -485,14 +534,18 @@ def planCannibalizeMerges(scenario, allActions, upgradeNeeds, province):
             # Remove the unit's own tile from the movement range tiles
             # This is important because otherwise we might try to merge the unit
             # with itself, which is not allowed.
-            movementRangeTiles = [tile for tile in movementRangeTiles if tile != tileNeedingUpgrade]
+            # We don't check tile equality by object identity, but rather by row and column,
+            # since upgradeNeeds is a deep copy.
+            movementRangeTiles = [tile for tile in movementRangeTiles if tile.row != tileNeedingUpgrade.row or tile.col != tileNeedingUpgrade.col]
 
             # Here's the only difference from planReservistMerges: Rather than looking for just reservist units
-            # to merge with, we look for any unit of the appropriate tier which is movable.
+            # to merge with, we look for any unit of the appropriate tier which is movable and which has not already been upgraded
+            # in this phase.
             # Iterate through all the movement range tiles to find an appropriate unit.
             appropriateTierUnit = None
             for movementRangeTile in movementRangeTiles:
-                if movementRangeTile.unit and movementRangeTile.owner.faction == province.faction and movementRangeTile.unit.canMove:
+                if (movementRangeTile.unit and movementRangeTile.owner == province and
+                    movementRangeTile.unit.canMove and movementRangeTile not in alreadyUpgradedTiles):
                     unit = movementRangeTile.unit
                     if unit.unitType == 'soldierTier' + str(upgradeTier):
                         appropriateTierUnit = movementRangeTile
@@ -525,12 +578,18 @@ def planCannibalizeMerges(scenario, allActions, upgradeNeeds, province):
                     # so all we need to do here is mark that something changed.
                     changed = True
                     foundMerge = True
+                    # And make sure we don't cannibalize this unit
+                    alreadyUpgradedTiles.append(tileNeedingUpgrade)
             
             # If we didn't find a merge for this unit, we need to re-add it to the upgradeNeeds
-            # for the next upgrade tier.
+            # for the next upgrade tier, and remove it from the current upgrade tier.
+            # We also need to make sure we don't mark a unit as needing an illegal upgrade tier,
+            # like an soldierTier3 needing a 2 tier upgrade, as this would cause an exception later
+            # on if a soldierTier2 actually tried to merge with that soldierTier3.
             if not foundMerge:
-                if upgradeTier < 3:
+                if tileNeedingUpgrade.unit is not None and upgradeTier + tileNeedingUpgrade.unit.tier < 4:
                     upgradeNeeds[upgradeTier + 1].append(tileNeedingUpgrade)
+                upgradeNeeds[upgradeTier].remove(tileNeedingUpgrade)
 
     return changed
 
@@ -561,6 +620,7 @@ def planTreeAndUnclaimedMoves(scenario, allActions, province):
         # we keep looking for tree tiles.
         # If we find a tree tile, we move there immediately. 
         firstUnclaimedTile = None
+        foundTreeTile = False
         for reachableTile in reachableTiles:
             # Let's see if there's a tree tile we can move to.
             if reachableTile.unit and reachableTile.unit.unitType == 'tree' and reachableTile.owner == province:
@@ -573,15 +633,16 @@ def planTreeAndUnclaimedMoves(scenario, allActions, province):
                     scenario.applyAction(moveAction, province)
 
                 changed = True
+                foundTreeTile = True
                 break  # Move to the next movable unit tile
             elif reachableTile.owner is None and firstUnclaimedTile is None:
                 # We found an unclaimed tile, but we keep looking for tree tiles.
                 firstUnclaimedTile = reachableTile
-        
-        # If we didn't break out of the loop, it means we didn't find any tree tiles.
-        # If we found an unclaimed tile, we move there.
-        if firstUnclaimedTile:
+
+        # If we didn't find a tree tile and we did find an unclaimed tile, we move there.
+        if not foundTreeTile and firstUnclaimedTile is not None:
             moveActions = scenario.moveUnit(tile.row, tile.col, firstUnclaimedTile.row, firstUnclaimedTile.col)
+
             for moveAction in moveActions:
                 allActions.append((moveAction, province))
             # Apply the actions immediately to update the scenario state
@@ -691,7 +752,6 @@ def planUpgradeLeftoverUnits(scenario, allActions, upgradeNeeds, province):
             unitTypeToBuild = 'soldierTier' + str(upgradeTier)
             neededResources = 10 * upgradeTier
             if province.resources >= neededResources:
-                pdb.set_trace()
                 buildActions = scenario.buildUnitOnTile(tileNeedingUpgrade.row, tileNeedingUpgrade.col, unitTypeToBuild, province)
                 # Apply the actions immediately to update the scenario state
                 for buildAction in buildActions:
@@ -755,6 +815,12 @@ def planMoveTowardsUnclaimedOrTreesOrEnemies(scenario, allActions, province):
         # And we know that all frontier tiles are enemy tiles in this case.
         targetTiles.extend(frontierTiles)
 
+    # In addition to avoiding our own units, and generally avoiding tiles in tilesToAvoid,
+    # we also want to avoid all the tiles not under our control as well,
+    # since we don't want to either cause an exception by trying to move onto an enemy tile
+    # we can't attack, or accidentally make an attack we didn't intend to make.
+    avoidedTileLambda = lambda tile: (tile.row, tile.col) in [(t.row, t.col) for t in tilesToAvoid] or tile.owner != province
+
     # If somehow targetTiles is still empty, there is nothing to move towards.
     # So we can just return.
     if len(targetTiles) == 0:
@@ -763,11 +829,12 @@ def planMoveTowardsUnclaimedOrTreesOrEnemies(scenario, allActions, province):
     for tile, _ in movableUnitTiles:
         # We can now just delegate to a helper to find the first move towards the closest target tile,
         # avoiding tiles occupied by our own units.
-        destinationTile = getMoveTowardsTargetTileAvoidingGivenTiles(tile, targetTiles, tilesToAvoid, scenario)
+        destinationTile = getMoveTowardsTargetTileAvoidingGivenTiles(tile, targetTiles, avoidedTileLambda, scenario)
 
         # This could be None, meaning there is no valid path to any target tile.
         if destinationTile:
             moveActions = scenario.moveUnit(tile.row, tile.col, destinationTile.row, destinationTile.col)
+            
             for moveAction in moveActions:
                 allActions.append((moveAction, province))
             # Apply the actions immediately to update the scenario state
@@ -775,6 +842,11 @@ def planMoveTowardsUnclaimedOrTreesOrEnemies(scenario, allActions, province):
                 scenario.applyAction(moveAction, province)
 
             changed = True
+
+            # If a unit moved, we need to update tilesToAvoid to include the new tile
+            # and remove the old tile since the unit that was there has moved away to the destination tile.
+            tilesToAvoid.remove(tile)
+            tilesToAvoid.add(destinationTile)
 
     return changed
 
@@ -811,3 +883,74 @@ def planBuildFarmsWithLeftoverResources(scenario, allActions, province):
 
         # Recompute farm candidates for the next iteration
         farmCandidates = getTilesWhichUnitCanBeBuiltOn(scenario, province, "farm")
+
+def planBuildUnitsWithLeftoverResources(scenario, allActions, province):
+    """
+    Plans actions to build soldiers on all uncontrolled tiles if possible.
+
+    Args:
+        scenario: The current game Scenario object.
+        allActions: A list to store all planned actions.
+        province: The province that is performing the building.
+
+    Returns:
+        A boolean indicating whether any changes were made.
+    """
+    changed = False
+    # Let's first get our frontier, as it will contain all the uncontrolled tiles
+    # we can build on.
+    frontierTiles = getFrontierTiles(province)
+    while frontierTiles and province.resources >= 10:
+        # Let's go through the entire frontier and figure out what the cheapest
+        # tile to build on is.
+        # Of course, if we find a tile that we can put a soldierTier1 on, we will pick that immediately,
+        # as no other tile can be cheaper than that.
+        cheapestTile = None
+        cheapestUnitType = None
+        cheapestCost = float('inf')
+        for tile in frontierTiles:
+            # We check what soldier types can be built on this tile
+            buildableUnitTypes = scenario.getBuildableUnitsOnTile(tile.row, tile.col, province)
+            for unitType in buildableUnitTypes:
+                if unitType.startswith('soldierTier'):
+                    # Tier of soldier will always be the last character of the unit type string
+                    tier = int(unitType[-1])
+                    unitCost = 10 * tier
+                    if unitCost < cheapestCost:
+                        cheapestCost = unitCost
+                        cheapestTile = tile
+                        cheapestUnitType = unitType
+                        # If we found a soldierTier1, we can break out of both loops immediately
+                        if tier == 1:
+                            break
+            if cheapestCost == 10:
+                break
+
+        if cheapestTile and cheapestUnitType:
+            buildActions = scenario.buildUnitOnTile(cheapestTile.row, cheapestTile.col, cheapestUnitType, province)
+            # Apply the actions immediately to update the scenario state
+            for buildAction in buildActions:
+                scenario.applyAction(buildAction, province)
+
+            # Ensure we can afford to build this unit
+            timeToBankrupt = checkTimeToBankruptProvince(province)
+            if timeToBankrupt is not None and timeToBankrupt < turnsOfIncomeToAffordMerge:
+                # The province cannot afford the soldier, so we must reverse the actions
+                for buildAction in reversed(buildActions):
+                    scenario.applyAction(buildAction.invert(), province)
+                # As we picked the cheapest tile to build on, if we can't afford this one,
+                # we can't afford any others either, so we stop trying to build more units
+                break
+            else:
+                # The build was successful, so we mark that something changed
+                # and record the actions
+                for buildAction in buildActions:
+                    allActions.append((buildAction, province))
+                changed = True
+        else:
+            # No valid tile to build on was found
+            break
+        # Recompute frontier tiles for the next iteration
+        frontierTiles = getFrontierTiles(province)
+
+    return changed

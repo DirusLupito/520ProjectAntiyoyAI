@@ -88,7 +88,7 @@ def getReachableTilesAsObjects(scenario, movementCoordinates):
         tiles.append(scenario.mapData[row][col])
     return tiles
 
-def getMoveTowardsTargetTileAvoidingGivenTiles(startTile, targetTiles, avoidedTiles, scenario):
+def getMoveTowardsTargetTileAvoidingGivenTiles(startTile, targetTiles, avoidedTileLambda, scenario):
     """
     Find the first step in a path from startTile to the closest tile in targetTiles,
     ensuring that first step is not in avoidedTiles.
@@ -96,7 +96,7 @@ def getMoveTowardsTargetTileAvoidingGivenTiles(startTile, targetTiles, avoidedTi
     Args:
         startTile: The HexTile to start the search from.
         targetTiles: A set of HexTiles to search for.
-        avoidedTiles: A set of HexTiles to avoid in the path.
+        avoidedTileLambda: A function that takes a HexTile and returns True if it should be avoided.
         scenario: The current game Scenario object in which the tiles exist.
 
     Returns:
@@ -128,7 +128,7 @@ def getMoveTowardsTargetTileAvoidingGivenTiles(startTile, targetTiles, avoidedTi
         return None
     
     # Now we check if the first step is in the avoided tiles
-    if firstStep in avoidedTiles:
+    if avoidedTileLambda(firstStep):
         # If so, lets find the closest tile to the first step
         # that is in the reachable tiles and not in the avoided tiles
         # using BFS inside our reachable tiles
@@ -137,7 +137,7 @@ def getMoveTowardsTargetTileAvoidingGivenTiles(startTile, targetTiles, avoidedTi
 
         while queue:
             currentTile = queue.popleft()
-            if currentTile in reachableTilesCoords and currentTile not in avoidedTiles:
+            if currentTile in reachableTilesCoords and not avoidedTileLambda(currentTile):
                 # If we found a valid tile, return it
                 return currentTile
 
