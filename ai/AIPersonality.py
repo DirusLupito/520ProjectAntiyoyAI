@@ -2,6 +2,7 @@ from ai.doNothingAgent import playTurn as doNothingPlayTurn
 from ai.simpleRuleBasedAgent.mark1SRB import playTurn as mark1PlayTurn
 from ai.simpleRuleBasedAgent.mark2SRB import playTurn as mark2PlayTurn
 from ai.simpleRuleBasedAgent.mark3SRB import playTurn as mark3PlayTurn
+from ai.simpleRuleBasedAgent.mark4SRB import playTurn as mark4PlayTurn
 
 class AIPersonality:
     """Represents a single AI personality that can be used to play a faction's turns."""
@@ -11,7 +12,8 @@ class AIPersonality:
         "donothing": doNothingPlayTurn,
         "mark1srb":  mark1PlayTurn,
         "mark2srb":  mark2PlayTurn,
-        "mark3srb":  mark3PlayTurn
+        "mark3srb":  mark3PlayTurn,
+        "mark4srb":  mark4PlayTurn,
     }
     
     def __init__(self, displayName: str, aiType: str) -> None:
