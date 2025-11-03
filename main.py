@@ -3,6 +3,7 @@ from game.scenarioGenerator import generateRandomScenario
 from game.world.factions.Faction import Faction
 from game.replays.Replay import Replay
 from ai.AIPersonality import AIPersonality
+from ai.utils.commonAIUtilityFunctions import getAllMovableUnitTilesInProvince
 import pdb
 
 def getIntegerInput(prompt, minValue=None, maxValue=None):
@@ -218,6 +219,7 @@ def main():
                     print("  unit <row>,<col> - Select a unit")
                     print("  build <row>,<col> - Check what can be built at location")
                     print("  build <row>,<col> <type> - Build unit type at location")
+                    print("  units - List all movable units in selected province")
                 else:
                     print("  moves - Show valid moves for selected unit")
                     print("  move <row>,<col> - Move selected unit")
@@ -338,6 +340,15 @@ def main():
                     selectedUnit = None
                     selectedUnitPosition = None
                     print("Unit deselected.")
+
+                elif cmd == "units" and selectedProvince:
+                    movableUnitTiles = getAllMovableUnitTilesInProvince(selectedProvince)
+                    if not movableUnitTiles:
+                        print("No movable units in the selected province.")
+                    else:
+                        print("Movable units in the selected province:")
+                        for tile, _ in movableUnitTiles: \
+                            print(f"  - {tile.unit.unitType} at ({tile.row}, {tile.col})")
                 
                 elif cmd.startswith("build ") and selectedProvince:
                     parts = cmd.split()
