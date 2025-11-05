@@ -6,6 +6,7 @@ from game.world.units.Tree import Tree
 from collections import deque
 from game.world.HexTile import HexTile
 from game.world.factions.Province import Province
+from game.scenarioCloner import ScenarioCloner
 
 class Scenario:
     """
@@ -76,6 +77,16 @@ class Scenario:
         self.factions = factions if factions is not None else []
         self.indexOfFactionToPlay = indexOfFactionToPlay if 0 <= indexOfFactionToPlay < len(self.factions) else 0
         
+    def clone(self):
+        """
+        Creates and returns a deep copy of the scenario and all associated game objects.
+
+        Returns:
+            A deep copy of the Scenario instance.
+        """
+        cloner = ScenarioCloner(self)
+        return cloner.getScenarioClone()
+
     def getFactionToPlay(self):
         """Returns the Faction instance whose turn it is to play."""
         if 0 <= self.indexOfFactionToPlay < len(self.factions):
