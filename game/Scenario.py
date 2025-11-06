@@ -6,7 +6,6 @@ from game.world.units.Tree import Tree
 from collections import deque
 from game.world.HexTile import HexTile
 from game.world.factions.Province import Province
-from game.scenarioCloner import ScenarioCloner
 
 class Scenario:
     """
@@ -79,13 +78,27 @@ class Scenario:
         
     def clone(self):
         """
-        Creates and returns a deep copy of the scenario and all associated game objects.
+        Creates and returns a ScenarioCloner object which
+        has a deep copy of the scenario and all associated game objects,
+        as well as maps from original to cloned objects for reference.
 
         Returns:
-            A deep copy of the Scenario instance.
+            A ScenarioCloner instance containing the cloned data and maps
+            from original to cloned objects.
         """
+        
+        from game.ScenarioCloner import ScenarioCloner
+        # We instantiate a new cloner every time
+        # rather than reuse a single cloner
+        # because ScenarioCloner is set up such that
+        # if you reuse the same cloner instance,
+        # it will return the same cloned scenario
+        # if you call getScenarioClone more than once.
+        # Only on the first call to a new ScenarioCloner
+        # instance does it perform a new deep clone.
         cloner = ScenarioCloner(self)
-        return cloner.getScenarioClone()
+        cloner.getScenarioClone()
+        return cloner
 
     def getFactionToPlay(self):
         """Returns the Faction instance whose turn it is to play."""
