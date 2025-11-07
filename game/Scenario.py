@@ -76,6 +76,30 @@ class Scenario:
         self.factions = factions if factions is not None else []
         self.indexOfFactionToPlay = indexOfFactionToPlay if 0 <= indexOfFactionToPlay < len(self.factions) else 0
         
+    def clone(self):
+        """
+        Creates and returns a ScenarioCloner object which
+        has a deep copy of the scenario and all associated game objects,
+        as well as maps from original to cloned objects for reference.
+
+        Returns:
+            A ScenarioCloner instance containing the cloned data and maps
+            from original to cloned objects.
+        """
+        
+        from game.ScenarioCloner import ScenarioCloner
+        # We instantiate a new cloner every time
+        # rather than reuse a single cloner
+        # because ScenarioCloner is set up such that
+        # if you reuse the same cloner instance,
+        # it will return the same cloned scenario
+        # if you call getScenarioClone more than once.
+        # Only on the first call to a new ScenarioCloner
+        # instance does it perform a new deep clone.
+        cloner = ScenarioCloner(self)
+        cloner.getScenarioClone()
+        return cloner
+
     def getFactionToPlay(self):
         """Returns the Faction instance whose turn it is to play."""
         if 0 <= self.indexOfFactionToPlay < len(self.factions):
