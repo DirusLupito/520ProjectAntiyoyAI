@@ -23,7 +23,7 @@ those actions on.
 """
 
 
-# clone scenario here
+
 
 import random
 from ai.utils.commonAIUtilityFunctions import findPathToClosestTileAvoidingGivenTiles
