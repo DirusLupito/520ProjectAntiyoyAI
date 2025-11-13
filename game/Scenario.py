@@ -87,7 +87,7 @@ class Scenario:
             from original to cloned objects.
         """
         
-        from game.ScenarioCloner import ScenarioCloner
+        from game.scenarioCloner import ScenarioCloner
         # We instantiate a new cloner every time
         # rather than reuse a single cloner
         # because ScenarioCloner is set up such that
