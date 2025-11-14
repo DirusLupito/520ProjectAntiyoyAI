@@ -61,43 +61,85 @@ def main():
     print("===== ASCIIyoy =====")
     print("An ASCII-based implementation of the Antiyoy strategy game.")
 
-    offerSavedReplayView()
+    # offerSavedReplayView()
     
     print("\n--- Game Setup ---")
-    dimension = getIntegerInput("Enter map dimension (recommended <=10): ", minValue=2)
+    # dimension = getIntegerInput("Enter map dimension (recommended <=10): ", minValue=2)
+    
+    # maxLandTiles = dimension * dimension
+    # targetNumberOfLandTiles = getIntegerInput(f"Enter target number of land tiles (min 4, max {maxLandTiles}): ",
+    #                                           minValue=4, maxValue=maxLandTiles)
+    
+    # maxFactions = targetNumberOfLandTiles // 2 - 1
+    # numFactions = getIntegerInput(f"Enter number of factions (max {maxFactions}): ", 
+    #                                minValue=1, maxValue=maxFactions)
+    # initialProvinceSize = getIntegerInput("Enter initial province size (recommended 2-6): ", minValue=2, maxValue=maxLandTiles // numFactions)
+    
+    # factions = []
+    # for i in range(numFactions):
+    #     name = input(f"Enter name for Faction {i+1}: ")
+    #     color = input(f"Enter color for Faction {i+1} (e.g. Red, Blue, Green): ")
+        
+    #     playerType = ""
+    #     while playerType not in ["h", "a"]:
+    #         playerType = input(f"Is Faction {i+1} controlled by a (h)uman or (a)i? ").lower()
+    #         if playerType not in ["h", "a"]:
+    #             print("Please enter 'h' for human or 'a' for ai.")
+    #     playerType = "human" if playerType == "h" else "ai"
+
+    #     aiType = None
+    #     if playerType == "ai":
+    #         while aiType not in AIPersonality.implementedAIs:
+    #             print("Available AI types:")
+    #             for aiKey in AIPersonality.implementedAIs.keys():
+    #                 print(f"  - {aiKey}")
+    #             aiType = input(f"Enter AI type for Faction {i+1}: ").lower()
+
+    #     factions.append(Faction(name=name, color=color, playerType=playerType, aiType=aiType))
+    
+    # randomSeed = getIntegerInput("Enter random seed (any number): ")
+
+    dimension = 5
     
     maxLandTiles = dimension * dimension
-    targetNumberOfLandTiles = getIntegerInput(f"Enter target number of land tiles (min 4, max {maxLandTiles}): ",
-                                              minValue=4, maxValue=maxLandTiles)
+    targetNumberOfLandTiles = 20
     
     maxFactions = targetNumberOfLandTiles // 2 - 1
-    numFactions = getIntegerInput(f"Enter number of factions (max {maxFactions}): ", 
-                                   minValue=1, maxValue=maxFactions)
-    initialProvinceSize = getIntegerInput("Enter initial province size (recommended 2-6): ", minValue=2, maxValue=maxLandTiles // numFactions)
+    numFactions = 2
+    initialProvinceSize = 3
     
     factions = []
-    for i in range(numFactions):
-        name = input(f"Enter name for Faction {i+1}: ")
-        color = input(f"Enter color for Faction {i+1} (e.g. Red, Blue, Green): ")
-        
-        playerType = ""
-        while playerType not in ["h", "a"]:
-            playerType = input(f"Is Faction {i+1} controlled by a (h)uman or (a)i? ").lower()
-            if playerType not in ["h", "a"]:
-                print("Please enter 'h' for human or 'a' for ai.")
-        playerType = "human" if playerType == "h" else "ai"
-
-        aiType = None
-        if playerType == "ai":
-            while aiType not in AIPersonality.implementedAIs:
-                print("Available AI types:")
-                for aiKey in AIPersonality.implementedAIs.keys():
-                    print(f"  - {aiKey}")
-                aiType = input(f"Enter AI type for Faction {i+1}: ").lower()
-
-        factions.append(Faction(name=name, color=color, playerType=playerType, aiType=aiType))
+    name = "Red"
+    color = "Red"
     
-    randomSeed = getIntegerInput("Enter random seed (any number): ")
+    playerType = "ai"
+
+    aiType = None
+    if playerType == "ai":
+        while aiType not in AIPersonality.implementedAIs:
+            print("Available AI types:")
+            for aiKey in AIPersonality.implementedAIs.keys():
+                print(f"  - {aiKey}")
+            aiType = "ppo"
+
+    factions.append(Faction(name=name, color=color, playerType=playerType, aiType=aiType))
+
+    name = "Blue"
+    color = "Blue"
+    
+    playerType = "ai"
+
+    aiType = None
+    if playerType == "ai":
+        while aiType not in AIPersonality.implementedAIs:
+            print("Available AI types:")
+            for aiKey in AIPersonality.implementedAIs.keys():
+                print(f"  - {aiKey}")
+            aiType = "mark1srb"
+
+    factions.append(Faction(name=name, color=color, playerType=playerType, aiType=aiType))
+    
+    randomSeed = 1
     
     replayMetadata = {
         "dimension": dimension,
