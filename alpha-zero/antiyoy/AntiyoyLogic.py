@@ -298,20 +298,24 @@ class Board:
         """
         Set up hex neighbors for a map. Static version for use in from_numpy.
         """
-        dimension = len(mapData)
-        for row in range(dimension):
-            for col in range(dimension):
+        height = len(mapData)
+        if height == 0:
+            return
+        width = len(mapData[0])
+
+        for row in range(height):
+            for col in range(width):
                 tile = mapData[row][col]
                 neighbors = [None] * 6
 
                 if col % 2 == 0:  # Even column
                     if row > 0:
                         neighbors[0] = mapData[row-1][col]
-                    if row > 0 and col < dimension - 1:
+                    if row > 0 and col < width - 1:
                         neighbors[1] = mapData[row-1][col+1]
-                    if col < dimension - 1:
+                    if col < width - 1:
                         neighbors[2] = mapData[row][col+1]
-                    if row < dimension - 1:
+                    if row < height - 1:
                         neighbors[3] = mapData[row+1][col]
                     if col > 0:
                         neighbors[4] = mapData[row][col-1]
@@ -320,16 +324,16 @@ class Board:
                 else:  # Odd column
                     if row > 0:
                         neighbors[0] = mapData[row-1][col]
-                    if col < dimension - 1:
+                    if col < width - 1:
                         neighbors[1] = mapData[row][col+1]
-                    if row < dimension - 1 and col < dimension - 1:
+                    if row < height - 1 and col < width - 1:
                         neighbors[2] = mapData[row+1][col+1]
-                    if row < dimension - 1:
+                    if row < height - 1:
                         neighbors[3] = mapData[row+1][col]
                     if col > 0:
                         neighbors[4] = mapData[row][col-1]
                     if row > 0 and col > 0:
-                        neighbors[5] = mapData[row][col-1]
+                        neighbors[5] = mapData[row-1][col-1]
 
                 tile.neighbors = neighbors
 

@@ -1,0 +1,46 @@
+2025-11-15 18:28:28,663 [INFO] ================================================================================
+2025-11-15 18:28:28,663 [INFO] Starting robust training runner
+2025-11-15 18:28:28,663 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-15 18:28:28,664 [INFO] Press Ctrl+C to stop
+2025-11-15 18:28:28,664 [INFO] ================================================================================
+2025-11-15 18:28:28,664 [INFO] 
+================================================================================
+2025-11-15 18:28:28,664 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-15 18:28:28,664 [INFO] Started at: 2025-11-15 18:28:28
+2025-11-15 18:28:28,664 [INFO] ================================================================================
+
+2025-11-15 18:28:29,487 [INFO] ============================================================
+2025-11-15 18:28:29,487 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-15 18:28:29,487 [INFO] ============================================================
+2025-11-15 18:28:29,487 [INFO] Loading AntiyoyGame...
+2025-11-15 18:28:29,487 [INFO] Game Configuration:
+2025-11-15 18:28:29,487 [INFO]   Board size: (23, 5, 5)
+2025-11-15 18:28:29,487 [INFO]   Action size: 676
+2025-11-15 18:28:29,487 [INFO] Loading NNetWrapper...
+2025-11-15 18:28:29,782 [INFO] Neural Network Configuration:
+2025-11-15 18:28:29,782 [INFO]   Input channels: 22 (board state encoding)
+2025-11-15 18:28:29,782 [INFO]   Output size: 676 (possible actions)
+2025-11-15 18:28:29,782 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-15 18:28:29,805 [INFO] Checkpoint loaded successfully!
+2025-11-15 18:28:29,806 [INFO] Loading the Coach...
+2025-11-15 18:28:29,819 [INFO] Loading 'trainExamples' from file...
+2025-11-15 18:28:29,819 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-15 18:28:34,004 [INFO] Previous training examples loaded successfully!
+2025-11-15 18:28:34,005 [INFO] ============================================================
+2025-11-15 18:28:34,005 [INFO] Starting the learning process 🎉
+2025-11-15 18:28:34,005 [INFO] ============================================================
+2025-11-15 18:28:34,005 [INFO] 
+2025-11-15 18:28:34,005 [INFO] Training Configuration:
+2025-11-15 18:28:34,005 [INFO]   Iterations: 1000
+2025-11-15 18:28:34,005 [INFO]   Self-play games per iteration: 50
+2025-11-15 18:28:34,005 [INFO]   MCTS simulations per move: 25
+2025-11-15 18:28:34,005 [INFO]   Arena games for evaluation: 25
+2025-11-15 18:28:34,005 [INFO]   Update threshold: 0.51
+2025-11-15 18:28:34,005 [INFO] 
+2025-11-15 18:28:34,005 [INFO] This will take a long time. You can:
+2025-11-15 18:28:34,005 [INFO]   - Monitor progress in the terminal
+2025-11-15 18:28:34,005 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-15 18:28:34,005 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-15 18:28:34,005 [INFO] 
+2025-11-15 18:28:34,005 [INFO] ============================================================
+2025-11-15 18:28:34,005 [INFO] Starting Iter #1 ...
