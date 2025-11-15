@@ -14,6 +14,8 @@ class AITournamentConfig:
     - Whether to record replays, display games, and track statistics
     - How many workers should run games in parallel
     - The maximum number of turns before a game is declared a draw
+    - The name of the output directory for tournament results
+    - A boolean telling whether or not the tournament summary will be printed to console
     """
 
     def __init__(
@@ -28,7 +30,10 @@ class AITournamentConfig:
         displayGames: bool = False,
         trackStatistics: bool = False,
         parallelWorkerCount: int = 1,
-        maxTurns: int = 0
+        maxTurns: int = 0,
+        outputDirectory: str = None,
+        printSummary: bool = True,
+        summaryFileName: str = None
     ) -> None:
         """
         Initializes a new AITournamentConfig with the given parameters.
@@ -44,6 +49,12 @@ class AITournamentConfig:
             displayGames (bool): Whether to display each game as it is played. Defaults to False.
             trackStatistics (bool): Whether to track detailed statistics for each game. Defaults to False.
             parallelWorkerCount (int): Number of workers that should play games in parallel. Defaults to 1.
+            maxTurns (int): The maximum number of turns before a game is declared a draw. Defaults to 0 (no limit).
+            outputDirectory (str): The name of the output directory for tournament results. Defaults to None
+                which will use a timestamp-based directory name.
+            printSummary (bool): Whether to print the tournament summary to console. Defaults to True.
+            summaryFileName (str): The name of the file that the tournament summary will be saved to.
+                Defaults to None which will cause no file to be created.
         """
 
         if roundCount <= 0:
@@ -69,3 +80,6 @@ class AITournamentConfig:
         self.trackStatistics = trackStatistics
         self.parallelWorkerCount = parallelWorkerCount
         self.maxTurns = maxTurns
+        self.outputDirectory = outputDirectory
+        self.printSummary = printSummary
+        self.summaryFileName = summaryFileName

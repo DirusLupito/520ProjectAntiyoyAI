@@ -303,8 +303,9 @@ class AITournamentRunner:
         """
         Initializes the tournament runner with the specified configuration.
         Sets up directories for replays and statistics if those features are enabled.
-        To ensure unique directories, a timestamp is used in their names.
-        A tournament which ran on June 1, 2024 at 14:30:15 would have directories named
+        To ensure unique directories, a timestamp is used in their names, provided no
+        name is already specified in the configuration.
+        A tournament which ran on June 1, 2024 at 14:30:15 with no name would have directories named
         "01-06-2024-14-30-15-tournamentReplays" and "01-06-2024-14-30-15-tournamentStats".
         
         Args:
@@ -324,19 +325,41 @@ class AITournamentRunner:
         # we double check here to be safe
         self.displayGamesEnabled = config.displayGames and self.parallelWorkerCount == 1
 
-        # day-month-year-hour-minute-second nomenclature for unique directory names
-        dateStamp = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+        # Where we will put our statistics and replays
+        self.outputDirectory = config.outputDirectory
         
-        # Figure out the full paths for replay and statistics directories if needed
-        self.replayDirectory = os.path.join(
-            os.getcwd(),
-            f"{dateStamp}-tournamentReplays"
-        ) if config.recordReplays else None
+        # The name of the file that the tournament summary will be saved to
+        self.summaryFileName = config.summaryFileName
         
-        self.statisticsDirectory = os.path.join(
-            os.getcwd(),
-            f"{dateStamp}-tournamentStats"
-        ) if config.trackStatistics else None
+        # Whether or not the tournament summary will be printed to console 
+        # (This will not affect whether or not the summary is saved to a file)
+        self.printSummary = config.printSummary
+        
+        if self.outputDirectory is None:
+            # day-month-year-hour-minute-second nomenclature for unique directory names
+            dateStamp = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+
+            # Figure out the full paths for replay and statistics directories if needed
+            self.replayDirectory = os.path.join(
+                os.getcwd(),
+                f"{dateStamp}-tournamentReplays"
+            ) if config.recordReplays else None
+
+            self.statisticsDirectory = os.path.join(
+                os.getcwd(),
+                f"{dateStamp}-tournamentStats"
+            ) if config.trackStatistics else None
+        else:
+            # Figure out the full paths for replay and statistics directories if needed
+            self.replayDirectory = os.path.join(
+                os.getcwd(),
+                f"{self.outputDirectory}-tournamentReplays"
+            ) if config.recordReplays else None
+    
+            self.statisticsDirectory = os.path.join(
+                os.getcwd(),
+                f"{self.outputDirectory}-tournamentStats"
+            ) if config.trackStatistics else None
         
         self.statisticsRecorder: Optional[TournamentStatisticsRecorder] = None
         # If we were able to set up a statistics directory, it means we want to record stats
@@ -589,12 +612,16 @@ class AITournamentRunner:
     def _displaySummary(
         self,
         outcomes: List[GameOutcome],
-        winsByPersonality: Dict[str, int]
+        winsByPersonality: Dict[str, int],
+        isWritingToFile: bool = False
     ) -> None:
         """
         Displays a summary of the tournament results.
         This will be printed to the console no matter what,
         even if replays and statistics recording were disabled.
+        
+        If self.outputDirectory is set, the summary will also be saved to a text file
+        in that directory named "tournamentSummary.txt".
         
         We display each game's winner, seed, and total number of turns played,
         a description of the tournament configuration,
@@ -603,7 +630,38 @@ class AITournamentRunner:
         Args:   
             outcomes (List[GameOutcome]): The list of outcomes for each game in the tournament.
             winsByPersonality (Dict[str, int]): A mapping of personality display names to their total wins.
+            isWritingToFile (bool): Whether we are currently writing the summary to a file.
+                This is used to ensure that if we are writing to a file, we don't try to write
+                to a file again recursively.
         """
+        
+        # If we have a designated summaryFileName, it means we want
+        # to save the summary to a file. Otherwise if it's None we
+        # do not want to save to a file.
+        # We only do this if we are not already writing to a file
+        if self.summaryFileName is not None and not isWritingToFile:
+            summaryFilePath = os.path.join(os.getcwd(), self.summaryFileName)
+            # We must make sure the directory exists
+            os.makedirs(os.path.dirname(summaryFilePath), exist_ok=True)
+            with open(summaryFilePath, "w") as summaryFile:
+                # Redirect standard output to the file temporarily
+                originalStdout = os.sys.stdout
+                os.sys.stdout = summaryFile
+                try:
+                    self._displaySummary(outcomes, winsByPersonality, True)
+                finally:
+                    # Restore original standard output
+                    # no matter if an exception occurred or not
+                    os.sys.stdout = originalStdout
+            print(f"Tournament summary saved to {summaryFilePath}.")
+        
+        # If we're only writing to a file, we can return now
+        # (except if this is a lower level call where isWritingToFile is True, then we want to continue
+        # to actually write the summary to the file)
+        if not self.printSummary and not isWritingToFile:
+            return
+        
+        # With that out of the way, we can display the summary to the console as normal
         
         # We first iterate through each game's outcome and print its details
         # since if there are a lot of games and we printed the rest of the summary first,
