@@ -55,7 +55,7 @@ class Board:
     # Maximum total turns before forcing a draw
     # Prevents infinite games where players just pass
     # Reduced to 50 to help MCTS terminate sooner
-    MAX_GAME_TURNS = 50
+    MAX_GAME_TURNS = 100  # Increased to allow games to finish naturally
 
     # Calculate action space size
     NUM_TILES = HEIGHT * WIDTH
@@ -840,9 +840,30 @@ class Board:
             -1 if player lost
             1e-4 for draw
         """
-        # Check if max turns reached (force draw)
+        # Check if max turns reached - determine winner by score instead of draw
         if self.turn_count >= self.MAX_GAME_TURNS:
-            return 1e-4  # Draw
+            # Calculate score for each faction (tiles + resources/10)
+            faction_scores = []
+            for faction in self.scenario.factions:
+                total_tiles = 0
+                total_resources = 0
+                for province in faction.provinces:
+                    if province.active:
+                        total_tiles += len(province.tiles)
+                        total_resources += province.resources
+                score = total_tiles + (total_resources / 10.0)
+                faction_scores.append(score)
+
+            # Determine winner
+            if abs(faction_scores[0] - faction_scores[1]) < 0.5:
+                # Very close game, call it a draw
+                return 1e-4
+            elif faction_scores[0] > faction_scores[1]:
+                # factions[0] is ahead (current player's perspective)
+                return 0.5  # Small win (not as good as actual victory)
+            else:
+                # factions[1] is ahead (opponent's perspective)
+                return -0.5  # Small loss
 
         # Count active factions
         active_factions = []
