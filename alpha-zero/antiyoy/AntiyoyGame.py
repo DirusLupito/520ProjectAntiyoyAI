@@ -61,12 +61,13 @@ class AntiyoyGame(Game):
         """
         return self.action_size
 
-    def getNextState(self, board, player, action):
+    def getNextState(self, board, player, action, debug=False):
         """
         Input:
             board: current board (numpy array)
             player: current player (1 or -1)
             action: action taken by current player
+            debug: If True, print debug information
 
         Returns:
             nextBoard: board after applying action (numpy array)

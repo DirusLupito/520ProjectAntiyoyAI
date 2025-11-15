@@ -588,7 +588,8 @@ class Province:
                 actions.append((self._createTileChangeAction(tile, newUnit=newUnit), tile.owner))
                 futureUnits[tile] = newUnit
 
-        if temporaryResources == 0:
+        # Soldiers die if income is <= 0 (not if resources are 0!)
+        if income <= 0:
             # All soldier units become gravestones
             for tile in self.tiles:
                 unit = futureUnits[tile]
@@ -651,7 +652,8 @@ class Province:
                 actions.append((self._createTileChangeAction(tile, newUnit=newUnit), tile.owner))
                 futureUnits[tile] = newUnit
 
-        if newResources == 0:
+        # Soldiers die if income is <= 0 (not if resources are 0!)
+        if income <= 0:
             # All soldier units become gravestones
             for tile in self.tiles:
                 unit = futureUnits[tile]

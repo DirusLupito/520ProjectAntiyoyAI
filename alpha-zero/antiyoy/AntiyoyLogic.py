@@ -173,9 +173,23 @@ class Board:
 
         # Decode the numpy array
         # Extract resource values (denormalized)
+        # Resources are encoded on every tile owned by the faction, so we can read from any owned tile
         max_resources = 200.0
-        faction1_resources_norm = numpy_board[18, 0, 0] if numpy_board[0, 0, 0] > 0 else 0
-        faction2_resources_norm = numpy_board[19, 0, 0] if numpy_board[1, 0, 0] > 0 else 0
+        faction1_resources_norm = 0
+        faction2_resources_norm = 0
+
+        # Find any tile owned by each faction to read resources
+        for row in range(cls.HEIGHT):
+            for col in range(cls.WIDTH):
+                if faction1_resources_norm == 0 and numpy_board[0, row, col] > 0:  # Faction 1 owns this tile
+                    faction1_resources_norm = numpy_board[18, row, col]
+                if faction2_resources_norm == 0 and numpy_board[1, row, col] > 0:  # Faction 2 owns this tile
+                    faction2_resources_norm = numpy_board[19, row, col]
+                # Break early if we've found both
+                if faction1_resources_norm > 0 and faction2_resources_norm > 0:
+                    break
+            if faction1_resources_norm > 0 and faction2_resources_norm > 0:
+                break
 
         province1.resources = int(faction1_resources_norm * max_resources)
         province2.resources = int(faction2_resources_norm * max_resources)
@@ -208,7 +222,7 @@ class Board:
                 for tier in range(1, 5):
                     if numpy_board[3 + tier - 1, row, col] > 0:
                         can_move = numpy_board[17, row, col] > 0
-                        unit = Soldier(tier=tier, owner=province1)
+                        unit = Soldier(tier=tier, owner=faction1)
                         unit.canMove = can_move
                         break
 
@@ -217,27 +231,29 @@ class Board:
                     for tier in range(1, 5):
                         if numpy_board[7 + tier - 1, row, col] > 0:
                             can_move = numpy_board[17, row, col] > 0
-                            unit = Soldier(tier=tier, owner=province2)
+                            unit = Soldier(tier=tier, owner=faction2)
                             unit.canMove = can_move
                             break
 
                 # Check for structures
                 if unit is None:
+                    # Structures need faction as owner, not province
+                    structure_owner = tile_owner.faction if tile_owner is not None else None
                     if numpy_board[11, row, col] > 0:  # Capital
-                        unit = Structure("capital", owner=tile_owner)
+                        unit = Structure("capital", owner=structure_owner)
                     elif numpy_board[12, row, col] > 0:  # Farm
-                        unit = Structure("farm", owner=tile_owner)
+                        unit = Structure("farm", owner=structure_owner)
                     elif numpy_board[13, row, col] > 0:  # Tower1
-                        unit = Structure("tower1", owner=tile_owner)
+                        unit = Structure("tower1", owner=structure_owner)
                     elif numpy_board[14, row, col] > 0:  # Tower2
-                        unit = Structure("tower2", owner=tile_owner)
+                        unit = Structure("tower2", owner=structure_owner)
 
                 # Check for trees/gravestones
                 if unit is None:
                     if numpy_board[15, row, col] > 0:  # Tree
-                        unit = Tree(unitType="tree", owner=None)
+                        unit = Tree(isGravestone=False, owner=None)
                     elif numpy_board[16, row, col] > 0:  # Gravestone
-                        unit = Tree(unitType="gravestone", owner=None)
+                        unit = Tree(isGravestone=True, owner=None)
 
                 tile.unit = unit
 
@@ -245,8 +261,13 @@ class Board:
         province1.active = len(province1.tiles) >= 2
         province2.active = len(province2.tiles) >= 2
 
-        # Determine which faction's turn it is based on current_player
-        # Player 1 = faction index 0, Player -1 = faction index 1
+        # IMPORTANT: When using canonical form (as MCTS does), the board is always
+        # normalized so that the current player's faction is in channel 0.
+        # Therefore, faction_to_play should always be 0 when using canonical form.
+        # Since current_player==1 indicates canonical form (current player's perspective),
+        # we always use faction 0 in that case.
+        # When current_player==-1, the board represents the opponent's perspective,
+        # so we use faction 1.
         faction_to_play_index = 0 if current_player == 1 else 1
 
         # Extract action counter and turn count from channel 22
@@ -327,8 +348,10 @@ class Board:
                 # Get all tiles within reasonable movement range (up to 4 hexes + attacks)
                 # We'll use a simple approach: consider all tiles within Manhattan distance
                 destinations = []
-                for to_row in range(self.HEIGHT):
-                    for to_col in range(self.WIDTH):
+                height = int(self.HEIGHT)
+                width = int(self.WIDTH)
+                for to_row in range(height):
+                    for to_col in range(width):
                         if (to_row, to_col) != (from_row, from_col):
                             # Calculate approximate hex distance (not perfect but consistent)
                             destinations.append((to_row, to_col))
@@ -336,8 +359,14 @@ class Board:
                 # Sort for consistency (lexicographic order)
                 destinations.sort()
 
+                # Validate destinations list integrity
+                for i, d in enumerate(destinations):
+                    if not isinstance(d, tuple) or len(d) != 2:
+                        raise ValueError(f"Destinations corrupted at index {i}: {d} (type: {type(d)}), from_tile=({from_row},{from_col})")
+
                 # Take only the first MAX_DESTINATIONS_PER_TILE
-                destinations = destinations[:self.MAX_DESTINATIONS_PER_TILE]
+                max_dest = int(self.MAX_DESTINATIONS_PER_TILE)
+                destinations = destinations[:max_dest]
 
                 # Build lookup tables
                 for offset, (to_row, to_col) in enumerate(destinations):
@@ -620,7 +649,8 @@ class Board:
                 continue
 
             if debug:
-                print(f"[ValidMoves Debug] Province: {len(province.tiles)} tiles, {province.resources} resources, active={province.active}")
+                income = province.computeIncome()
+                print(f"[ValidMoves Debug] Province: {len(province.tiles)} tiles, {province.resources} resources, income={income}, active={province.active}")
 
             for tile in province.tiles:
                 # Check for movable soldiers
@@ -644,7 +674,7 @@ class Board:
                             print(f"[ValidMoves Debug] Error getting moves for ({tile.row},{tile.col}): {e}")
                         pass  # Skip if there's an error
 
-                # Check for buildable units
+                # Check for buildable units on this tile (owned by province)
                 try:
                     buildable_units = self.scenario.getBuildableUnitsOnTile(
                         tile.row, tile.col, province
@@ -663,6 +693,30 @@ class Board:
                         print(f"[ValidMoves Debug] Error getting buildable units for ({tile.row},{tile.col}): {e}")
                     pass  # Skip if there's an error
 
+                # Also check neighboring tiles for capture opportunities
+                for neighbor in tile.neighbors:
+                    if neighbor is None or neighbor.isWater:
+                        continue
+                    # Only check tiles not owned by this province (enemy or neutral)
+                    if neighbor.owner != province:
+                        try:
+                            buildable_units = self.scenario.getBuildableUnitsOnTile(
+                                neighbor.row, neighbor.col, province
+                            )
+
+                            if debug and len(buildable_units) > 0:
+                                print(f"[ValidMoves Debug] Can CAPTURE ({neighbor.row},{neighbor.col}): {buildable_units}")
+
+                            for unit_type in buildable_units:
+                                action = self.encode_build_action(neighbor.row, neighbor.col, unit_type)
+                                if action is not None and self.MOVE_ACTIONS <= action < self.MOVE_ACTIONS + self.BUILD_ACTIONS:
+                                    valid[action] = 1.0
+                                    num_build_actions += 1
+                        except Exception as e:
+                            if debug:
+                                print(f"[ValidMoves Debug] Error checking capture for ({neighbor.row},{neighbor.col}): {e}")
+                            pass  # Skip if there's an error
+
         # End turn is always valid
         valid[-1] = 1.0
 
@@ -671,51 +725,56 @@ class Board:
 
         return valid
 
-    def apply_action(self, action):
+    def apply_action(self, action, debug=False):
         """
         Apply an action to the board.
 
         Args:
             action: Integer action index
+            debug: If True, print debug information
 
         Returns:
             True if successful, False otherwise
         """
         if self.is_end_turn_action(action):
             # End turn - advance to next faction and reset action counter
+            self.turn_count += 1  # Increment total turn count
             actions_to_apply = self.scenario.advanceTurn()
             for act, prov in actions_to_apply:
                 self.scenario.applyAction(act, prov)
             self.actions_this_turn = 0  # Reset counter for next turn
-            self.turn_count += 1  # Increment total turn count
-            return True
-
-        # Check if we've reached max actions per turn
-        # If so, force end turn instead of allowing more actions
-        if self.actions_this_turn >= self.MAX_ACTIONS_PER_TURN:
-            # Automatically end turn
-            actions_to_apply = self.scenario.advanceTurn()
-            for act, prov in actions_to_apply:
-                self.scenario.applyAction(act, prov)
-            self.actions_this_turn = 0
-            self.turn_count += 1  # Increment total turn count
             return True
 
         # Try to decode as move action
         move_result = self.decode_move_action(action)
+
         if move_result is not None:
             from_row, from_col, to_row, to_col = move_result
             try:
                 actions_to_apply = self.scenario.moveUnit(from_row, from_col, to_row, to_col)
-                for act, prov in actions_to_apply:
-                    self.scenario.applyAction(act, prov)
+                for act in actions_to_apply:
+                    self.scenario.applyAction(act, None)
                 self.actions_this_turn += 1  # Increment action counter
+
+                # Check if we've now reached max actions per turn
+                # If so, force end turn
+                if self.actions_this_turn >= self.MAX_ACTIONS_PER_TURN:
+                    self.turn_count += 1  # Increment total turn count
+                    actions_to_apply = self.scenario.advanceTurn()
+                    for act, prov in actions_to_apply:
+                        self.scenario.applyAction(act, prov)
+                    self.actions_this_turn = 0
+
                 return True
             except Exception as e:
+                # Action failed - log for debugging
+                import logging
+                logging.debug(f"Move action {action} failed: {e}")
                 return False
 
         # Try to decode as build action
         build_result = self.decode_build_action(action)
+
         if build_result is not None:
             row, col, unit_type = build_result
             try:
@@ -723,25 +782,54 @@ class Board:
                 tile = self.scenario.mapData[row][col]
                 province = tile.owner
 
-                if province is None:
-                    return False
+                # For capturing neutral/enemy tiles, use current faction's province
+                if province is None or province.faction != self.scenario.getFactionToPlay():
+                    # Use current faction's active province for capturing
+                    current_faction = self.scenario.getFactionToPlay()
+                    if current_faction is None:
+                        return False
+
+                    # Find first active province
+                    province = None
+                    for prov in current_faction.provinces:
+                        if prov.active:
+                            province = prov
+                            break
+
+                    if province is None:
+                        return False
 
                 actions_to_apply = self.scenario.buildUnitOnTile(row, col, unit_type, province)
-                for act, prov in actions_to_apply:
-                    self.scenario.applyAction(act, prov)
+                for act in actions_to_apply:
+                    self.scenario.applyAction(act, province)
                 self.actions_this_turn += 1  # Increment action counter
+
+                # Check if we've now reached max actions per turn
+                # If so, force end turn
+                if self.actions_this_turn >= self.MAX_ACTIONS_PER_TURN:
+                    self.turn_count += 1  # Increment total turn count
+                    actions_to_apply = self.scenario.advanceTurn()
+                    for act, prov in actions_to_apply:
+                        self.scenario.applyAction(act, prov)
+                    self.actions_this_turn = 0
+
                 return True
             except Exception as e:
+                # Action failed - log for debugging
+                import logging
+                logging.debug(f"Build action {action} failed: {e}")
                 return False
 
+        # Action didn't match any known type
         return False
 
-    def check_game_ended(self, player):
+    def check_game_ended(self, player, debug=False):
         """
         Check if the game has ended and return the result for the given player.
 
         Args:
             player: 1 or -1
+            debug: If True, print debug information
 
         Returns:
             0 if game not ended
@@ -756,7 +844,8 @@ class Board:
         # Count active factions
         active_factions = []
         for faction in self.scenario.factions:
-            if any(p.active for p in faction.provinces):
+            active_provinces = [p for p in faction.provinces if p.active]
+            if active_provinces:
                 active_factions.append(faction)
 
         if len(active_factions) > 1:

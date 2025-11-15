@@ -1,12 +1,13 @@
 import logging
 import math
-
+import sys
 import numpy as np
 
 EPS = 1e-8
 
 log = logging.getLogger(__name__)
 
+sys.setrecursionlimit(4000)
 
 class MCTS():
     """
@@ -25,6 +26,11 @@ class MCTS():
         self.Es = {}  # stores game.getGameEnded ended for board s
         self.Vs = {}  # stores game.getValidMoves for board s
 
+        # Diagnostics (enable with args.verbose)
+        self.max_depth_reached = 0
+        self.terminal_depths = []
+        self.state_revisits = 0
+
     def getActionProb(self, canonicalBoard, temp=1):
         """
         This function performs numMCTSSims simulations of MCTS starting from
@@ -34,8 +40,29 @@ class MCTS():
             probs: a policy vector where the probability of the ith action is
                    proportional to Nsa[(s,a)]**(1./temp)
         """
+        # Reset diagnostics
+        self.max_depth_reached = 0
+        self.terminal_depths = []
+        self.state_revisits = 0
+
         for i in range(self.args.numMCTSSims):
             self.search(canonicalBoard)
+
+        # # Print diagnostics if verbose mode enabled
+        # verbose = getattr(self.args, 'verbose', False)
+        # if verbose:
+        #     if self.terminal_depths:
+        #         avg_terminal_depth = sum(self.terminal_depths) / len(self.terminal_depths)
+        #         log.info(f"MCTS Stats: max_depth={self.max_depth_reached}, "
+        #                 f"terminals_found={len(self.terminal_depths)}, "
+        #                 f"avg_terminal_depth={avg_terminal_depth:.1f}, "
+        #                 f"state_revisits={self.state_revisits}, "
+        #                 f"unique_states={len(self.Es)}")
+        #     else:
+        #         log.warning(f"MCTS Stats: max_depth={self.max_depth_reached}, "
+        #                    f"terminals_found=0, "
+        #                    f"state_revisits={self.state_revisits}, "
+        #                    f"unique_states={len(self.Es)}")
 
         s = self.game.stringRepresentation(canonicalBoard)
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.getActionSize())]
@@ -52,7 +79,7 @@ class MCTS():
         probs = [x / counts_sum for x in counts]
         return probs
 
-    def search(self, canonicalBoard):
+    def search(self, canonicalBoard, depth=0):
         """
         This function performs one iteration of MCTS. It is recursively called
         till a leaf node is found. The action chosen at each node is one that
@@ -68,16 +95,36 @@ class MCTS():
         state. This is done since v is in [-1,1] and if v is the value of a
         state for the current player, then its value is -v for the other player.
 
+        Args:
+            canonicalBoard: current board state
+            depth: recursion depth (for safety check)
+
         Returns:
             v: the negative of the value of the current canonicalBoard
         """
 
+        # Track max depth
+        if depth > self.max_depth_reached:
+            self.max_depth_reached = depth
+
+        # Safety check: MAX_GAME_TURNS is 50
+        # Allow generous depth for untrained network exploration
+        # With sys.setrecursionlimit(4000), we have plenty of headroom
+        if depth > 1000:
+            log.warning(f"MCTS search depth exceeded 1000 (depth={depth}). Forcing draw.")
+            return 0
+
         s = self.game.stringRepresentation(canonicalBoard)
+
+        # Check for state revisits
+        if s in self.Ps:
+            self.state_revisits += 1
 
         if s not in self.Es:
             self.Es[s] = self.game.getGameEnded(canonicalBoard, 1)
         if self.Es[s] != 0:
-            # terminal node
+            # terminal node - record depth
+            self.terminal_depths.append(depth)
             return -self.Es[s]
 
         if s not in self.Ps:
@@ -122,7 +169,7 @@ class MCTS():
         next_s, next_player = self.game.getNextState(canonicalBoard, 1, a)
         next_s = self.game.getCanonicalForm(next_s, next_player)
 
-        v = self.search(next_s)
+        v = self.search(next_s, depth + 1)
 
         if (s, a) in self.Qsa:
             self.Qsa[(s, a)] = (self.Nsa[(s, a)] * self.Qsa[(s, a)] + v) / (self.Nsa[(s, a)] + 1)
