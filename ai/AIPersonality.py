@@ -4,6 +4,7 @@ from ai.simpleRuleBasedAgent.mark2SRB import playTurn as mark2PlayTurn
 from ai.simpleRuleBasedAgent.mark3SRB import playTurn as mark3PlayTurn
 from ai.simpleRuleBasedAgent.mark4SRB import playTurn as mark4PlayTurn
 from ai.minimax.minimax_anti import playTurn as minimaxPlayTurn
+from ai.alphaZeroAgent.AlphaZeroAgent import playTurn as alphaZeroPlayTurn
 
 class AIPersonality:
     """Represents a single AI personality that can be used to play a faction's turns."""
@@ -15,7 +16,8 @@ class AIPersonality:
         "mark2srb":  mark2PlayTurn,
         "mark3srb":  mark3PlayTurn,
         "mark4srb":  mark4PlayTurn,
-        "minimax": minimaxPlayTurn
+        "minimax": minimaxPlayTurn,
+        "alphazero": alphaZeroPlayTurn
     }
     
     def __init__(self, displayName: str, aiType: str) -> None:

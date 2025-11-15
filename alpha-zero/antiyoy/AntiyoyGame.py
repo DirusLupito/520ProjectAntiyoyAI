@@ -104,18 +104,19 @@ class AntiyoyGame(Game):
 
         return (next_board, next_player)
 
-    def getValidMoves(self, board, player):
+    def getValidMoves(self, board, player, debug=False):
         """
         Input:
             board: current board (numpy array)
             player: current player (1 or -1)
+            debug: If True, print debug information
 
         Returns:
             validMoves: binary numpy array of length getActionSize(), where
                         validMoves[i] = 1 if action i is valid, 0 otherwise
         """
         b = self._board_from_numpy(board, player)
-        return b.get_valid_moves_vector()
+        return b.get_valid_moves_vector(debug=debug)
 
     def getGameEnded(self, board, player):
         """

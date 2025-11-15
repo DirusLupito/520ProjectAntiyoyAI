@@ -580,9 +580,12 @@ class Board:
         """Check if an action is the end turn action."""
         return action == self.ACTION_SIZE - 1
 
-    def get_valid_moves_vector(self):
+    def get_valid_moves_vector(self, debug=False):
         """
         Get a binary vector of valid actions.
+
+        Args:
+            debug: If True, print debug information about valid moves
 
         Returns:
             numpy array of shape (ACTION_SIZE,) with 1 for valid actions, 0 otherwise
@@ -593,18 +596,31 @@ class Board:
         faction = self.scenario.getFactionToPlay()
         if faction is None:
             # If no faction, only end turn is valid
+            if debug:
+                print("[ValidMoves Debug] No faction to play - only END_TURN valid")
             valid[-1] = 1.0
             return valid
 
         # If we've reached max actions per turn, only allow end turn
         if self.actions_this_turn >= self.MAX_ACTIONS_PER_TURN:
+            if debug:
+                print(f"[ValidMoves Debug] Max actions reached ({self.actions_this_turn} >= {self.MAX_ACTIONS_PER_TURN}) - only END_TURN valid")
             valid[-1] = 1.0
             return valid
 
+        if debug:
+            print(f"[ValidMoves Debug] Checking faction with {len(faction.provinces)} provinces")
+
         # Get all valid move actions
+        num_move_actions = 0
+        num_build_actions = 0
+
         for province in faction.provinces:
             if not province.active:
                 continue
+
+            if debug:
+                print(f"[ValidMoves Debug] Province: {len(province.tiles)} tiles, {province.resources} resources, active={province.active}")
 
             for tile in province.tiles:
                 # Check for movable soldiers
@@ -615,11 +631,17 @@ class Board:
                             tile.row, tile.col
                         )
 
+                        if debug and len(destinations) > 0:
+                            print(f"[ValidMoves Debug] Soldier at ({tile.row},{tile.col}) can move to {len(destinations)} tiles")
+
                         for dest_row, dest_col in destinations:
                             action = self.encode_move_action(tile.row, tile.col, dest_row, dest_col)
                             if action is not None and 0 <= action < self.MOVE_ACTIONS:
                                 valid[action] = 1.0
-                    except:
+                                num_move_actions += 1
+                    except Exception as e:
+                        if debug:
+                            print(f"[ValidMoves Debug] Error getting moves for ({tile.row},{tile.col}): {e}")
                         pass  # Skip if there's an error
 
                 # Check for buildable units
@@ -628,15 +650,24 @@ class Board:
                         tile.row, tile.col, province
                     )
 
+                    if debug and len(buildable_units) > 0:
+                        print(f"[ValidMoves Debug] Can build on ({tile.row},{tile.col}): {buildable_units}")
+
                     for unit_type in buildable_units:
                         action = self.encode_build_action(tile.row, tile.col, unit_type)
                         if action is not None and self.MOVE_ACTIONS <= action < self.MOVE_ACTIONS + self.BUILD_ACTIONS:
                             valid[action] = 1.0
-                except:
+                            num_build_actions += 1
+                except Exception as e:
+                    if debug:
+                        print(f"[ValidMoves Debug] Error getting buildable units for ({tile.row},{tile.col}): {e}")
                     pass  # Skip if there's an error
 
         # End turn is always valid
         valid[-1] = 1.0
+
+        if debug:
+            print(f"[ValidMoves Debug] Found {num_move_actions} move actions, {num_build_actions} build actions")
 
         return valid
 

@@ -1,0 +1,13 @@
+n
+6 
+36
+2
+3
+ai 
+Red 
+a
+alphazero
+human
+Blue 
+h
+1
