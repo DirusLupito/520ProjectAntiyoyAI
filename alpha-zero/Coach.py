@@ -77,6 +77,12 @@ class Coach():
         only if it wins >= updateThreshold fraction of games.
         """
 
+        # Save initial model as best.pth.tar if it doesn't exist
+        best_path = os.path.join(self.args.checkpoint, 'best.pth.tar')
+        if not os.path.exists(best_path):
+            log.info('Saving initial model as best.pth.tar')
+            self.nnet.save_checkpoint(folder=self.args.checkpoint, filename='best.pth.tar')
+
         for i in range(1, self.args.numIters + 1):
             # bookkeeping
             log.info(f'Starting Iter #{i} ...')

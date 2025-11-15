@@ -76,7 +76,7 @@ args = dotdict({
     # This is the key parameter for playing strength
     # Typical range: 25-800 (AlphaZero used 800)
     # Start with lower values (25-100) for faster training
-    'numMCTSSims': 30, # THIS IS CPU BOUND (probably what slows us down)
+    'numMCTSSims': 25, # THIS IS CPU BOUND (probably what slows us down)
 
     # CPUCT parameter for MCTS exploration
     # Higher = more exploration of uncertain moves
@@ -94,13 +94,13 @@ args = dotdict({
     # Higher = more conservative (only accept clearly better networks)
     # Lower = more aggressive (accept marginally better networks)
     # Typical range: 0.55-0.60
-    'updateThreshold': 0.55,
+    'updateThreshold': 0.51,
 
     # Number of games to play in arena for evaluation
     # More games = more reliable evaluation but slower
     # Fewer games = faster but less reliable
     # Typical range: 20-100
-    'arenaCompare': 30,
+    'arenaCompare': 25,
 
     # ===================================================================
     # TRAINING DATA PARAMETERS
@@ -129,7 +129,7 @@ args = dotdict({
 
     # Whether to load a previous model
     # Set to True to resume training from a checkpoint
-    'load_model': False,
+    'load_model': True,
 
     # Checkpoint to load (if load_model is True)
     # Format: (folder, filename)
@@ -176,10 +176,16 @@ def main():
     # LOAD CHECKPOINT (if requested)
     # ===================================================================
     if args.load_model:
-        log.info('Loading checkpoint "%s/%s"...',
-                 args.load_folder_file[0], args.load_folder_file[1])
-        nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
-        log.info('Checkpoint loaded successfully!')
+        checkpoint_path = os.path.join(args.load_folder_file[0], args.load_folder_file[1])
+        if os.path.exists(checkpoint_path):
+            log.info('Loading checkpoint "%s/%s"...',
+                     args.load_folder_file[0], args.load_folder_file[1])
+            nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+            log.info('Checkpoint loaded successfully!')
+        else:
+            log.warning('Checkpoint "%s" not found!', checkpoint_path)
+            log.warning('Starting from scratch instead.')
+            args.load_model = False  # Disable loading for training examples too
     else:
         log.warning('Not loading a checkpoint - starting from scratch!')
         log.warning('Training from scratch will take a long time.')

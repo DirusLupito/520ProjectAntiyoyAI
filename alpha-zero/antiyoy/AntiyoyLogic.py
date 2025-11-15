@@ -36,8 +36,8 @@ class Board:
     """
 
     # Board dimensions
-    HEIGHT = 6
-    WIDTH = 6
+    HEIGHT = 5
+    WIDTH = 5
 
     # Number of channels in the encoded board state
     # Channel 22 is reserved for action counter (encoded as scalar across all tiles)
@@ -105,7 +105,7 @@ class Board:
 
     def _create_initial_scenario(self):
         """
-        Create a balanced starting scenario for 2 factions on a 6x6 board.
+        Create a balanced starting scenario for 2 factions.
 
         Returns:
             Scenario object with initial game state
@@ -116,10 +116,13 @@ class Board:
         factions = [faction1, faction2]
 
         # Generate a random scenario with balanced starting positions
-        # Target ~20 land tiles out of 36 total, with each faction starting with 3 tiles
+        # For 5x5: ~14 land tiles out of 25 total, with each faction starting with 3 tiles
+        # For 6x6: ~20 land tiles out of 36 total, with each faction starting with 3 tiles
+        total_tiles = self.WIDTH * self.HEIGHT
+        target_land = int(total_tiles * 0.56)  # ~56% land coverage
         scenario = generateRandomScenario(
             dimension=self.WIDTH,
-            targetNumberOfLandTiles=20,
+            targetNumberOfLandTiles=target_land,
             factions=factions,
             initialProvinceSize=3,
             randomSeed=None  # Can set for reproducibility
@@ -860,12 +863,16 @@ class Board:
         winner_faction = active_factions[0]
 
         # Determine which player the winner corresponds to
+        # NOTE: When using canonical form, the board is always from the current player's perspective.
+        # The board was reconstructed via from_numpy(board, player), which means:
+        # - Channel 0 data → factions[0] (represents the "player" perspective)
+        # - Channel 1 data → factions[1] (represents the opponent)
+        #
+        # Since canonical form swaps channels when player=-1, factions[0] always
+        # represents the player from whose perspective we're checking.
         if winner_faction == self.scenario.factions[0]:
-            winner_player = 1
-        else:
-            winner_player = -1
-
-        if winner_player == player:
+            # The current player (from whose perspective the board was constructed) won
             return 1
         else:
+            # The opponent won
             return -1

@@ -43,7 +43,7 @@ args = dotdict({
     # Prevents overfitting by randomly dropping connections during training
     # 0.0 = no dropout, 1.0 = drop everything (don't use)
     # Typical range: 0.2 - 0.5
-    'dropout': 0.3,
+    'dropout': 0.2,
 
     # Number of training epochs per learning iteration
     # More epochs = better convergence but slower
@@ -63,12 +63,12 @@ args = dotdict({
     # Number of convolutional filters (network width)
     # More = more capacity but slower and may overfit
     # Typical range: 128 - 512
-    'num_channels': 256,
+    'num_channels': 128,
 
     # Number of residual blocks (network depth)
     # More = can learn more complex patterns but slower
     # Typical range: 3 - 15
-    'num_res_blocks': 5,
+    'num_res_blocks': 3,
 })
 
 
