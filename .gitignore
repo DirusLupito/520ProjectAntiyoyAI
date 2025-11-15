@@ -6,4 +6,4 @@
 # No tournament result files
 *tournamentStats*
 *tournamentReplays*
-*tournamentResults*
+./alpha-zero/temp
