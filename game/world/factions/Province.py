@@ -568,12 +568,9 @@ class Province:
         income = self.computeIncome()
         temporaryResources = self.resources + income
 
-        if temporaryResources < 0:
-            temporaryResources = 0
-
          # Inactivity check here so that soldiers still die on inactive provinces
         if not self.active:
-            temporaryResources = 0
+            temporaryResources = -1
 
         # Turn all preexisting gravestones into normal trees
         # Done before turning soldiers into gravestones to avoid 
@@ -588,7 +585,7 @@ class Province:
                 actions.append((self._createTileChangeAction(tile, newUnit=newUnit), tile.owner))
                 futureUnits[tile] = newUnit
 
-        if temporaryResources == 0:
+        if temporaryResources < 0:
             # All soldier units become gravestones
             for tile in self.tiles:
                 unit = futureUnits[tile]
@@ -613,29 +610,27 @@ class Province:
         """
         Generates actions to update the province after a turn.
         This involves computing the income and updating the resources.
-        If the province is inactive, its resources remain at 0.
+        If the province is inactive, its resources are locked at 0 (-1 but then this becomes 0 later).
         If the province has soldier units, they are reset to be able to move again next turn.
-        If the province has < 0 resources, it is reset to 0. 
-        If the province has <= 0 resources after income calculation, all soldier units become gravestones.
+        If the province has < 0 resources after income calculation, all soldier units become gravestones.
         All prexisting gravestones turn into normal trees.
         All trees randomly grow onto empty adjacent tiles regardless of province ownership.
+        Resources are capped on the bottom by 0, though this capping does not prevent negative resources
+        from being calculated for the sake of other mechanics here.
         """
         actions = []
         income = self.computeIncome()
         newResources = self.resources + income
-
-        if newResources < 0:
-            newResources = 0
         
         # Inactivity check here so that soldiers still die on inactive provinces
         if not self.active:
-            newResources = 0
+            newResources = -1
 
         if newResources != self.resources:
             actions.append((Action("provinceResourceChange", {
                 "province": self,
                 "previousResources": self.resources,
-                "newResources": newResources
+                "newResources": newResources if newResources >= 0 else 0
             }, isDirectConsequenceOfAnotherAction=True), self))
 
         # Turn all preexisting gravestones into normal trees
@@ -651,7 +646,7 @@ class Province:
                 actions.append((self._createTileChangeAction(tile, newUnit=newUnit), tile.owner))
                 futureUnits[tile] = newUnit
 
-        if newResources == 0:
+        if newResources < 0:
             # All soldier units become gravestones
             for tile in self.tiles:
                 unit = futureUnits[tile]
