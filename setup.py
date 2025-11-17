@@ -4,8 +4,12 @@ import os
 setup(
     name="antiyoy_ai",
     version="0.1.0",
-    packages=find_packages(include=['ai', 'ai.*', 'game', 'game.*', 'rl', 'rl.*',
-                                     'tournaments', 'tournaments.*', 'azg', 'azg.*']),
+    packages=find_packages(include=['ai', 'ai.*',
+                                     'game', 'game.*',
+                                     'rl', 'rl.*',
+                                     'tournaments', 'tournaments.*',
+                                     'azg', 'azg.*',
+                                     'alpha_zero', 'alpha_zero.*']),
     package_dir={
         '': '.',
     },
