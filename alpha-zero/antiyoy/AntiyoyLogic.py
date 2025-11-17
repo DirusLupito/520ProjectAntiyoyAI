@@ -40,8 +40,8 @@ class Board:
     WIDTH = 5
 
     # Number of channels in the encoded board state
-    # Channel 22 is reserved for action counter (encoded as scalar across all tiles)
-    NUM_CHANNELS = 23
+    # Channel 21 is reserved for action counter (encoded as scalar across all tiles)
+    NUM_CHANNELS = 22
 
     # Action space configuration
     MAX_DESTINATIONS_PER_TILE = 20  # Conservative upper bound for movement options per tile
@@ -185,9 +185,9 @@ class Board:
         for row in range(cls.HEIGHT):
             for col in range(cls.WIDTH):
                 if faction1_resources_norm == 0 and numpy_board[0, row, col] > 0:  # Faction 1 owns this tile
-                    faction1_resources_norm = numpy_board[18, row, col]
+                    faction1_resources_norm = numpy_board[17, row, col]
                 if faction2_resources_norm == 0 and numpy_board[1, row, col] > 0:  # Faction 2 owns this tile
-                    faction2_resources_norm = numpy_board[19, row, col]
+                    faction2_resources_norm = numpy_board[18, row, col]
                 # Break early if we've found both
                 if faction1_resources_norm > 0 and faction2_resources_norm > 0:
                     break
@@ -224,7 +224,7 @@ class Board:
                 # Check for soldiers (Player 1)
                 for tier in range(1, 5):
                     if numpy_board[3 + tier - 1, row, col] > 0:
-                        can_move = numpy_board[17, row, col] > 0
+                        can_move = numpy_board[16, row, col] > 0
                         unit = Soldier(tier=tier, owner=faction1)
                         unit.canMove = can_move
                         break
@@ -233,7 +233,7 @@ class Board:
                 if unit is None:
                     for tier in range(1, 5):
                         if numpy_board[7 + tier - 1, row, col] > 0:
-                            can_move = numpy_board[17, row, col] > 0
+                            can_move = numpy_board[16, row, col] > 0
                             unit = Soldier(tier=tier, owner=faction2)
                             unit.canMove = can_move
                             break
@@ -251,12 +251,10 @@ class Board:
                     elif numpy_board[14, row, col] > 0:  # Tower2
                         unit = Structure("tower2", owner=structure_owner)
 
-                # Check for trees/gravestones
+                # Check for trees (gravestones removed - purely visual)
                 if unit is None:
                     if numpy_board[15, row, col] > 0:  # Tree
                         unit = Tree(isGravestone=False, owner=None)
-                    elif numpy_board[16, row, col] > 0:  # Gravestone
-                        unit = Tree(isGravestone=True, owner=None)
 
                 tile.unit = unit
 
@@ -273,9 +271,9 @@ class Board:
         # so we use faction 1.
         faction_to_play_index = 0 if current_player == 1 else 1
 
-        # Extract action counter and turn count from channel 22
-        action_counter_norm = numpy_board[22, 0, 0]  # Top half
-        turn_count_norm = numpy_board[22, 3, 0]      # Bottom half
+        # Extract action counter and turn count from channel 21
+        action_counter_norm = numpy_board[21, 0, 0]  # Top half
+        turn_count_norm = numpy_board[21, 3, 0]      # Bottom half
         # Use rounding instead of truncation to handle floating point precision
         actions_this_turn = int(action_counter_norm * cls.MAX_ACTIONS_PER_TURN + 0.5)
         turn_count = int(turn_count_norm * cls.MAX_GAME_TURNS + 0.5)
@@ -447,9 +445,9 @@ class Board:
                         elif unit_faction_idx == 1:  # Player 2 soldiers
                             board[7 + tier - 1, row, col] = 1.0
 
-                        # Channel 17: Movement status
+                        # Channel 16: Movement status
                         if unit.canMove:
-                            board[17, row, col] = 1.0
+                            board[16, row, col] = 1.0
 
                     # Channels 11-14: Structures
                     elif isinstance(unit, Structure):
@@ -462,36 +460,34 @@ class Board:
                         elif unit.unitType == "tower2":
                             board[14, row, col] = 1.0
 
-                    # Channels 15-16: Trees and gravestones
+                    # Channel 15: Trees only (gravestones removed - purely visual)
                     elif isinstance(unit, Tree):
                         if unit.unitType == "tree":
                             board[15, row, col] = 1.0
-                        elif unit.unitType == "gravestone":
-                            board[16, row, col] = 1.0
 
-                # Channels 18-19: Province resources (normalized)
+                # Channels 17-18: Province resources (normalized)
                 if tile.owner is not None:
                     if tile.owner.faction == faction1:
-                        board[18, row, col] = faction1_resources_norm
+                        board[17, row, col] = faction1_resources_norm
                     elif tile.owner.faction == faction2:
-                        board[19, row, col] = faction2_resources_norm
+                        board[18, row, col] = faction2_resources_norm
 
-                # Channels 20-21: Province income (normalized)
+                # Channels 19-20: Province income (normalized)
                 if tile.owner is not None:
                     if tile.owner.faction == faction1:
-                        board[20, row, col] = faction1_income_norm
+                        board[19, row, col] = faction1_income_norm
                     elif tile.owner.faction == faction2:
-                        board[21, row, col] = faction2_income_norm
+                        board[20, row, col] = faction2_income_norm
 
-        # Channel 22: Action counter and turn count (encoded together)
+        # Channel 21: Action counter and turn count (encoded together)
         # Top half of tiles: action counter
         # Bottom half of tiles: turn counter
         action_counter_norm = self.actions_this_turn / self.MAX_ACTIONS_PER_TURN
         turn_count_norm = min(self.turn_count / self.MAX_GAME_TURNS, 1.0)
 
         # Fill top 3 rows with action counter, bottom 3 rows with turn counter
-        board[22, :3, :] = action_counter_norm
-        board[22, 3:, :] = turn_count_norm
+        board[21, :3, :] = action_counter_norm
+        board[21, 3:, :] = turn_count_norm
 
         return board
 
@@ -901,3 +897,84 @@ class Board:
         else:
             # The opponent won
             return -1
+
+    def evaluate_position(self):
+        """
+        Evaluate the current board position using a heuristic function.
+
+        This is used when MCTS reaches max depth and needs a position evaluation
+        instead of a true terminal outcome. Returns a value in [-1, 1] representing
+        how good the position is for the current player (factions[0] in canonical form).
+
+        The heuristic is based on income ratio: maximizer_income / total_income.
+        This encourages the AI to maximize its own income while weakening opponents.
+
+        Returns:
+            float: Position evaluation in range [-1, 1]
+                   Positive = good for current player (factions[0])
+                   Negative = good for opponent (factions[1])
+        """
+        # Calculate income for both factions
+        faction1 = self.scenario.factions[0]  # Current player in canonical form
+        faction2 = self.scenario.factions[1]  # Opponent
+
+        income1 = _calculateFactionIncome(faction1)
+        income2 = _calculateFactionIncome(faction2)
+        total_income = income1 + income2
+
+        # Avoid division by zero
+        if total_income <= 0:
+            return 0.0
+
+        # Calculate ratio from current player's perspective
+        # Returns value in [0, 1], need to convert to [-1, 1]
+        ratio = income1 / total_income
+
+        # Convert [0, 1] to [-1, 1]
+        # ratio=0.5 (equal) -> 0
+        # ratio=1.0 (all income) -> 1
+        # ratio=0.0 (no income) -> -1
+        return 2.0 * ratio - 1.0
+
+
+def _calculateFactionIncome(faction):
+    """
+    Helper function to compute tile-based income including farms for a faction.
+
+    Formula: income = numTiles + 4 * numFarms
+    - Each controlled tile provides 1 income
+    - Each farm provides an additional 4 income
+    - Trees negate the tile's income contribution
+    - Inactive provinces do not contribute
+
+    Args:
+        faction: The Faction object for which to calculate income
+
+    Returns:
+        int: The calculated income for the faction
+    """
+    tile_count = 0
+    farm_count = 0
+
+    # Iterate over every province owned by the faction
+    for province in getattr(faction, "provinces", []):
+        # Inactive provinces do not contribute to income
+        if province is None or not getattr(province, "active", False):
+            continue
+
+        # Within each valid province, count tiles and farms
+        for tile in getattr(province, "tiles", []):
+            if tile is None:
+                continue
+
+            tile_count += 1
+
+            # Check for farms (add extra income)
+            if tile.unit is not None and tile.unit.unitType == "farm":
+                farm_count += 1
+
+            # Trees negate the income from the tile
+            if tile.unit is not None and tile.unit.unitType == "tree":
+                tile_count -= 1
+
+    return tile_count + (4 * farm_count)

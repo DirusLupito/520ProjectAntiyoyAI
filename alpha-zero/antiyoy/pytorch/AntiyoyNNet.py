@@ -2,7 +2,7 @@
 AntiyoyNNet.py - Neural Network Architecture for Antiyoy
 
 This module defines the neural network architecture for the Antiyoy game.
-The network takes a 22-channel 6x6 board representation as input and outputs:
+The network takes a 22-channel 5x5 board representation as input and outputs:
 - Policy head: Probability distribution over 973 possible actions
 - Value head: Estimated value of the current position (-1 to 1)
 
@@ -94,7 +94,7 @@ class AntiyoyNNet(nn.Module):
     a policy (which action to take) and a value (how good is this position).
 
     Architecture Overview:
-    1. Input Layer: Processes 22-channel 6x6 board
+    1. Input Layer: Processes 22-channel 5x5 board
     2. Initial Convolution: Expands to num_channels features
     3. Residual Blocks: Deep feature extraction
     4. Policy Head: Outputs probability distribution over actions
@@ -121,7 +121,7 @@ class AntiyoyNNet(nn.Module):
 
         # Extract game parameters
         # board_x, board_y are actually (num_channels, height, width) for Antiyoy
-        # So board_x = 22 (channels), board_y = 6 (height), board_z = 6 (width)
+        # So board_x = 22 (channels), board_y = 5 (height), board_z = 5 (width)
         board_dims = game.getBoardSize()
         if len(board_dims) == 3:
             self.num_input_channels, self.board_y, self.board_x = board_dims
@@ -203,7 +203,7 @@ class AntiyoyNNet(nn.Module):
 
         Args:
             s: Input tensor of shape (batch_size, num_input_channels, board_y, board_x)
-               For Antiyoy: (batch_size, 22, 6, 6)
+               For Antiyoy: (batch_size, 22, 5, 5)
 
         Returns:
             pi: Log probabilities for actions, shape (batch_size, action_size)

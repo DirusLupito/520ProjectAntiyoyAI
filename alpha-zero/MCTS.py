@@ -7,8 +7,6 @@ EPS = 1e-8
 
 log = logging.getLogger(__name__)
 
-sys.setrecursionlimit(4000)
-
 class MCTS():
     """
     This class handles the MCTS tree.
@@ -111,8 +109,25 @@ class MCTS():
         # Allow generous depth for untrained network exploration
         # With sys.setrecursionlimit(4000), we have plenty of headroom
         if depth > 1000:
-            log.warning(f"MCTS search depth exceeded 1000 (depth={depth}). Forcing draw.")
-            return 0
+            # Use heuristic evaluation instead of treating as draw
+            # This provides meaningful training signal even at max depth
+            if hasattr(self.game, 'evaluatePosition'):
+                heuristic_value = self.game.evaluatePosition(canonicalBoard, 1)
+
+                # Apply weighting factor to indicate less certainty than true terminals
+                # Default weight of 0.5 means heuristic evals are treated as "softer" signals
+                weight = getattr(self.args, 'heuristic_weight', 0.5)
+                weighted_value = weight * heuristic_value
+
+                if depth % 100 == 1:  # Log occasionally to avoid spam
+                    log.info(f"MCTS max depth ({depth}): Using heuristic eval = {heuristic_value:.3f}, "
+                            f"weighted = {weighted_value:.3f} (weight={weight})")
+
+                return -weighted_value
+            else:
+                # Fallback to draw if evaluatePosition not available
+                log.warning(f"MCTS search depth exceeded 1000 (depth={depth}). Forcing draw.")
+                return 0
 
         s = self.game.stringRepresentation(canonicalBoard)
 

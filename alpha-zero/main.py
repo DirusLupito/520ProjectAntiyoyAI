@@ -23,7 +23,7 @@ import os
 
 # Increase recursion limit for deep MCTS searches
 # MCTS can easily go 1000+ levels deep
-sys.setrecursionlimit(5000)
+sys.setrecursionlimit(2000)
 
 # Add paths for imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -83,6 +83,14 @@ args = dotdict({
     # Lower = more exploitation of known good moves
     # Typical range: 0.5-2.0
     'cpuct': 1.0,
+
+    # Heuristic evaluation weight for max depth positions
+    # When MCTS reaches max depth (1000), use heuristic evaluation instead of draw
+    # This value scales the heuristic to indicate less certainty than true terminals
+    # 0.5 = heuristic evaluations weighted at 50% of true terminal states
+    # 1.0 = treat heuristic evaluations as confidently as true terminals
+    # Typical range: 0.3-0.7
+    'heuristic_weight': 0.5,
 
     # ===================================================================
     # EVALUATION PARAMETERS

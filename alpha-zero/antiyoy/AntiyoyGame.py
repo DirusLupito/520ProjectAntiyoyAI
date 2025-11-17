@@ -36,7 +36,7 @@ class AntiyoyGame(Game):
         """Initialize the game."""
         self.height = Board.HEIGHT
         self.width = Board.WIDTH
-        self.num_channels = Board.NUM_CHANNELS  # Now 23 (includes action counter)
+        self.num_channels = Board.NUM_CHANNELS  # Now 22 (gravestones removed, purely visual)
         self.action_size = Board.ACTION_SIZE
 
     def getInitBoard(self):
@@ -134,6 +134,26 @@ class AntiyoyGame(Game):
         b = self._board_from_numpy(board, player)
         return b.check_game_ended(player)
 
+    def evaluatePosition(self, board, player):
+        """
+        Evaluate a non-terminal board position using a heuristic function.
+
+        This is used when MCTS reaches maximum search depth and needs to evaluate
+        a position that hasn't reached a terminal state. The evaluation is based
+        on the income ratio between the current player and opponent.
+
+        Input:
+            board: current board (numpy array)
+            player: current player (1 or -1)
+
+        Returns:
+            float: Position evaluation in range [-1, 1]
+                   Positive = good for current player
+                   Negative = good for opponent
+        """
+        b = self._board_from_numpy(board, player)
+        return b.evaluate_position()
+
     def getCanonicalForm(self, board, player):
         """
         Input:
@@ -158,11 +178,11 @@ class AntiyoyGame(Game):
         for i in range(4):
             canonical[3 + i], canonical[7 + i] = board[7 + i].copy(), board[3 + i].copy()
 
-        # Swap resource channels (18 and 19)
-        canonical[18], canonical[19] = board[19].copy(), board[18].copy()
+        # Swap resource channels (17 and 18)
+        canonical[17], canonical[18] = board[18].copy(), board[17].copy()
 
-        # Swap income channels (20 and 21)
-        canonical[20], canonical[21] = board[21].copy(), board[20].copy()
+        # Swap income channels (19 and 20)
+        canonical[19], canonical[20] = board[20].copy(), board[19].copy()
 
         return canonical
 
@@ -266,15 +286,13 @@ class AntiyoyGame(Game):
                     unit_char = " T2"
                 elif board[15, row, col] > 0:  # Tree
                     unit_char = " t "
-                elif board[16, row, col] > 0:  # Gravestone
-                    unit_char = " g "
 
                 print(unit_char, end="")
             print()
 
         # Display resources
-        p1_resources = board[18, 0, 0] if board[0, 0, 0] > 0 else 0
-        p2_resources = board[19, 0, 0] if board[1, 0, 0] > 0 else 0
+        p1_resources = board[17, 0, 0] if board[0, 0, 0] > 0 else 0
+        p2_resources = board[18, 0, 0] if board[1, 0, 0] > 0 else 0
         print(f"\nResources (normalized): P1={p1_resources:.2f}, P2={p2_resources:.2f}")
 
         print("=" * 50 + "\n")
