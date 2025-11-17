@@ -1,6 +1,10 @@
 # Sample script for running a Mark1SRB vs Mark2SRB tournament.
 # Feel free to modify this script to test different configurations.
 
+import sys, os
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
+sys.path.append(PROJECT_ROOT)
+
 from ai.AIPersonality import AIPersonality
 from tournaments.AITournamentConfig import AITournamentConfig
 from tournaments.TournamentSeedPicker import TournamentSeedPicker
@@ -23,7 +27,7 @@ def runSampleTournament() -> None:
     # or mark2srb vs mark1srb vs mark2srb game being played
     # Just try to give them unique names so you can tell them apart in the results
     personalities = [
-        AIPersonality("Mark1SRB", "mark1srb"),
+        AIPersonality("PPO", "ppo"),
         AIPersonality("Mark2SRB", "mark2srb")
     ]
 
@@ -55,9 +59,9 @@ def runSampleTournament() -> None:
     config = AITournamentConfig(
         personalities=personalities,
         roundCount=50,
-        dimension=20,
-        targetLandTiles=200,
-        initialProvinceSize=50,
+        dimension=4,
+        targetLandTiles=16,
+        initialProvinceSize=4,
         seedPicker=seedPicker,
         recordReplays=True,
         displayGames=False,
@@ -66,7 +70,7 @@ def runSampleTournament() -> None:
         # of physical CPU cores on your machine for best performance
         parallelWorkerCount=4,
         # If two AIs haven't won in this many turns, declare the game a draw
-        maxTurns=1000
+        maxTurns=200
     )
 
     # You must instantiate the runner with a config object

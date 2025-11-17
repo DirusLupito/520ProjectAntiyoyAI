@@ -38,7 +38,11 @@ class AntiyoyEnv(gym.Env):
 
         self.num_tiles = len(self.scenario.mapData) * len(self.scenario.mapData[0])
 
-        self.action_space_size = self.num_tiles * 13 + 1
+        self.reachable_lists = None
+        self.MAX_REACHABLE = None
+        self._precompute_reachable_lists()
+
+        self.action_space_size = self.num_tiles * (self.MAX_REACHABLE + 7) + 1
 
         self.UNIT_TYPES = [
             "soldierTier1",
@@ -56,8 +60,64 @@ class AntiyoyEnv(gym.Env):
         # self.prev_friendly_metric = self._evaluate_friendly_force()
         self.prev_farm_count = self._count_farms()
         self.enemy_tiles_claimed = 0
-        self.prev_income = self._get_total_income()
         self.dumb_move_penalty = 0
+        self.tree_elim = 0
+        self.prev_income, self.prev_resources = self._get_total_income()
+        self.turn = 0
+
+        
+
+    def _precompute_reachable_lists(self, max_steps=4):
+        """
+        Precompute reachable tiles for every tile with a 'dummy unit'
+        so we can build a static movement action space.
+        """
+        rows = len(self.scenario.mapData)
+        cols = len(self.scenario.mapData[0])
+
+        self.reachable_lists = []  # list of lists
+        max_len = 0
+
+        for r in range(rows):
+            for c in range(cols):
+                reachable = self._bfs_reachable(r, c, max_steps)
+                # print(f"Tile ({r},{c}) reachable tiles ({len(reachable)}): {reachable}")
+                self.reachable_lists.append(reachable)
+                max_len = max(max_len, len(reachable))
+
+        self.MAX_REACHABLE = max_len
+
+        # Pad all lists to MAX_REACHABLE length with dummy invalid tile (-1, -1)
+        for i, lst in enumerate(self.reachable_lists):
+            if len(lst) < self.MAX_REACHABLE:
+                padding = [(-1, -1)] * (self.MAX_REACHABLE - len(lst))
+                self.reachable_lists[i] = lst + padding
+
+    def _bfs_reachable(self, sr, sc, max_steps):
+        from collections import deque
+        visited = set()
+        q = deque([(sr, sc, 0)])
+
+        while q:
+            r, c, dist = q.popleft()
+            if dist > max_steps:
+                continue
+            if (r, c) in visited:
+                continue
+
+            visited.add((r, c))
+
+            # Add neighbors
+            for nb in self.scenario.mapData[r][c].neighbors:
+                if nb is None:
+                    continue
+                # Skip water tiles if required by game rules
+                if nb.isWater:
+                    continue
+                q.append((nb.row, nb.col, dist + 1))
+
+        visited.remove((sr, sc))  # Remove the start tile itself
+        return list(visited)
 
     
     def index_to_coords(self, tile_index):
@@ -90,6 +150,16 @@ class AntiyoyEnv(gym.Env):
         """
         return self.scenario.getAllTilesWithinMovementRange(row, col)
     
+    def get_winner(self):
+        activeFactions = []
+        for faction in self.scenario.factions:
+            if any(province.active for province in faction.provinces):
+                activeFactions.append(faction)
+
+        if len(activeFactions) <= 1:
+            return activeFactions
+        return None
+    
     def decode_action(self, action_idx):
         """
         How we convert action ids to real actions
@@ -97,40 +167,34 @@ class AntiyoyEnv(gym.Env):
         """
         NUM_TILES = self.num_tiles
 
-        MOVE_UNIT_SIZE = NUM_TILES * 6  # 6 directions per tile for movement
+        MOVE_UNIT_SIZE = NUM_TILES * self.MAX_REACHABLE
         BUILD_UNIT_SIZE = NUM_TILES * len(self.UNIT_TYPES)
+
+        actions = []
 
 
         # 1) Move unit
         if action_idx < MOVE_UNIT_SIZE:
-            tile_index = action_idx // 6
-            direction = action_idx % 6
+            tile_index = action_idx // self.MAX_REACHABLE
+            reach_idx = action_idx % self.MAX_REACHABLE
 
+            num_cols = len(self.scenario.mapData[0])
             start_row, start_col = self.index_to_coords(tile_index)
-            unit = self.scenario.mapData[start_row][start_col].unit
+            flat_index = start_row * num_cols + start_col
 
-            if unit is None or unit.owner is None or unit.owner.name != self.scenario.factions[self.faction_idx].name or not self.can_move_unit(unit):
-                # Invalid move action
-                return None, None
-
-            reachable_tiles = self.get_all_reachable_tiles(start_row, start_col)
-            # Find destination tile based on direction
-            # Assuming direction maps to neighbor index 0-5
-            neighbors = self.scenario.mapData[start_row][start_col].neighbors
-            dest_hex = neighbors[direction]
-
-            if dest_hex is None:
-                return None, None  # invalid direction (edge of map)
-
-            dest_row, dest_col = dest_hex.row, dest_hex.col
-
-            if (dest_row, dest_col) not in reachable_tiles:
-                return None, None  # destination not reachable
+            reachable_list = self.reachable_lists[flat_index]
+            dest_row, dest_col = reachable_list[reach_idx]
             
             dest_owner = self.scenario.mapData[dest_row][dest_col].owner
-            if dest_owner is not None and dest_owner not in self.scenario.factions[self.faction_idx].provinces:
-                self.enemy_tiles_claimed += 1
-            
+            if dest_owner is not None:
+                if dest_owner not in self.scenario.factions[self.faction_idx].provinces:
+                    self.enemy_tiles_claimed += 1
+                elif dest_owner in self.scenario.factions[self.faction_idx].provinces:
+                    if self.scenario.mapData[dest_row][dest_col].unit is not None and self.scenario.mapData[dest_row][dest_col].unit.unitType == 'tree':
+                        self.tree_elim += 1
+                    else:
+                        self.dumb_move_penalty -= 1
+                    
 
             # Build the Action for unit movement
             actions = self.scenario.moveUnit(start_row, start_col, dest_row, dest_col)
@@ -155,9 +219,9 @@ class AntiyoyEnv(gym.Env):
                 buildable = self.scenario.getBuildableUnitsOnTile(row, col, province)
                 if unit_type_str in buildable:
                     actions = self.scenario.buildUnitOnTile(row, col, unit_type_str, self.scenario.factions[self.faction_idx].provinces[i])
+                    # print(f"Building {unit_type_str} at ({row}, {col})")
                     break
             
-            # print(f"Building {unit_type_str} at ({row}, {col})")
             return actions, i
         else:
             # Action index outside known range or end turn
@@ -173,11 +237,27 @@ class AntiyoyEnv(gym.Env):
             self.scenario.advanceTurn()
             from ai.AIPersonality import AIPersonality
             # can choose here which ai to play against
-            ai_fn = AIPersonality.implementedAIs["mark1srb"]
-            actions = ai_fn(self.scenario, self.scenario.getFactionToPlay())
+            ai_fn = AIPersonality.implementedAIs["mark2srb"]
+            actions = ai_fn(self.scenario, self.scenario.factions[1-self.faction_idx])
+            # ai_fn = AIPersonality.implementedAIs["ppo"]
+            # actions = ai_fn(self.scenario, self.scenario.factions[1-self.faction_idx], train=False)
             # perform its actions
-            for act, prov in actions:
-                self.scenario.applyAction(act, prov)
+            for act, prov_idx in actions:
+                if not isinstance(prov_idx, Province):
+                    if prov_idx is None:
+                        # Some actions don't need a province
+                        self.scenario.applyAction(act, None)
+                    else:
+                        # Convert index → Province object
+                        faction = self.scenario.getFactionToPlay()
+                        prov_list = faction.provinces
+
+                        # Clamp to avoid out-of-range issues
+                        prov_obj = prov_list[min(prov_idx, len(prov_list) - 1)]
+
+                        self.scenario.applyAction(act, prov_obj)
+                else:
+                    self.scenario.applyAction(act, prov_idx)
             # now back to our turn
             self.scenario.advanceTurn()
         # otherwise, if it is not end turn
@@ -187,16 +267,10 @@ class AntiyoyEnv(gym.Env):
                 if province_idx is None:
                     self.scenario.applyAction(a)
                 else:
-
                     self.scenario.applyAction(a, self.scenario.factions[self.faction_idx].provinces[min(province_idx, len(self.scenario.factions[self.faction_idx].provinces) - 1)])
-                actions.append([a, province_idx])
+                actions.append([a, self.scenario.factions[self.faction_idx].provinces[min(province_idx, len(self.scenario.factions[self.faction_idx].provinces) - 1)]])
                 
-        activeFactions = 0
-        for faction in self.scenario.factions:
-            if any(province.active for province in faction.provinces):
-                activeFactions += 1
-
-        if activeFactions <= 1:
+        if self.get_winner() is not None:
             obs = self._get_observation()
             reward = self._calculate_reward()
             return obs, reward, True, {}, []
@@ -264,6 +338,14 @@ class AntiyoyEnv(gym.Env):
                     if utype in unit_map:
                         unit_layer[r, c, unit_map[utype]] = 1.0
 
+        current_income, current_resources = self._get_total_income()
+
+        max_resources = 1000  # adjust based on your game's typical max
+        max_income = 100
+
+        normalized_resources = min(max_resources, current_resources) / max_resources
+        normalized_income = min(max_income, current_income) / max_income
+
         if debug:
             return {
                 "terrain": terrain_layer,
@@ -277,6 +359,7 @@ class AntiyoyEnv(gym.Env):
             owner_layer.flatten(),
             building_layer.flatten(),
             unit_layer.flatten(),
+            np.array([normalized_resources, normalized_income], dtype=np.float32)
         ]).astype(np.float32)
 
         # print({"terrain": terrain_layer,"owner": owner_layer,"building": building_layer,"unit": unit_layer})
@@ -319,14 +402,9 @@ class AntiyoyEnv(gym.Env):
 
     # --- evaluate friendly force (attack-aware + prefers many weaker units) ---
     def _evaluate_friendly_force(self):
-        """
-        Compute a scalar value for the enemy force present on the map.
-        This is designed to prioritize strong units on tiles near enemies
-        """
-
-        ON_BONUS = 9.0
-        ADJACENT_BONUS = 6.0
-        ONE_BACK_BONUS = 3.0
+        ADJACENT_BONUS = 10.0
+        ONE_BACK_BONUS = 5.0
+        HIGH_TIER_PENALTY = -30.0   # tweak this value
 
         friendly_units = self._collect_friendly_units()
         if not friendly_units:
@@ -335,44 +413,45 @@ class AntiyoyEnv(gym.Env):
         faction = self.scenario.factions[self.faction_idx]
         score = 0.0
 
-        for u in friendly_units:
-            tile = u
+        for tile in friendly_units:
+            unit = tile.unit
 
-            found_on = False
+            # Tier penalty (Tier >= 3)
+            if unit.attackPower >= 3:
+                score += HIGH_TIER_PENALTY
+
             found_adjacent = False
             found_one_back = False
 
-            if isEnemyTile(tile, faction):
-                found_on = True
-                break
+            # Adjacent tiles
+            for n1 in tile.neighbors:
+                if n1 is not None and isEnemyTile(n1, faction):
+                    found_adjacent = True
+                    break
 
-            # --- Adjacent tiles ---
-            if not found_on:
-                for n1 in tile.neighbors:
-                    if n1 is not None and isEnemyTile(n1, faction):
-                        found_adjacent = True
-                        break
-
-            if not found_adjacent and not found_on:
-                # --- Distance 2 tiles (neighbors of neighbors) ---
+            # Distance-2 tiles only if nothing adjacent
+            if not found_adjacent:
                 for n1 in tile.neighbors:
                     if n1 is not None:
                         for n2 in n1.neighbors:
-                            if n2 is tile:  
-                                continue  # skip the original tile
+                            if n2 is tile:
+                                continue
                             if n2 is not None and isEnemyTile(n2, faction):
                                 found_one_back = True
                                 break
                     if found_one_back:
                         break
-            
-            if found_on:
-                score += ON_BONUS
-            elif found_adjacent:
+
+            # Add bonuses
+            if found_adjacent:
                 score += ADJACENT_BONUS
             elif found_one_back:
                 score += ONE_BACK_BONUS
-            score *= 1 + ((tile.unit.attackPower - 1) *.5)
+
+            # Reward stronger units *only up to tier 2*
+            # Tier 3+ already penalized above
+            if unit.attackPower <= 2:
+                score *= 1 + ((unit.attackPower - 1) * 0.5)
 
         return score
 
@@ -415,78 +494,179 @@ class AntiyoyEnv(gym.Env):
         return count
     
     def _calculate_bankruptcy(self):
-        penalty = 0
+        min_time_to_bankrupt = None
+
         for province in self.scenario.factions[self.faction_idx].provinces:
-            b_time = checkTimeToBankruptProvince(province)
-            if b_time is not None and b_time > 0:
-                penalty += 3/b_time
-        return penalty
+            b_time = checkTimeToBankruptProvince(province)  # returns int turns or None
+            if b_time is not None:
+                if min_time_to_bankrupt is None or b_time < min_time_to_bankrupt:
+                    min_time_to_bankrupt = b_time
+
+        if min_time_to_bankrupt is None:
+            return 0.0  # no bankruptcy risk
+
+        # Return an inverse measure so smaller time = larger penalty
+        # Add 1 to avoid division by zero if bankruptcy is immediate
+        bankruptcy_score = 1.0 / (min_time_to_bankrupt + 1)
+        return bankruptcy_score
     
     def _get_total_income(self):
         income = 0
+        resources = 0
         for province in self.scenario.factions[self.faction_idx].provinces:
-            income = province.computeIncome()
-        return income
+            income += province.computeIncome()
+            resources += province.resources
+        return income, resources
+    
+    def calculateFactionIncome(self, faction):
+        """
+        Computes tile-based income including farms for a faction.
+        We use the formula: income = numTiles + 4 * numFarms,
+        since each controlled tile provides 1 income,
+        and each farm unit provides an additional 4 income.
+        
+        We also subtract out tree tiles, since a tile with a tree
+        does not provide income.
+        
+        Inactive provinces do not contribute to income either.
+        
+        Args:
+            faction: The Faction object for which to calculate income.
+            
+        Returns:
+            int: The calculated income for the faction.
+        """
+        tileCount = 0
+        farmCount = 0
+        # getattr is safer than faction.provinces or province.tiles, or... etc directly,
+        # since the latter could raise an exception if our objects are None.
+        # We first iterate over every province owned by the faction.
+        for province in getattr(faction, "provinces", []):
+            # Invalid provinces do not contribute to income.
+            if province is None or not getattr(province, "active", False):
+                continue
+            
+            # Within each valid province, we count tiles and farms,
+            # and subtract out tree tiles.
+            for tile in getattr(province, "tiles", []):
+                if tile is None:
+                    continue
+                
+                tileCount += 1
+                if tile.unit is not None and tile.unit.unitType == "farm":
+                    farmCount += 1
+                    
+                if tile.unit is not None and tile.unit.unitType == "tree":
+                    tileCount -= 1  # Trees negate the income from the tile
+                    
+        return tileCount + (4 * farmCount)
+    
+    def boardEvaluation(self, maximizerFaction):
+        """
+        Scores the scenario at the current state from the perspective of the maximizer faction.
+        Called in the terminal nodes of the minimax search.
+        
+        This evaluation function computes the ratio of the maximizer faction's income
+        to the total income of all factions. This encourages the AI to not only maximize its own income
+        but also to make the opponents weaker. It also doesn't take into account unit upkeep costs,
+        so that building an army is not penalized.
+        
+        Args:
+            planningScenario: The Scenario object representing the current planning state.    
+            maximizerFaction: The faction for which the score is being calculated.
+        """
+        # maximizerIncome / totalIncome
+        totalIncome = 0
+        maximizerIncome = 0
+        
+        # We compute income for each faction
+        # using the formula defined in calculateFactionIncome.
+        for faction in self.scenario.factions:
+            factionIncome = self.calculateFactionIncome(faction)
+            totalIncome += factionIncome
+            
+            if faction == maximizerFaction:
+                maximizerIncome = factionIncome
+        
+        # Should not be possible to have zero total income
+        # unless the game is over, but just in case we want
+        # to avoid division by zero.
+        if totalIncome <= 0:
+            return 0.0
+        
+        return maximizerIncome / totalIncome
 
 
     # --- main reward calc ---
     def _calculate_reward(self):
-        # multipliers (tweak to taste)
-        ENEMY_UNIT_MULT = 2.0       # reward for eliminating enemy attack
-        FACTION_MULT = 2.0          # reward per faction tile gained
-        FARM_MULT = 10.0             # reward per new farm acquired
-        ENEMY_TILE_MULT = 10.0
-        BANKRUPT_MULT = -60.0
-        INCOME_MULT = 3.0
+        # # multipliers (tweak to taste)
+        # FACTION_MULT = 20.0          # reward per faction tile gained
+        # FARM_MULT = 40.0             # reward per new farm acquired
+        # ENEMY_TILE_MULT = 10.0
+        # BANKRUPT_MULT = -1000.0
+        # INCOME_MULT = 10.0
+        # DUMB_MOVE_MULT = 30.0
+        # RESOURCE_MULT = 1.0
+        # TREE_MULT = 30.0
 
-        # --- friendly force metric and reward based on its change ---
-        friendly_metric_reward = self._evaluate_friendly_force()
-        # friendly_metric_reward = 0.0
-        # friendly_metric_reward = (current_friendly_metric - self.prev_friendly_metric)
-        # # store for next turn
-        # self.prev_friendly_metric = current_friendly_metric
+        # # --- friendly force metric and reward based on its change ---
+        # friendly_metric_reward = self._evaluate_friendly_force()
 
-        # --- enemy force removal reward based on its change ---
-        # current_enemy_attack = self._evaluate_enemy_force()
-        # enemy_attack_reward = 0.0
-        # enemy_attack_reward = (self.prev_enemy_attack - current_enemy_attack) * ENEMY_UNIT_MULT
-        # # store for next turn
-        # self.prev_enemy_attack = current_enemy_attack
+        # # --- province expansion reward (tiles gained) ---
+        # current_faction_tiles = self._count_faction_tiles()
+        # faction_expansion_reward = 0
+        # faction_expansion_reward = (current_faction_tiles - self.prev_faction_tiles) * FACTION_MULT
+        # self.prev_faction_tiles = current_faction_tiles
 
-        # --- province expansion reward (tiles gained) ---
-        current_faction_tiles = self._count_faction_tiles()
-        faction_expansion_reward = 0
-        faction_expansion_reward = (current_faction_tiles - self.prev_faction_tiles) * FACTION_MULT
-        self.prev_faction_tiles = current_faction_tiles
+        # # --- farm / economy reward ---
+        # current_farms = self._count_farms()
+        # farm_reward = 0
+        # farm_reward = (current_farms - self.prev_farm_count) * FARM_MULT
+        # self.prev_farm_count = current_farms
 
-        # --- farm / economy reward ---
-        current_farms = self._count_farms()
-        farm_reward = 0
-        farm_reward = (current_farms - self.prev_farm_count) * FARM_MULT
-        self.prev_farm_count = current_farms
+        # # --- claim enemy tile reward ---
+        # claimed_enemy_tile_reward = self.enemy_tiles_claimed * ENEMY_TILE_MULT
+        # self.enemy_tiles_claimed = 0
 
-        # --- claim enemy tile reward ---
-        claimed_enemy_tile_reward = self.enemy_tiles_claimed * ENEMY_TILE_MULT
-        self.enemy_tiles_claimed = 0
+        # # --- bankruptcy penalty ---
+        # bankruptcy_penalty = self._calculate_bankruptcy() * BANKRUPT_MULT
 
-        # --- bankruptcy penalty ---
-        bankruptcy_penalty = self._calculate_bankruptcy() * BANKRUPT_MULT
+        # # --- income reward ---
+        # current_income, current_resources = self._get_total_income()
+        # delta_income = current_income - self.prev_income
+        # delta_resources = current_resources - self.prev_resources
+        # income_reward = delta_income * INCOME_MULT
+        # resource_reward = delta_resources * RESOURCE_MULT
+        # self.prev_income = current_income
+        # self.prev_resources = current_resources
 
-        # --- income reward ---
-        current_income = self._get_total_income()
-        income_reward = current_income * INCOME_MULT
+        # dumb_move_penalty = self.dumb_move_penalty * DUMB_MOVE_MULT
+        # self.dumb_move_penalty = 0
+
+        tree_reward = self.tree_elim
+        self.tree_elim = 0
+
+        turn_length_penalty = max(-0.1, self.turn * -0.01)
         
         # sum everything
-        reward = friendly_metric_reward + faction_expansion_reward + farm_reward + claimed_enemy_tile_reward + bankruptcy_penalty + income_reward
+        # reward = friendly_metric_reward + faction_expansion_reward + farm_reward + claimed_enemy_tile_reward + bankruptcy_penalty + income_reward + dumb_move_penalty + resource_reward + tree_reward
+        # reward = friendly_metric_reward + faction_expansion_reward + farm_reward + claimed_enemy_tile_reward + bankruptcy_penalty + income_reward + dumb_move_penalty + tree_reward
+        # reward = income_reward + friendly_metric_reward + claimed_enemy_tile_reward + tree_reward + turn_length_penalty
+
+        reward = self.boardEvaluation(self.scenario.factions[self.faction_idx]) - 0.5 + turn_length_penalty + (tree_reward * 0.1)
 
         # Debugging info
         # print(f"Turn Reward: {reward:.2f}")
         # print(f"Friendly metric reward: {friendly_metric_reward:.2f}")
+        # print(f"Enemy tile claimed reward: {claimed_enemy_tile_reward:.2f}")
+        # print(f"Income reward: {income_reward:.2f}")
+        # print(f"Turn Penalty: {turn_length_penalty:.2f}")
         # print(f"Faction expansion reward: {faction_expansion_reward:.2f} (tiles: {current_faction_tiles})")
         # print(f"Farm reward: {farm_reward:.2f} (farms: {current_farms})")
-        # print(f"Enemy tile claimed reward: {claimed_enemy_tile_reward:.2f}")
         # print(f"Bankruptcy penalty: {bankruptcy_penalty:.2f}")
-        # print(f"Income reward: {income_reward:.2f}")
+        # print(f"Resource reward: {resource_reward:.2f}")
+        # print(f"Tree reward: {(tree_reward * 0.1):.2f}")
+        # print(f"Dumb move penalty: {dumb_move_penalty:.2f}")
 
         return reward
     
@@ -502,42 +682,28 @@ class AntiyoyEnv(gym.Env):
         build_mask = torch.zeros(num_tiles * len(self.UNIT_TYPES), dtype=torch.bool)
 
         # Move mask
-        for start_row in range(side):
-            for start_col in range(side):
-                unit = self.scenario.mapData[start_row][start_col].unit
+        for tile_index in range(self.num_tiles):
+            r, c = self.index_to_coords(tile_index)
+            unit = self.scenario.mapData[r][c].unit
 
-                # if unit is not None:
-                #     print(unit.unitType)
-                #     print(unit.owner)
+            # No unit or wrong faction → all false
+            if unit is None or unit.owner.name !=self.scenario.factions[self.faction_idx].name or not self.can_move_unit(unit):
+                move_mask_list.extend([False] * self.MAX_REACHABLE)
+                continue
 
-                # Skip tiles with no movable unit or wrong owner
-                if unit is None or unit.owner is None or unit.owner.name != self.scenario.factions[self.faction_idx].name or not self.can_move_unit(unit):
-                        
-                    # No moves from here
-                    for _ in range(6):
-                        move_mask_list.append(False)
-                    continue
+            reachable_tiles = self.scenario.getAllTilesWithinMovementRangeFiltered(r, c)
 
-                # print("unit owner", unit.owner.name)
-                # print("faction", self.scenario.factions[self.faction_idx].name)
+            cols = len(self.scenario.mapData[0])
+            index = r * cols + c
+            reachable_list = self.reachable_lists[index]
 
-                reachable_tiles = self.scenario.getAllTilesWithinMovementRangeFiltered(start_row, start_col)
-                neighbors = self.scenario.mapData[start_row][start_col].neighbors
-
-                for direction in range(6):
-                    dest_hex = neighbors[direction]
-
-                    if dest_hex is None:
-                        move_mask_list.append(False)
-                        continue
-
-                    dest_row, dest_col = dest_hex.row, dest_hex.col
-                    if (dest_row, dest_col) in reachable_tiles:
-                        # print(f"{unit.unitType} at ({start_row}, {start_col}) can move to ({dest_row}, {dest_col})")
-                        move_mask_list.append(True)
-                    else:
-
-                        move_mask_list.append(False)
+            for item in reachable_list:
+                rr, cc = item
+                if rr == -1 or item not in reachable_tiles:
+                    move_mask_list.append(False)
+                else:
+                    # print(f"{unit.unitType} at ({r}, {c}) can move to ({rr}, {cc})")
+                    move_mask_list.append(True)
 
         move_mask = torch.tensor(move_mask_list, dtype=torch.bool)
 

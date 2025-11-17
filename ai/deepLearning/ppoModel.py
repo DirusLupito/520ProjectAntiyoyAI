@@ -1,4 +1,5 @@
 import math
+import os
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -81,32 +82,38 @@ def ppo_update(policy, optimizer, states, actions, old_log_probs, returns, advan
             surr2 = torch.clamp(ratio, 1.0 - clip_epsilon, 1.0 + clip_epsilon) * batch_advantages
             actor_loss = -torch.min(surr1, surr2).mean()
             critic_loss = F.mse_loss(values, batch_returns)
-            loss = actor_loss + 0.5 * critic_loss - 0.02 * entropy
+            loss = actor_loss + 0.5 * critic_loss - 0.05 * entropy
 
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
-def train_ppo(num_episodes=10000, max_steps=100):
+def train_ppo(num_episodes=400000, max_steps=50, checkpoint_path=""):
     factions = []
     factions.append(Faction(name="Red", color="Red", playerType="ai", aiType="ppo"))
-    factions.append(Faction(name="Blue", color="Blue", playerType="ai", aiType="mark1srb"))
-    scenario = generateRandomScenario(5, 20, factions, 3, 1)
+    factions.append(Faction(name="Blue", color="Blue", playerType="ai", aiType="mark2srb"))
+    scenario = generateRandomScenario(4, 16, factions, 4, 1)
     env = AntiyoyEnv(scenario, 0)
 
     obs_dim = env._get_observation().shape[0]
-    num_tiles = len(env.scenario.mapData) * len(env.scenario.mapData[0])
-    num_move_actions = num_tiles * 6  # 6 directions per tile
-    num_build_actions = num_tiles * 7
-    action_dim = num_move_actions + num_build_actions + 1
 
-    policy = ActorCritic(obs_dim, action_dim)
+    policy = ActorCritic(obs_dim, env.action_space_size)
     optimizer = optim.Adam(policy.parameters(), lr=3e-4)
+
+    # Load checkpoint if exists to continue training
+    if os.path.exists(checkpoint_path):
+        print(f"Loading checkpoint from {checkpoint_path}")
+        checkpoint = torch.load(checkpoint_path)
+        policy.load_state_dict(checkpoint['policy_state_dict'])
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        # start_episode = checkpoint.get('episode', 0) + 1
+        # print(f"Resuming training from episode {start_episode}")
+    else:
+        # start_episode = 0
+        print("Starting training from scratch")
 
     gamma = 0.99
     lam = 0.95
-
-    env.reset()
 
     won = 0
     tie = 0
@@ -114,10 +121,16 @@ def train_ppo(num_episodes=10000, max_steps=100):
     for episode in range(num_episodes):
         factions = []
         # Generate new game every episode
-        factions.append(Faction(name="Red", color="Red", playerType="ai", aiType="ppo"))
-        factions.append(Faction(name="Blue", color="Blue", playerType="ai", aiType="mark1srb"))
-        scenario = generateRandomScenario(5, 20, factions, 3, randomSeed=episode) # we can fix this seed if we want to train on the same board
-        env = AntiyoyEnv(scenario, 0)
+        if episode % 2 == 0:
+            factions.append(Faction(name="Red", color="Red", playerType="ai", aiType="ppo"))
+            factions.append(Faction(name="Blue", color="Blue", playerType="ai", aiType="mark2srb"))
+            scenario = generateRandomScenario(4, 16, factions, 4, randomSeed=episode) # we can fix this seed if we want to train on the same board
+            env = AntiyoyEnv(scenario, 0)
+        else:
+            factions.append(Faction(name="Blue", color="Blue", playerType="ai", aiType="mark2srb"))
+            factions.append(Faction(name="Red", color="Red", playerType="ai", aiType="ppo"))
+            scenario = generateRandomScenario(4, 16, factions, 4, randomSeed=episode) # we can fix this seed if we want to train on the same board
+            env = AntiyoyEnv(scenario, 1)
 
         obs = env._get_observation()
         done = False
@@ -152,16 +165,29 @@ def train_ppo(num_episodes=10000, max_steps=100):
                         break
                 
                 if winner:
+                    win_bonus = 30.0
+                    lose_penalty = 10.0
+                    progress = 1.0 - (step / max_steps)
+                    reward_bonus = win_bonus * progress
+                    T = len(rewards)
+
+                    # Linear weights: 1, 2, 3, ..., T
+                    weights = torch.arange(1, T + 1, dtype=torch.float32)
+                    weights = weights / weights.sum()  # normalize to sum to 1
                     # Add winner bonus that decreases as games go longer
                     if winner.name == "Red":
-                        max_bonus = 2000.0
-                        progress = 1.0 - (step / max_steps)
-                        reward_bonus = max_bonus * progress
-                        rewards[-1] += reward_bonus
-                    # else:
-                    #     rewards[-1] -= 1000.0
+                        # Apply weighted bonus
+                        for i in range(T):
+                            rewards[i] += reward_bonus * weights[i].item()
+                        # bonus_per_step = reward_bonus / len(rewards)
+
+                        # for i in range(len(rewards)):
+                        #     rewards[i] += bonus_per_step
+                    else:
+                        for i in range(T):
+                            rewards[i] -= lose_penalty * weights[i].item()
             # elif step == max_steps - 1:
-            #     rewards[-1] -= 100.0
+            #     rewards[-1] -= 1000.0
 
             # Store step info
             states.append(obs_tensor)
@@ -174,11 +200,12 @@ def train_ppo(num_episodes=10000, max_steps=100):
 
             obs = next_obs
             step += 1
+            env.turn += 1
 
         # If max steps hit without done, forcibly end episode
         if step == max_steps and not done:
             done = True
-            print("Max steps reached")
+            print(f"\033[33mEpisode {episode + 1} max steps reached, total reward: {sum(rewards)}")
             tie += 1
         else:
             winner = None
@@ -190,6 +217,9 @@ def train_ppo(num_episodes=10000, max_steps=100):
             if winner:
                 if winner.name == "Red":
                     won += 1
+                    print(f"\033[32mEpisode {episode + 1} complete, total reward: {sum(rewards)}")
+                else:
+                    print(f"\033[31mEpisode {episode + 1} complete, total reward: {sum(rewards)}")
 
         # Compute returns and advantages
         if math.isnan(reward) or math.isinf(reward):
@@ -199,23 +229,21 @@ def train_ppo(num_episodes=10000, max_steps=100):
         # PPO update
         ppo_update(policy, optimizer, states, actions, old_log_probs, returns, advantages, valid_masks)
 
-        print(f"Episode {episode + 1} complete, total reward: {sum(rewards)}")
-
         
 
     # Final save
-    print(f"Number of games won by PPO: {won}. Number of games tied: {tie}. Winrate: {float(won)/float(num_episodes-tie)}")
-    torch.save(policy.state_dict(), "ppo_policy_final.pth")
+    print(f"\033[0mNumber of games won by PPO: {won}. Number of games tied: {tie}. Winrate: {float(won)/float(num_episodes-tie)}")
+    torch.save({
+        "policy_state_dict": policy.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict()
+    }, "ppo_checkpoint.pth")
     print("Training complete. Model saved to ppo_policy_final.pth")
 
 def run_trained_policy(env, model_path, max_steps=100):
     obs_dim = env._get_observation().shape[0]
     num_tiles = len(env.scenario.mapData) * len(env.scenario.mapData[0])
-    num_move_actions = num_tiles * 6  # 6 directions per tile
-    num_build_actions = num_tiles * 7
-    action_dim = num_move_actions + num_build_actions + 1
 
-    policy = ActorCritic(obs_dim, action_dim)
+    policy = ActorCritic(obs_dim, env.action_space_size)
     policy.load_state_dict(torch.load(model_path))
     policy.eval()  # Set to eval mode
 
@@ -241,7 +269,7 @@ def run_trained_policy(env, model_path, max_steps=100):
 
     print(f"Episode finished after {step} steps with total reward {total_reward}")
 
-def get_turn_moves(env, policy):
+def get_turn_moves(env, policy, faction):
     """
     Runs the policy on the given env, collecting moves until the end-turn action is selected.
     Returns a list of actions taken this turn.
@@ -263,12 +291,12 @@ def get_turn_moves(env, policy):
         if action == len(mask_tensor) - 1:  # End turn action (last index)
             # Stop collecting moves this turn
             done = True
-            for action, province_idx in reversed(actions):
+            for action, province in reversed(actions):
                 # print(env.scenario.factions[0].provinces[0].resources)
-                if province_idx is None:
+                if province is None:
                     env.scenario.applyAction(action.invert())
                 else:
-                    env.scenario.applyAction(action.invert(), provinceDoingAction=env.scenario.factions[0].provinces[min(province_idx, len(env.scenario.factions[0].provinces) - 1)])
+                    env.scenario.applyAction(action.invert(), provinceDoingAction=province)
             # env.render()
         else:
             moves.append(action)
@@ -281,3 +309,6 @@ def get_turn_moves(env, policy):
             done = done_flag  # Should be False here until turn ends or game ends
 
     return actions
+
+if __name__ == "__main__":
+    train_ppo(checkpoint_path="500kmark1.pth")
