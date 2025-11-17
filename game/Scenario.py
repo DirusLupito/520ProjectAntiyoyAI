@@ -575,7 +575,7 @@ class Scenario:
             finalTile.unit is not None and
             isinstance(finalTile.unit, Soldier) and
             isinstance(unitToMove, Soldier)):
-            resultantUnit = Soldier(unitToMove.tier + finalTile.unit.tier)
+            resultantUnit = Soldier(unitToMove.tier + finalTile.unit.tier, unitToMove.owner)
         
         previousInitialHexState = {
             "unit": unitToMove,
