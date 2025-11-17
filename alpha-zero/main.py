@@ -35,7 +35,7 @@ import coloredlogs
 from Coach import Coach
 from antiyoy.AntiyoyGame import AntiyoyGame as Game
 from antiyoy.pytorch.NNet import NNetWrapper as nn
-from utils import *
+from azg.utils import *
 
 # Set up logging
 log = logging.getLogger(__name__)
