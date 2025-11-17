@@ -1,0 +1,286 @@
+2025-11-17 06:26:44,812 [INFO] ================================================================================
+2025-11-17 06:26:44,812 [INFO] Starting robust training runner
+2025-11-17 06:26:44,812 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 06:26:44,812 [INFO] Press Ctrl+C to stop
+2025-11-17 06:26:44,812 [INFO] ================================================================================
+2025-11-17 06:26:44,812 [INFO] 
+================================================================================
+2025-11-17 06:26:44,812 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 06:26:44,812 [INFO] Started at: 2025-11-17 06:26:44
+2025-11-17 06:26:44,812 [INFO] ================================================================================
+
+2025-11-17 06:26:45,603 [INFO] ============================================================
+2025-11-17 06:26:45,603 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 06:26:45,603 [INFO] ============================================================
+2025-11-17 06:26:45,603 [INFO] Loading AntiyoyGame...
+2025-11-17 06:26:45,603 [INFO] Game Configuration:
+2025-11-17 06:26:45,603 [INFO]   Board size: (22, 5, 5)
+2025-11-17 06:26:45,604 [INFO]   Action size: 676
+2025-11-17 06:26:45,604 [INFO] Loading NNetWrapper...
+2025-11-17 06:26:45,741 [INFO] Neural Network Configuration:
+2025-11-17 06:26:45,741 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 06:26:45,741 [INFO]   Output size: 676 (possible actions)
+2025-11-17 06:26:45,741 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 06:26:45,759 [INFO] Checkpoint loaded successfully!
+2025-11-17 06:26:45,759 [INFO] Loading the Coach...
+2025-11-17 06:26:45,775 [INFO] Loading 'trainExamples' from file...
+2025-11-17 06:26:45,775 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 06:26:46,581 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 06:26:46,581 [INFO] 
+================================================================================
+2025-11-17 06:26:46,581 [INFO] Training stopped by user
+2025-11-17 06:26:46,581 [INFO] ================================================================================
+2025-11-17 06:30:25,223 [INFO] ================================================================================
+2025-11-17 06:30:25,223 [INFO] Starting robust training runner
+2025-11-17 06:30:25,224 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 06:30:25,224 [INFO] Press Ctrl+C to stop
+2025-11-17 06:30:25,224 [INFO] ================================================================================
+2025-11-17 06:30:25,224 [INFO] 
+================================================================================
+2025-11-17 06:30:25,224 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 06:30:25,224 [INFO] Started at: 2025-11-17 06:30:25
+2025-11-17 06:30:25,224 [INFO] ================================================================================
+
+2025-11-17 06:31:28,689 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 06:31:28,689 [INFO] 
+================================================================================
+2025-11-17 06:31:28,689 [INFO] Training stopped by user
+2025-11-17 06:31:28,689 [INFO] ================================================================================
+2025-11-17 06:31:29,785 [INFO] ================================================================================
+2025-11-17 06:31:29,785 [INFO] Starting robust training runner
+2025-11-17 06:31:29,785 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 06:31:29,786 [INFO] Press Ctrl+C to stop
+2025-11-17 06:31:29,786 [INFO] ================================================================================
+2025-11-17 06:31:29,786 [INFO] 
+================================================================================
+2025-11-17 06:31:29,786 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 06:31:29,786 [INFO] Started at: 2025-11-17 06:31:29
+2025-11-17 06:31:29,786 [INFO] ================================================================================
+
+2025-11-17 06:31:31,570 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 06:31:31,570 [INFO] 
+================================================================================
+2025-11-17 06:31:31,570 [INFO] Training stopped by user
+2025-11-17 06:31:31,570 [INFO] ================================================================================
+2025-11-17 06:34:22,365 [INFO] ================================================================================
+2025-11-17 06:34:22,366 [INFO] Starting robust training runner
+2025-11-17 06:34:22,366 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 06:34:22,366 [INFO] Press Ctrl+C to stop
+2025-11-17 06:34:22,366 [INFO] ================================================================================
+2025-11-17 06:34:22,366 [INFO] 
+================================================================================
+2025-11-17 06:34:22,366 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 06:34:22,366 [INFO] Started at: 2025-11-17 06:34:22
+2025-11-17 06:34:22,366 [INFO] ================================================================================
+
+2025-11-17 06:34:23,842 [INFO] ============================================================
+2025-11-17 06:34:23,842 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 06:34:23,842 [INFO] ============================================================
+2025-11-17 06:34:23,842 [INFO] Loading AntiyoyGame...
+2025-11-17 06:34:23,842 [INFO] Game Configuration:
+2025-11-17 06:34:23,842 [INFO]   Board size: (22, 5, 5)
+2025-11-17 06:34:23,842 [INFO]   Action size: 676
+2025-11-17 06:34:23,842 [INFO] Loading NNetWrapper...
+2025-11-17 06:34:23,999 [INFO] Neural Network Configuration:
+2025-11-17 06:34:23,999 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 06:34:23,999 [INFO]   Output size: 676 (possible actions)
+2025-11-17 06:34:23,999 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 06:34:24,024 [INFO] Checkpoint loaded successfully!
+2025-11-17 06:34:24,025 [INFO] Loading the Coach...
+2025-11-17 06:34:24,034 [INFO] Loading 'trainExamples' from file...
+2025-11-17 06:34:24,034 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 06:34:24,034 [ERROR] Training crashed with EOFError: EOF when reading a line
+2025-11-17 06:34:24,035 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/run_training.py", line 41, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/main.py", line 222, in main
+    c.loadTrainExamples()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/Coach.py", line 153, in loadTrainExamples
+    r = input("Continue? [y|n]")
+EOFError: EOF when reading a line
+
+2025-11-17 06:34:24,035 [WARNING] 
+================================================================================
+2025-11-17 06:34:24,035 [WARNING] Training crashed! This was crash #1
+2025-11-17 06:34:24,035 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 06:34:24,035 [WARNING] ================================================================================
+
+2025-11-17 06:34:29,040 [INFO] Restarting training from most recent checkpoint...
+2025-11-17 06:34:29,040 [INFO] 
+================================================================================
+2025-11-17 06:34:29,040 [INFO] Training attempt #2 (Total crashes: 1)
+2025-11-17 06:34:29,040 [INFO] Started at: 2025-11-17 06:34:29
+2025-11-17 06:34:29,040 [INFO] ================================================================================
+
+2025-11-17 06:34:29,040 [INFO] ============================================================
+2025-11-17 06:34:29,040 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 06:34:29,040 [INFO] ============================================================
+2025-11-17 06:34:29,040 [INFO] Loading AntiyoyGame...
+2025-11-17 06:34:29,040 [INFO] Game Configuration:
+2025-11-17 06:34:29,040 [INFO]   Board size: (22, 5, 5)
+2025-11-17 06:34:29,040 [INFO]   Action size: 676
+2025-11-17 06:34:29,040 [INFO] Loading NNetWrapper...
+2025-11-17 06:34:29,052 [INFO] Neural Network Configuration:
+2025-11-17 06:34:29,052 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 06:34:29,052 [INFO]   Output size: 676 (possible actions)
+2025-11-17 06:34:29,052 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 06:34:29,069 [INFO] Checkpoint loaded successfully!
+2025-11-17 06:34:29,069 [INFO] Loading the Coach...
+2025-11-17 06:34:29,078 [INFO] Loading 'trainExamples' from file...
+2025-11-17 06:34:29,079 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 06:34:29,079 [ERROR] Training crashed with EOFError: EOF when reading a line
+2025-11-17 06:34:29,079 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/run_training.py", line 41, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/main.py", line 222, in main
+    c.loadTrainExamples()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/Coach.py", line 153, in loadTrainExamples
+    r = input("Continue? [y|n]")
+EOFError: EOF when reading a line
+
+2025-11-17 06:34:29,079 [WARNING] 
+================================================================================
+2025-11-17 06:34:29,079 [WARNING] Training crashed! This was crash #2
+2025-11-17 06:34:29,079 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 06:34:29,079 [WARNING] ================================================================================
+
+2025-11-17 06:34:34,079 [INFO] Restarting training from most recent checkpoint...
+2025-11-17 06:34:34,079 [INFO] 
+================================================================================
+2025-11-17 06:34:34,079 [INFO] Training attempt #3 (Total crashes: 2)
+2025-11-17 06:34:34,079 [INFO] Started at: 2025-11-17 06:34:34
+2025-11-17 06:34:34,079 [INFO] ================================================================================
+
+2025-11-17 06:34:34,079 [INFO] ============================================================
+2025-11-17 06:34:34,079 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 06:34:34,079 [INFO] ============================================================
+2025-11-17 06:34:34,079 [INFO] Loading AntiyoyGame...
+2025-11-17 06:34:34,079 [INFO] Game Configuration:
+2025-11-17 06:34:34,079 [INFO]   Board size: (22, 5, 5)
+2025-11-17 06:34:34,079 [INFO]   Action size: 676
+2025-11-17 06:34:34,079 [INFO] Loading NNetWrapper...
+2025-11-17 06:34:34,095 [INFO] Neural Network Configuration:
+2025-11-17 06:34:34,095 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 06:34:34,095 [INFO]   Output size: 676 (possible actions)
+2025-11-17 06:34:34,096 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 06:34:34,105 [INFO] Checkpoint loaded successfully!
+2025-11-17 06:34:34,106 [INFO] Loading the Coach...
+2025-11-17 06:34:34,113 [INFO] Loading 'trainExamples' from file...
+2025-11-17 06:34:34,113 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 06:34:34,113 [ERROR] Training crashed with EOFError: EOF when reading a line
+2025-11-17 06:34:34,113 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/run_training.py", line 41, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/main.py", line 222, in main
+    c.loadTrainExamples()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/Coach.py", line 153, in loadTrainExamples
+    r = input("Continue? [y|n]")
+EOFError: EOF when reading a line
+
+2025-11-17 06:34:34,114 [WARNING] 
+================================================================================
+2025-11-17 06:34:34,114 [WARNING] Training crashed! This was crash #3
+2025-11-17 06:34:34,114 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 06:34:34,114 [WARNING] ================================================================================
+
+2025-11-17 06:34:41,232 [INFO] Restarting training from most recent checkpoint...
+2025-11-17 06:34:41,232 [INFO] 
+================================================================================
+2025-11-17 06:34:41,232 [INFO] Training attempt #4 (Total crashes: 3)
+2025-11-17 06:34:41,232 [INFO] Started at: 2025-11-17 06:34:41
+2025-11-17 06:34:41,232 [INFO] ================================================================================
+
+2025-11-17 06:34:41,232 [INFO] ============================================================
+2025-11-17 06:34:41,232 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 06:34:41,232 [INFO] ============================================================
+2025-11-17 06:34:41,232 [INFO] Loading AntiyoyGame...
+2025-11-17 06:34:41,232 [INFO] Game Configuration:
+2025-11-17 06:34:41,232 [INFO]   Board size: (22, 5, 5)
+2025-11-17 06:34:41,232 [INFO]   Action size: 676
+2025-11-17 06:34:41,232 [INFO] Loading NNetWrapper...
+2025-11-17 06:34:41,242 [INFO] Neural Network Configuration:
+2025-11-17 06:34:41,242 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 06:34:41,242 [INFO]   Output size: 676 (possible actions)
+2025-11-17 06:34:41,242 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 06:34:41,253 [INFO] Checkpoint loaded successfully!
+2025-11-17 06:34:41,253 [INFO] Loading the Coach...
+2025-11-17 06:34:41,263 [INFO] Loading 'trainExamples' from file...
+2025-11-17 06:34:41,263 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 06:34:41,263 [ERROR] Training crashed with EOFError: EOF when reading a line
+2025-11-17 06:34:41,264 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/run_training.py", line 41, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/main.py", line 222, in main
+    c.loadTrainExamples()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/Coach.py", line 153, in loadTrainExamples
+    r = input("Continue? [y|n]")
+EOFError: EOF when reading a line
+
+2025-11-17 06:34:41,264 [WARNING] 
+================================================================================
+2025-11-17 06:34:41,264 [WARNING] Training crashed! This was crash #4
+2025-11-17 06:34:41,264 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 06:34:41,264 [WARNING] ================================================================================
+
+2025-11-17 06:41:43,197 [INFO] ================================================================================
+2025-11-17 06:41:43,198 [INFO] Starting robust training runner
+2025-11-17 06:41:43,198 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 06:41:43,198 [INFO] Press Ctrl+C to stop
+2025-11-17 06:41:43,198 [INFO] ================================================================================
+2025-11-17 06:41:43,198 [INFO] 
+================================================================================
+2025-11-17 06:41:43,198 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 06:41:43,198 [INFO] Started at: 2025-11-17 06:41:43
+2025-11-17 06:41:43,198 [INFO] ================================================================================
+
+2025-11-17 06:42:44,154 [INFO] ================================================================================
+2025-11-17 06:42:44,154 [INFO] Starting robust training runner
+2025-11-17 06:42:44,154 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 06:42:44,154 [INFO] Press Ctrl+C to stop
+2025-11-17 06:42:44,154 [INFO] ================================================================================
+2025-11-17 06:42:44,154 [INFO] 
+================================================================================
+2025-11-17 06:42:44,154 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 06:42:44,154 [INFO] Started at: 2025-11-17 06:42:44
+2025-11-17 06:42:44,154 [INFO] ================================================================================
+
+2025-11-17 06:42:44,872 [INFO] ============================================================
+2025-11-17 06:42:44,872 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 06:42:44,872 [INFO] ============================================================
+2025-11-17 06:42:44,872 [INFO] Loading AntiyoyGame...
+2025-11-17 06:42:44,872 [INFO] Game Configuration:
+2025-11-17 06:42:44,872 [INFO]   Board size: (22, 5, 5)
+2025-11-17 06:42:44,872 [INFO]   Action size: 676
+2025-11-17 06:42:44,872 [INFO] Loading NNetWrapper...
+2025-11-17 06:42:44,998 [INFO] Neural Network Configuration:
+2025-11-17 06:42:44,998 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 06:42:44,998 [INFO]   Output size: 676 (possible actions)
+2025-11-17 06:42:44,998 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 06:42:45,017 [INFO] Checkpoint loaded successfully!
+2025-11-17 06:42:45,017 [INFO] Loading the Coach...
+2025-11-17 06:42:45,029 [INFO] Loading 'trainExamples' from file...
+2025-11-17 06:42:45,029 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 06:42:46,354 [INFO] Previous training examples loaded successfully!
+2025-11-17 06:42:46,355 [INFO] ============================================================
+2025-11-17 06:42:46,355 [INFO] Starting the learning process 🎉
+2025-11-17 06:42:46,355 [INFO] ============================================================
+2025-11-17 06:42:46,355 [INFO] 
+2025-11-17 06:42:46,355 [INFO] Training Configuration:
+2025-11-17 06:42:46,355 [INFO]   Iterations: 1000
+2025-11-17 06:42:46,355 [INFO]   Self-play games per iteration: 50
+2025-11-17 06:42:46,355 [INFO]   MCTS simulations per move: 100
+2025-11-17 06:42:46,355 [INFO]   Arena games for evaluation: 25
+2025-11-17 06:42:46,355 [INFO]   Update threshold: 0.51
+2025-11-17 06:42:46,355 [INFO] 
+2025-11-17 06:42:46,355 [INFO] This will take a long time. You can:
+2025-11-17 06:42:46,355 [INFO]   - Monitor progress in the terminal
+2025-11-17 06:42:46,355 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 06:42:46,355 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 06:42:46,355 [INFO] 
+2025-11-17 06:42:46,355 [INFO] ============================================================
+2025-11-17 06:42:46,355 [INFO] Starting Iter #1 ...
+2025-11-17 06:42:52,185 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 06:42:52,187 [INFO] 
+================================================================================
+2025-11-17 06:42:52,187 [INFO] Training stopped by user
+2025-11-17 06:42:52,187 [INFO] ================================================================================

@@ -1,0 +1,5 @@
+coloredlogs>=15.0.0
+dotdict>=0.1
+numpy<3.0.0,>=1.24.0
+torch>=2.0.0
+tqdm>=4.67.0
