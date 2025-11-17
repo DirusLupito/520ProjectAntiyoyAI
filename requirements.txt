@@ -1,4 +1,3 @@
--e git+https://github.com/DirusLupito/520ProjectAntiyoyAI.git@a29b031dce43695a65f05dcdb1089948c07d0c93#egg=antiyoy_ai
 coloredlogs==15.0.1
 dotdict==0.1
 filelock==3.20.0
