@@ -18,24 +18,14 @@ https://arxiv.org/abs/1712.01815
 """
 
 import logging
-import sys
-import os
-
-# Increase recursion limit for deep MCTS searches
-# MCTS can easily go 1000+ levels deep
-sys.setrecursionlimit(2000)
-
-# Add paths for imports
-current_dir = os.path.dirname(os.path.abspath(__file__))
-azg_path = os.path.join(current_dir, '..', 'azg')
-sys.path.append(azg_path)
+import setup_path  # Sets up paths for imports - must be first!
 
 import coloredlogs
-
+import os
 from Coach import Coach
 from antiyoy.AntiyoyGame import AntiyoyGame as Game
 from antiyoy.pytorch.NNet import NNetWrapper as nn
-from azg.utils import *
+from azg.utils import dotdict
 
 # Set up logging
 log = logging.getLogger(__name__)

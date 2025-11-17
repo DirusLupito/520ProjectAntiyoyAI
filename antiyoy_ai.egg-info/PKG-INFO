@@ -1,10 +1,11 @@
 Metadata-Version: 2.1
 Name: antiyoy-ai
 Version: 0.1.0
-Summary: UNKNOWN
+Summary: Antiyoy AI using AlphaZero and other RL techniques
 Home-page: UNKNOWN
 License: UNKNOWN
 Platform: UNKNOWN
+Requires-Python: >=3.8
 
 UNKNOWN
 

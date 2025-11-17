@@ -16,13 +16,17 @@ complexity and board size.
 """
 
 import sys
+import os
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# Add parent directory to path for imports
-sys.path.append('../../..')
-from azg.utils import *
+# Set up paths for imports
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../'))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+from azg.utils import dotdict
 
 
 class ResidualBlock(nn.Module):

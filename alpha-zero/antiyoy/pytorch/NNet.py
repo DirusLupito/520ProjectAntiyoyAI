@@ -17,9 +17,12 @@ import time
 import numpy as np
 from tqdm import tqdm
 
-# Add paths for imports
-sys.path.append('../../../')
-from azg.utils import *
+# Set up paths for imports
+parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../'))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
+from azg.utils import dotdict, AverageMeter
 from azg.NeuralNet import NeuralNet
 
 import torch

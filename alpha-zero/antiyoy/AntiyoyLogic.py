@@ -10,8 +10,10 @@ import numpy as np
 import sys
 import os
 
-# Add the parent directory to the path to import game modules
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+# Set up paths for imports
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
 
 from game.Scenario import Scenario
 from game.world.factions.Faction import Faction
