@@ -9,11 +9,7 @@ import numpy as np
 import sys
 import os
 
-# Add the azg directory to the path to import Game base class
-azg_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'azg')
-sys.path.append(azg_path)
-
-from Game import Game
+from azg.Game import Game
 from .AntiyoyLogic import Board
 
 
