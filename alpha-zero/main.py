@@ -76,13 +76,26 @@ args = dotdict({
     # This is the key parameter for playing strength
     # Typical range: 25-800 (AlphaZero used 800)
     # Start with lower values (25-100) for faster training
-    'numMCTSSims': 25, # THIS IS CPU BOUND (probably what slows us down)
+    # INCREASED FOR MORE CONFIDENT POLICIES: 50-100 gives much better training signal
+    'numMCTSSims': 100, # THIS IS CPU BOUND (probably what slows us down)
 
     # CPUCT parameter for MCTS exploration
     # Higher = more exploration of uncertain moves
     # Lower = more exploitation of known good moves
     # Typical range: 0.5-2.0
     'cpuct': 1.0,
+
+    # Dirichlet noise parameters for root node exploration (AlphaZero technique)
+    # Alpha controls the concentration of the Dirichlet distribution
+    # Lower alpha = more concentrated noise = more diverse exploration
+    # Typical range: 0.03 (chess) to 0.3 (Go) to 0.5 (many valid moves)
+    'dirichletAlpha': 0.3,
+
+    # Fraction of root policy that comes from Dirichlet noise
+    # (1-epsilon)*policy + epsilon*noise
+    # Higher = more exploration during self-play
+    # Typical value: 0.25 (25% noise, 75% policy)
+    'explorationFraction': 0.25,
 
     # Heuristic evaluation weight for max depth positions
     # When MCTS reaches max depth (1000), use heuristic evaluation instead of draw

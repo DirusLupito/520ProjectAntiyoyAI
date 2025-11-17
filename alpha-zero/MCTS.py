@@ -43,7 +43,32 @@ class MCTS():
         self.terminal_depths = []
         self.state_revisits = 0
 
+        # Add Dirichlet noise to root node for exploration (AlphaZero technique)
+        # This encourages exploration of less-visited moves during self-play
+        s = self.game.stringRepresentation(canonicalBoard)
+
         for i in range(self.args.numMCTSSims):
+            # Apply Dirichlet noise to root policy on first iteration
+            if i == 0 and s in self.Ps:
+                # Get Dirichlet noise parameters from args (with defaults)
+                dirichlet_alpha = getattr(self.args, 'dirichletAlpha', 0.3)
+                exploration_fraction = getattr(self.args, 'explorationFraction', 0.25)
+
+                # Only add noise if we want exploration (temp > 0)
+                if temp > 0:
+                    valids = self.game.getValidMoves(canonicalBoard, 1)
+                    num_valid_moves = int(np.sum(valids))
+
+                    # Generate Dirichlet noise for valid moves only
+                    noise = np.random.dirichlet([dirichlet_alpha] * num_valid_moves)
+
+                    # Create noise array matching action size
+                    noise_array = np.zeros(len(valids))
+                    noise_array[valids > 0] = noise
+
+                    # Mix policy with noise: (1-ε)p + ε*noise
+                    self.Ps[s] = (1 - exploration_fraction) * self.Ps[s] + exploration_fraction * noise_array
+
             self.search(canonicalBoard)
 
         # # Print diagnostics if verbose mode enabled

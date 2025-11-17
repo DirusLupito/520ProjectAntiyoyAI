@@ -356,7 +356,7 @@ def _get_or_create_agent():
     try:
         _global_agent = AlphaZeroAgent(
             checkpoint_folder='/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha-zero/temp/',
-            checkpoint_file='temp.pth.tar',
+            checkpoint_file='best.pth.tar',
             use_mcts=False,  # Fast mode for gameplay (set to True for stronger play)
             num_mcts_sims=25
         )

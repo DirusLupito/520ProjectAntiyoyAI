@@ -259,6 +259,13 @@ class AntiyoyNNet(nn.Module):
         )
         pi = self.policy_fc2(pi)  # (batch_size, action_size)
 
+        # Apply temperature scaling to sharpen the policy distribution
+        # Lower temperature (< 1.0) makes the policy more confident/spiky
+        # Higher temperature (> 1.0) makes the policy more uniform
+        # Temperature of 0.5-0.7 often works well for increasing volatility
+        temperature = 0.6  # Adjust this value: lower = more volatile
+        pi = pi / temperature
+
         # Apply log_softmax for numerical stability
         # This is preferred over softmax + log for numerical reasons
         pi = F.log_softmax(pi, dim=1)

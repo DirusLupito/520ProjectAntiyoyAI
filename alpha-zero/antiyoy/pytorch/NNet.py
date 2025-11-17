@@ -192,9 +192,11 @@ class NNetWrapper(NeuralNet):
                 l_pi = self.loss_pi(target_pis, out_pi)  # Policy loss
                 l_v = self.loss_v(target_vs, out_v)      # Value loss
 
-                # Total loss is sum of both losses
-                # Could weight these differently, but equal weighting works well
-                total_loss = l_pi + l_v
+                # Total loss with weighted policy loss
+                # Weighting policy loss more heavily encourages sharper predictions
+                # policy_weight > 1.0 makes network focus more on matching MCTS policies
+                policy_weight = 1.5  # Try 1.5-2.0 for more policy emphasis
+                total_loss = policy_weight * l_pi + l_v
 
                 # ===================================================================
                 # BACKWARD PASS
