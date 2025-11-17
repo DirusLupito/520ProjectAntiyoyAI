@@ -17,11 +17,18 @@ This process is based on the AlphaZero paper:
 https://arxiv.org/abs/1712.01815
 """
 
+import sys
+import os
 import logging
-import setup_path  # Sets up paths for imports - must be first!
+
+# Add alpha-zero directory to path so we can import setup_path
+script_dir = os.path.dirname(os.path.abspath(__file__))
+if script_dir not in sys.path:
+    sys.path.insert(0, script_dir)
+
+import setup_path  # Sets up paths for imports
 
 import coloredlogs
-import os
 from Coach import Coach
 from antiyoy.AntiyoyGame import AntiyoyGame as Game
 from antiyoy.pytorch.NNet import NNetWrapper as nn

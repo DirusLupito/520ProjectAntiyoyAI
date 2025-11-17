@@ -5,6 +5,14 @@ This script demonstrates how to use the Antiyoy game implementation
 to play a full game between two random agents.
 """
 
+import sys
+import os
+
+# Add alpha-zero directory to path so we can import setup_path
+script_dir = os.path.dirname(os.path.abspath(__file__))
+if script_dir not in sys.path:
+    sys.path.insert(0, script_dir)
+
 import setup_path  # Sets up paths for imports
 import numpy as np
 
