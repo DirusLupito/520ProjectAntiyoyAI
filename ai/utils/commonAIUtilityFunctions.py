@@ -297,6 +297,58 @@ def getFrontierTiles(province):
     }
     return frontierTiles
 
+def getOwnedTilesAdjacentToEnemy(province):
+    """
+    Retrieves all tiles that are a part of the province
+    which are adjacent to a tile owned by an opposing faction.
+
+    Args:
+        province: The Province object to search for owned tiles near enemies.
+
+    Returns:
+        A list of HexTile objects that are owned by the province
+        which are adjacent to enemy tiles.
+    """
+    ownedTilesNearEnemy = []
+    for tile in province.tiles:
+        for neighbor in tile.neighbors:
+            if neighbor and neighbor.owner and neighbor.owner.faction != province.faction:
+                ownedTilesNearEnemy.append(tile)
+                break  # No need to check other neighbors for this tile
+    return ownedTilesNearEnemy
+
+def getOwnedTilesWithinTwoTilesOfEnemy(province):
+    """
+    Retrieves all tiles that are a part of the province
+    which are either adjacent a tile owned by an opposing
+    faction or adjacent to a tile fitting the aforementioned criteria.
+    Args:
+        province: The Province object to search for owned tiles near enemies.
+
+    Returns:
+        A list of HexTile objects that are owned by the province
+        which are near enemy tiles.
+    """
+    # We first go through and find all tiles directly adjacent to enemy tiles
+    ownedTilesNearEnemy = set()
+    for tile in province.tiles:
+        for neighbor in tile.neighbors:
+            if neighbor and neighbor.owner and neighbor.owner.faction != province.faction:
+                ownedTilesNearEnemy.add(tile)
+                break  # No need to check other neighbors for this tile
+
+    # Next, we find all owned tiles adjacent to those tiles
+    additionalOwnedTilesNearEnemy = set()
+    for tile in province.tiles:
+        for neighbor in tile.neighbors:
+            if neighbor in ownedTilesNearEnemy:
+                additionalOwnedTilesNearEnemy.add(tile)
+                break  # No need to check other neighbors for this tile
+
+    ownedTilesNearEnemy.update(additionalOwnedTilesNearEnemy)
+    return list(ownedTilesNearEnemy)
+
+
 def getEnemyTilesInRangeOfTile(scenario, tile, province):
     """
     Retrieves all enemy tiles within the one turn movement range of the given tile.

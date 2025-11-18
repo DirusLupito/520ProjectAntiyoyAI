@@ -2,9 +2,10 @@
 #Mac Gagne
 
 import math
+import pdb
 from typing import List, Tuple
 
-from ai.utils.commonAIUtilityFunctions import getAllMovableUnitTilesInProvince
+from ai.utils.commonAIUtilityFunctions import getAllMovableUnitTilesInProvince, getEnemyTilesInRangeOfTile, getMoveTowardsTargetTileAvoidingGivenTiles, getOwnedTilesAdjacentToEnemy, getOwnedTilesWithinTwoTilesOfEnemy, getTilesInProvinceWhichContainGivenUnitTypes, getTilesWhichUnitCanBeBuiltOn
 from ai.utils.commonAIUtilityFunctions import getFrontierTiles
 from game.Action import Action
 from game.world.factions.Province import Province
@@ -31,7 +32,7 @@ def playTurn(originalScenario, originalFaction):
     Returns:
         A list of (Action, province) tuples to be executed.
     """
-    fixedSearchDepth = 1  # Modify this value to change the search depth
+    fixedSearchDepth = 2  # Modify this value to change the search depth
     return playTurnWithSearchDepth(originalScenario, originalFaction, fixedSearchDepth)
 
 def playTurnWithSearchDepth(originalScenario, originalFaction, searchDepth):
@@ -65,6 +66,10 @@ def playTurnWithSearchDepth(originalScenario, originalFaction, searchDepth):
     if planningFaction is None:
         return []
 
+    # Used to ensure we only explore one ordering of
+    # unit movement to prune the search space.
+    initializeUnitMovementOrdering(planningScenario)
+
     # alphaBetaSearch performs the actual minimax search
     # If nothing is found, we return no actions.
     _, chosenSequence = alphaBetaSearch(planningScenario, planningFaction, evaluatedDepth, -math.inf, math.inf)
@@ -76,6 +81,103 @@ def playTurnWithSearchDepth(originalScenario, originalFaction, searchDepth):
     # made in the context of a cloned scenario use cloned objects).
     translateSequence = buildSequenceTranslator(originalScenario, scenarioCloner)
     return translateSequence(chosenSequence)
+
+
+def initializeUnitMovementOrdering(planningScenario):
+    """
+    Precomputes deterministic movement ordering for every faction.
+    This is done to reduce the state space the minimax algorithm has to explore,
+    as moving every permutation of each unit to every possible location
+    is unfeasible for anything but the smallest of scenarios.
+
+    Args:
+        planningScenario: The Scenario object representing the current planning state.
+    """
+    if planningScenario is None:
+        return
+
+    # We will throw into each scenario a mapping
+    # of faction to their unit movement ordering.
+    if getattr(planningScenario, "unitMovementOrdering", None):
+        return
+
+    orderingByFaction = {}
+    for faction in getattr(planningScenario, "factions", []):
+        orderingByFaction[faction] = buildFactionUnitOrdering(faction, planningScenario)
+
+    planningScenario.unitMovementOrdering = orderingByFaction
+
+
+def buildFactionUnitOrdering(faction, planningScenario):
+    """
+    Builds a repeatable list of movable units for the given faction.
+
+    Key ideas:
+    - We can only assume a fixed order of movement for minimax if we
+      assume that it is the 'best' or approximately best order to move
+      units in.
+
+    - So what is the 'best' order to move units in? Excerpt from the mark 4:
+      The idea is to first ``reduce'' the enemy's ability to defend themselves, 
+      then to cripple their industry, if such an industry exists,
+      and then if neither of those are possible,
+      to simply make inroads into the most fortified enemy positions.
+
+    - What does this translate to in terms of unit movement ordering?
+      Well, higher tier units are the only ones that can ``reduce'' enemy defenses
+      of a high tier, and thus should be moved first. But only if they are within
+      range of the enemy. But even if it isn't within range we want to move
+      these units closer to the enemy first so in large army groups they will
+      tend to be at the front, and therefore be able to attack sooner.
+
+    - So putting it all together, we can sort units by:
+        1. Tier (higher first)
+        2. Proximity to enemy units (getAllTilesWithinMovementRangeFiltered returns at least one
+           enemy occupied tile)
+
+    Args:
+        faction: The Faction object for which to build the unit ordering.
+        planningScenario: The Scenario object representing the current planning state.
+
+    Returns:
+        A list of tuples of (tile, province) for each movable unit in the faction,
+        ordered by the criteria described above.
+    """
+    ordering = []
+    if faction is None:
+        return ordering
+
+    for province in getattr(faction, "provinces", []):
+        if province is None or not getattr(province, "active", False):
+            continue
+
+        movableTiles = getAllMovableUnitTilesInProvince(province)
+        
+        def tileSortKey(entry):
+            tile, _ = entry
+            unit = getattr(tile, "unit", None)
+            if unit is None:
+                return (0, 0)  # Should not happen since we filtered for movable units, but just in case
+            
+            tier = getattr(unit, "tier", 1) if isinstance(unit, Soldier) else 0
+            allEnemyTilesInRange = getEnemyTilesInRangeOfTile(planningScenario, tile, province)
+
+            # Let's filter out all the enemy tiles which belong to single-tile provinces/inactive provinces,
+            # since these can be bypassed by our offensive units and cleaned up later once their units
+            # have starved to death.
+            filteredEnemyTilesInRange = [tile for tile in allEnemyTilesInRange if len(tile.owner.tiles) > 1]
+
+            if filteredEnemyTilesInRange:
+                # We know there is at least one enemy tile in range.
+                return (-tier, -1)
+            
+            return (-tier, 0)
+        
+        movableTiles.sort(key=tileSortKey)
+
+        ordering.extend(movableTiles)
+
+    return ordering
 
 
 def alphaBetaSearch(planningScenario, maximizerFaction, remainingDepth, alphaValue, betaValue):
@@ -165,7 +267,6 @@ def generateTurnBranches(planningScenario, maximizerFaction):
     sequence: ActionChain = []
 
     def depthFirstEnumerate():
-        actingFaction = planningScenario.getFactionToPlay()
         # Clone the current planning state so each yielded branch is isolated.
         # We don't want planning in one independent branch to affect another.
         branchCloner = planningScenario.clone()
@@ -228,64 +329,215 @@ def collectSingleStepActions(planningScenario):
     # We go through every province owned by the faction
     # and figure out everything each individual province can do.
     # Since we're only doing single-step actions, we don't
-    # really need to worry about merges.
+    # really need to worry about province merges causing issues 
+    # (like if we did, say, double step actions).
     
     # Also, since we aren't applying any actions yet, the provinces
     # will stay in the same state, allowing us to safely iterate over them
     # and generate actions for modifying them, without worrying about
     # reverting any changes.
-    for province in list(actingFaction.provinces):
-        # getattr is safer than province.active directly,
-        # since the latter could raise an exception if province is None.
-        if province is None or not getattr(province, "active", False):
-            continue
 
-        # First, we gather all movable units in the province
-        # and see where they can go.
-        movableTiles = getAllMovableUnitTilesInProvince(province)
-        for tile, originProvince in movableTiles:
-            # getAllTilesWithinMovementRangeFiltered could raise ValueError
-            # if somehow tile is out of bounds. Should be impossible here,
-            # but just in case, we catch and skip.
+    # We retrieve the precomputed next unit to move from the ordering,
+    # so that we do not explore all the permutations of unit movement orders.
+    orderingByFaction = getattr(planningScenario, "unitMovementOrdering", None)
+    if orderingByFaction is None:
+        initializeUnitMovementOrdering(planningScenario)
+        orderingByFaction = getattr(planningScenario, "unitMovementOrdering", None)
+
+    nextUnitToMove = None
+    if orderingByFaction is not None:
+        factionOrdering = orderingByFaction.get(actingFaction)
+        if factionOrdering:
+            for orderedUnit in factionOrdering:
+                if getattr(orderedUnit, "canMove", True):
+                    nextUnitToMove = orderedUnit
+                    break
+
+    # We don't need to do unit movement in the province loop
+    # since there is only one unit to move next.
+    # nextUnitToMove = tuple of (tile, province)
+    if nextUnitToMove is not None and getattr(getattr(nextUnitToMove[0], "unit", None), "canMove", False):
+        nextUnitTile, nextUnitProvince = nextUnitToMove
+
+        # getAllTilesWithinMovementRangeFiltered could raise ValueError
+        # if somehow tile is out of bounds. Should be impossible here,
+        # but just in case, we catch and skip.
+        try:
+            allDestinations = planningScenario.getAllTilesWithinMovementRangeFiltered(nextUnitTile.row, nextUnitTile.col)
+
+            # We now filter destinations since some moves are insensible under 99.999... percent of all situations
+            # These are moves that take the unit out of range to either attack or defend from an attack.
+            # In fact we can probably filter out destinations insensible under 90 percent of all situations
+            # and it won't be that bad.
+            # So we will only consider destinations that are either on the frontier of the province, or
+            # adjacent to an enemy tile.
+            frontierTiles = getFrontierTiles(nextUnitProvince)
+            frontierTilesAsCoordTuples = [(tile.row, tile.col) for tile in frontierTiles]
+            enemyAdjacentTiles = getOwnedTilesAdjacentToEnemy(nextUnitProvince)
+            enemyAdjacentTilesAsCoordTuples = [(tile.row, tile.col) for tile in enemyAdjacentTiles]
+            # We also filter out tiles with an immobile unit on them
+            # since the only reason to move a unit there would be in a very
+            # niche situation (a very temporary defense).
+            immobileSoldierTiles = [tile for tile in nextUnitProvince.tiles if isinstance(getattr(tile, "unit", None), Soldier) and not getattr(tile.unit, "canMove", False)]
+            immobileSoldierTilesAsCoordTuples = [(tile.row, tile.col) for tile in immobileSoldierTiles]
+            destinations = list(((set(frontierTilesAsCoordTuples) | set(enemyAdjacentTilesAsCoordTuples)) - set(immobileSoldierTilesAsCoordTuples)) & set(allDestinations))
+        except ValueError:
+            destinations = []
+
+        
+        for targetRow, targetCol in destinations:
+            # Likewise, moveUnit could raise ValueError
+            # if the target tile is invalid. We catch and skip.
             try:
-                destinations = planningScenario.getAllTilesWithinMovementRangeFiltered(tile.row, tile.col)
+                moveActions = planningScenario.moveUnit(nextUnitTile.row, nextUnitTile.col, targetRow, targetCol)
             except ValueError:
                 continue
             
+            # If we actually made any valid move actions, we add them
+            # to our list of possible single-step action chains.
+            if moveActions:
+                actions.append([(action, nextUnitProvince) for action in moveActions])
+
+        # If destinations was empty, the unit can still move, so let's consider tiles within 2 hexes of the enemy
+        # or tiles with trees
+        if not destinations:
+            try:
+                allDestinations = planningScenario.getAllTilesWithinMovementRangeFiltered(nextUnitTile.row, nextUnitTile.col)
+                borderTiles = getOwnedTilesWithinTwoTilesOfEnemy(nextUnitProvince)
+                borderTilesAsCoordTuples = [(tile.row, tile.col) for tile in borderTiles]
+                treeTiles = getTilesInProvinceWhichContainGivenUnitTypes(nextUnitProvince, ["tree"])
+                treeTilesAsCoordTuples = [(tile.row, tile.col) for tile in treeTiles]
+                destinations = list((set(borderTilesAsCoordTuples) | set(treeTilesAsCoordTuples)) & set(allDestinations))
+            except ValueError:
+                destinations = []
+
             for targetRow, targetCol in destinations:
                 # Likewise, moveUnit could raise ValueError
                 # if the target tile is invalid. We catch and skip.
                 try:
-                    moveActions = planningScenario.moveUnit(tile.row, tile.col, targetRow, targetCol)
+                    moveActions = planningScenario.moveUnit(nextUnitTile.row, nextUnitTile.col, targetRow, targetCol)
                 except ValueError:
                     continue
                 
                 # If we actually made any valid move actions, we add them
                 # to our list of possible single-step action chains.
                 if moveActions:
-                    actions.append([(action, originProvince) for action in moveActions])
+                    actions.append([(action, nextUnitProvince) for action in moveActions])
 
-        # The only place that a province can build units is on its frontier tiles,
-        # and on tiles that are part of the province.
-        # Thus we only consider those tiles for building.
-        potentialBuildTiles = list(province.tiles)
+        # Again, if destinations was still empty, the unit can still move, but its so far from the enemy
+        # that we might as well use logic from the mark 4 SRB for its movement to bring it closer to an unclaimed
+        # or tree tile that we can claim/cut down later.
+        if not destinations:
+            # We want to avoid moving onto tiles occupied by our own units,
+            # so we build a set of such tiles to avoid.
+            tilesToAvoid = set()
+
+            # We shall populate tilesToAvoid with all tiles in the province
+            # that contain our own units.
+            for tile in nextUnitProvince.tiles:
+                if tile.unit:
+                    tilesToAvoid.add(tile)
+
+            # Our target tiles will be tree tiles and the frontier
+            targetTiles = []
+            treeTiles = getTilesInProvinceWhichContainGivenUnitTypes(nextUnitProvince, ["tree"])
+            targetTiles.extend(treeTiles)
+            frontierTiles = getFrontierTiles(nextUnitProvince)
+            targetTiles.extend(frontierTiles)
+
+            # If somehow targetTiles is empty, there is nothing to move towards.
+            # Otherwise, we can proceed
+            if targetTiles:
+
+                # In addition to avoiding our own units, and generally avoiding tiles in tilesToAvoid,
+                # we also want to avoid all the tiles not under our control as well,
+                # since we don't want to either cause an exception by trying to move onto an enemy tile
+                # we can't attack, or accidentally make an attack we didn't intend to make.
+                avoidedTileLambda = lambda tile: (tile.row, tile.col) in [(t.row, t.col) for t in tilesToAvoid] or tile.owner != nextUnitProvince
+
+                # We can now just delegate to a helper to find the first move towards the closest target tile,
+                # avoiding tiles occupied by our own units.
+                destinationTile = getMoveTowardsTargetTileAvoidingGivenTiles(nextUnitTile, targetTiles, avoidedTileLambda, planningScenario)
+
+                # This could be None, meaning there is no valid path to any target tile.
+                if destinationTile:
+                    moveActions = planningScenario.moveUnit(nextUnitTile.row, nextUnitTile.col, destinationTile.row, destinationTile.col)
+                    
+                    for moveAction in moveActions:
+                        actions.append([(moveAction, nextUnitProvince)])
+
+
+    for province in list(actingFaction.provinces):
+        # getattr is safer than province.active directly,
+        # since the latter could raise an exception if province is None.
+        if province is None or not getattr(province, "active", False):
+            continue
+
+        # Unit movement should already be handled above,
+        # so here we only consider building new units.
+
+        # The only place we shall consider building soldier units is on frontier tiles,
+        # tree tiles, and on movable soldiers (in case we wish to upgrade them).
+        movableSoldierTileTuples = getAllMovableUnitTilesInProvince(province)
+        movableSoldierTiles = [tileTuple[0] for tileTuple in movableSoldierTileTuples]
         frontierTiles = getFrontierTiles(province)
-        potentialBuildTiles.extend(frontierTiles)
-        for tile in potentialBuildTiles:
-            
-            # Like before, we catch ValueErrors from these methods
-            # just in case something unexpected happens.
+        treeTiles = getTilesInProvinceWhichContainGivenUnitTypes(province, ["tree"])
+        soldierCandidates = list(set(frontierTiles) | set(treeTiles) | set(movableSoldierTiles))
+        for tile in soldierCandidates:
             try:
                 buildableUnits = planningScenario.getBuildableUnitsOnTile(tile.row, tile.col, province)
             except ValueError:
                 continue
-            
+
             for unitType in buildableUnits:
+                # We only want to consider building soldier units here.
+                if not unitType.startswith("soldier"):
+                    continue
                 try:
                     buildActions = planningScenario.buildUnitOnTile(tile.row, tile.col, unitType, province)
                 except ValueError:
                     continue
-                
+            
+                # If we actually made any valid build actions, we add them
+                # to our list of possible single-step action chains.
+                if buildActions:
+                    actions.append([(action, province) for action in buildActions])
+
+        # The only place we shall consider building a farm is on tiles adjacent to either the capital
+        # or existing farms
+        farmCandidates = getTilesWhichUnitCanBeBuiltOn(planningScenario, province, "farm")
+        for tile in farmCandidates:
+            try:
+                buildActions = planningScenario.buildUnitOnTile(tile.row, tile.col, "farm", province)
+            except ValueError:
+                continue
+            
+            if buildActions:
+                actions.append([(action, province) for action in buildActions])
+
+        # And the only place we shall consider building a tower is on tiles near the enemy
+        tower1Candidates = getTilesWhichUnitCanBeBuiltOn(planningScenario, province, "tower1")
+        borderTiles = getOwnedTilesWithinTwoTilesOfEnemy(province)
+        # A tower candidate will be a border tile in either tower1Candidates
+        # Since a tower2 can be built anywhere a tower2 can, and is more expensive,
+        # tower 2 candidates will be a subset of tower1Candidates, so we need not
+        # compute them
+        towerCandidates = list(set(tower1Candidates) & set(borderTiles))
+        for tile in towerCandidates:
+            try:
+                buildableUnits = planningScenario.getBuildableUnitsOnTile(tile.row, tile.col, province)
+            except ValueError:
+                continue
+
+            for unitType in buildableUnits:
+                # Only consider building tower units here.
+                if not unitType.startswith("tower"):
+                    continue
+                try:
+                    buildActions = planningScenario.buildUnitOnTile(tile.row, tile.col, unitType, province)
+                except ValueError:
+                    continue
+            
                 # If we actually made any valid build actions, we add them
                 # to our list of possible single-step action chains.
                 if buildActions:
@@ -304,6 +556,9 @@ def applyActionChain(planningScenario, actionChain):
     """
     for action, province in actionChain:
         planningScenario.applyAction(action, province)
+    # Reset unit ordering since the actions may have changed
+    # where they are
+    planningScenario.unitMovementOrdering = None
 
 
 def revertActionChain(planningScenario, actionChain):
