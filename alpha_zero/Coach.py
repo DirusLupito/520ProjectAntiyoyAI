@@ -150,9 +150,16 @@ class Coach():
         examplesFile = modelFile + ".examples"
         if not os.path.isfile(examplesFile):
             log.warning(f'File "{examplesFile}" with trainExamples not found!')
-            r = input("Continue? [y|n]")
-            if r != "y":
-                sys.exit()
+
+            # Check if running in interactive mode (has a terminal)
+            if sys.stdin.isatty():
+                r = input("Continue? [y|n]")
+                if r != "y":
+                    sys.exit()
+            else:
+                # Non-interactive mode (background job, remote execution, etc.)
+                # Automatically continue without examples - training will start from scratch
+                log.info("Running in non-interactive mode, automatically continuing without examples...")
         else:
             log.info("File with trainExamples found. Loading it...")
             with open(examplesFile, "rb") as f:

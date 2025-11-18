@@ -4,18 +4,9 @@ test_antiyoy.py - Basic tests for Antiyoy alpha-zero-general integration
 This script tests the basic functionality of the Antiyoy game implementation.
 """
 
-import sys
-import os
 import numpy as np
 
-# Add paths for imports
-current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.dirname(os.path.dirname(current_dir))
-alpha_zero_dir = os.path.join(project_root, 'alpha-zero')
-sys.path.append(project_root)
-sys.path.append(alpha_zero_dir)
-
-from antiyoy.AntiyoyGame import AntiyoyGame
+from alpha_zero.antiyoy.AntiyoyGame import AntiyoyGame
 
 
 def test_basic_game():

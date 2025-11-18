@@ -92,6 +92,12 @@ class MCTS():
 
         if temp == 0:
             bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
+            if len(bestAs) == 0:
+                # All counts are NaN or invalid - fall back to uniform distribution
+                log.error("All visit counts are invalid (NaN), using uniform distribution")
+                valids = self.game.getValidMoves(canonicalBoard, 1)
+                probs = valids / np.sum(valids)
+                return probs.tolist()
             bestA = np.random.choice(bestAs)
             probs = [0] * len(counts)
             probs[bestA] = 1
@@ -99,7 +105,15 @@ class MCTS():
 
         counts = [x ** (1. / temp) for x in counts]
         counts_sum = float(sum(counts))
-        probs = [x / counts_sum for x in counts]
+
+        if counts_sum > 1e-8:  # Avoid division by zero
+            probs = [x / counts_sum for x in counts]
+        else:
+            # Fallback: use valid moves uniformly
+            log.error("MCTS visit counts sum to zero, using uniform distribution")
+            valids = self.game.getValidMoves(canonicalBoard, 1)
+            probs = (valids / np.sum(valids)).tolist()
+
         return probs
 
     def search(self, canonicalBoard, depth=0):
@@ -132,8 +146,7 @@ class MCTS():
 
         # Safety check: MAX_GAME_TURNS is 50
         # Allow generous depth for untrained network exploration
-        # With sys.setrecursionlimit(4000), we have plenty of headroom
-        if depth > 1000:
+        if depth > 100:
             # Use heuristic evaluation instead of treating as draw
             # This provides meaningful training signal even at max depth
             if hasattr(self.game, 'evaluatePosition'):
@@ -173,16 +186,15 @@ class MCTS():
             valids = self.game.getValidMoves(canonicalBoard, 1)
             self.Ps[s] = self.Ps[s] * valids  # masking invalid moves
             sum_Ps_s = np.sum(self.Ps[s])
-            if sum_Ps_s > 0:
+            if sum_Ps_s > 0 and not np.isnan(sum_Ps_s):
                 self.Ps[s] /= sum_Ps_s  # renormalize
             else:
-                # if all valid moves were masked make all valid moves equally probable
-
+                # Handle both masked moves and NaN values
                 # NB! All valid moves may be masked if either your NNet architecture is insufficient or you've get overfitting or something else.
-                # If you have got dozens or hundreds of these messages you should pay attention to your NNet and/or training process.   
-                log.error("All valid moves were masked, doing a workaround.")
-                self.Ps[s] = self.Ps[s] + valids
-                self.Ps[s] /= np.sum(self.Ps[s])
+                # If you have got dozens or hundreds of these messages you should pay attention to your NNet and/or training process.
+                log.error(f"Invalid policy sum ({sum_Ps_s}), using uniform over valid moves")
+                # Replace with uniform distribution over valid moves (don't add to NaN)
+                self.Ps[s] = valids / np.sum(valids)
 
             self.Vs[s] = valids
             self.Ns[s] = 0

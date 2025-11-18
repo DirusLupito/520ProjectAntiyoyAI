@@ -20,15 +20,17 @@ https://arxiv.org/abs/1712.01815
 import sys
 import os
 import logging
+
+# Add alpha-zero directory to path so we can import setup_path
+script_dir = os.path.dirname(os.path.abspath(__file__))
+if script_dir not in sys.path:
+    sys.path.insert(0, script_dir)
+
 import coloredlogs
-
-from alpha_zero.Coach import Coach
-from alpha_zero.antiyoy.AntiyoyGame import AntiyoyGame as Game
-from alpha_zero.antiyoy.pytorch.NNet import NNetWrapper as nn
+from Coach import Coach
+from antiyoy.AntiyoyGame import AntiyoyGame as Game
+from antiyoy.pytorch.NNet import NNetWrapper as nn
 from azg.utils import dotdict
-
-# Set recursion limit for deep MCTS searches
-sys.setrecursionlimit(2000)
 
 # Set up logging
 log = logging.getLogger(__name__)
@@ -70,7 +72,7 @@ args = dotdict({
     # Typical range: 25-800 (AlphaZero used 800)
     # Start with lower values (25-100) for faster training
     # INCREASED FOR MORE CONFIDENT POLICIES: 50-100 gives much better training signal
-    'numMCTSSims': 100, # THIS IS CPU BOUND (probably what slows us down)
+    'numMCTSSims': 25, # THIS IS CPU BOUND (probably what slows us down)
 
     # CPUCT parameter for MCTS exploration
     # Higher = more exploration of uncertain moves
@@ -125,7 +127,7 @@ args = dotdict({
     # Larger = more diverse data but uses more RAM
     # Smaller = less RAM usage but less diverse data
     # Should be larger than numEps * avg_game_length * numItersForTrainExamplesHistory
-    'maxlenOfQueue': 200000,
+    'maxlenOfQueue': 100000,
 
     # Number of iterations of training examples to keep
     # We keep examples from the last N iterations

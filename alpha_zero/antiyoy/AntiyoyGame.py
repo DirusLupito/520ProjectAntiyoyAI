@@ -21,7 +21,7 @@ class AntiyoyGame(Game):
     and the Antiyoy game logic.
 
     Game rules:
-    - 6x6 hexagonal board
+    - 4x4 hexagonal board
     - 2 players (factions)
     - Players take turns making multiple actions (moves/builds) then ending turn
     - Win by being the last faction with active provinces
@@ -232,7 +232,7 @@ class AntiyoyGame(Game):
             board: numpy array representing the board
         """
         print("\n" + "=" * 50)
-        print("ANTIYOY BOARD (6x6 Hex Grid)")
+        print("ANTIYOY BOARD (4x4 Hex Grid)")
         print("=" * 50)
 
         # Display ownership

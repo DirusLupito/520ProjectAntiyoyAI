@@ -2,8 +2,8 @@
 AntiyoyNNet.py - Neural Network Architecture for Antiyoy
 
 This module defines the neural network architecture for the Antiyoy game.
-The network takes a 22-channel 5x5 board representation as input and outputs:
-- Policy head: Probability distribution over 973 possible actions
+The network takes a 22-channel 4x4 board representation as input and outputs:
+- Policy head: Probability distribution over 433 possible actions
 - Value head: Estimated value of the current position (-1 to 1)
 
 Architecture Design Principles:
@@ -91,7 +91,7 @@ class AntiyoyNNet(nn.Module):
     a policy (which action to take) and a value (how good is this position).
 
     Architecture Overview:
-    1. Input Layer: Processes 22-channel 5x5 board
+    1. Input Layer: Processes 22-channel 4x4 board
     2. Initial Convolution: Expands to num_channels features
     3. Residual Blocks: Deep feature extraction
     4. Policy Head: Outputs probability distribution over actions
@@ -200,7 +200,7 @@ class AntiyoyNNet(nn.Module):
 
         Args:
             s: Input tensor of shape (batch_size, num_input_channels, board_y, board_x)
-               For Antiyoy: (batch_size, 22, 5, 5)
+               For Antiyoy: (batch_size, 22, 4, 4)
 
         Returns:
             pi: Log probabilities for actions, shape (batch_size, action_size)
@@ -256,15 +256,9 @@ class AntiyoyNNet(nn.Module):
         )
         pi = self.policy_fc2(pi)  # (batch_size, action_size)
 
-        # Apply temperature scaling to sharpen the policy distribution
-        # Lower temperature (< 1.0) makes the policy more confident/spiky
-        # Higher temperature (> 1.0) makes the policy more uniform
-        # Temperature of 0.5-0.7 often works well for increasing volatility
-        temperature = 0.6  # Adjust this value: lower = more volatile
-        pi = pi / temperature
-
         # Apply log_softmax for numerical stability
-        # This is preferred over softmax + log for numerical reasons
+        # Temperature scaling is NOT applied here - it should only be used during
+        # inference (in the predict() method), never during training
         pi = F.log_softmax(pi, dim=1)
 
         # ===================================================================

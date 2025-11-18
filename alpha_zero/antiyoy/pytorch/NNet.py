@@ -44,14 +44,14 @@ args = dotdict({
 
     # Number of training epochs per learning iteration
     # More epochs = better convergence but slower
-    # Typical range: 5 - 20
-    'epochs': 10,
+    # REDUCED FOR FASTER TRAINING: 3 for quick iteration
+    'epochs': 3,
 
     # Batch size for training
     # Larger = more stable gradients but uses more memory
     # Smaller = more updates but noisier gradients
-    # Typical range: 32 - 256
-    'batch_size': 128,
+    # REDUCED TO 32: With only 10 episodes (~200 examples), 256 creates 0 batches
+    'batch_size': 32,
 
     # Use GPU if available
     # GPU training is much faster for neural networks
@@ -59,13 +59,13 @@ args = dotdict({
 
     # Number of convolutional filters (network width)
     # More = more capacity but slower and may overfit
-    # Typical range: 128 - 512
-    'num_channels': 128,
+    # REDUCED FOR FASTER TRAINING: 64 for quick iteration
+    'num_channels': 64,
 
     # Number of residual blocks (network depth)
     # More = can learn more complex patterns but slower
-    # Typical range: 3 - 15
-    'num_res_blocks': 3,
+    # REDUCED FOR FASTER TRAINING: 2 for quick iteration
+    'num_res_blocks': 2,
 })
 
 
@@ -266,11 +266,31 @@ class NNetWrapper(NeuralNet):
 
         # ===================================================================
         # PREPARE OUTPUT
-        # Convert from log probabilities to probabilities
+        # Apply temperature scaling for sharper/more volatile predictions
         # ===================================================================
-        # Network outputs log probabilities (log_softmax)
-        # We need to exponentiate to get actual probabilities
-        pi = torch.exp(pi).data.cpu().numpy()[0]
+        # Temperature < 1.0 = sharper, more confident predictions
+        # Temperature > 1.0 = softer, more exploratory predictions
+        # Temperature = 1.0 = no scaling (default AlphaZero behavior)
+        temperature = 0.6  # Adjust for desired exploration level
+
+        # Apply temperature scaling BEFORE exp for numerical stability
+        # Working in log-space prevents underflow
+        pi = pi / temperature
+
+        # Convert to probabilities
+        pi = torch.exp(pi)
+
+        # Check for underflow and handle edge case
+        pi_sum = pi.sum()
+        if pi_sum > 1e-8:  # Small threshold to avoid division by near-zero
+            pi = pi / pi_sum
+        else:
+            # Fallback: uniform distribution over all actions
+            # This prevents NaN from division by zero
+            pi = torch.ones_like(pi) / pi.size(1)
+
+        # Convert to numpy
+        pi = pi.data.cpu().numpy()[0]
 
         # Value is already in [-1, 1] range from tanh
         v = v.data.cpu().numpy()[0]

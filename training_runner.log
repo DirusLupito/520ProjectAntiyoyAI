@@ -284,3 +284,1464 @@ EOFError: EOF when reading a line
 ================================================================================
 2025-11-17 06:42:52,187 [INFO] Training stopped by user
 2025-11-17 06:42:52,187 [INFO] ================================================================================
+2025-11-17 14:45:00,852 [INFO] ================================================================================
+2025-11-17 14:45:00,853 [INFO] Starting robust training runner
+2025-11-17 14:45:00,853 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 14:45:00,853 [INFO] Press Ctrl+C to stop
+2025-11-17 14:45:00,853 [INFO] ================================================================================
+2025-11-17 14:45:00,853 [INFO] 
+================================================================================
+2025-11-17 14:45:00,853 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 14:45:00,853 [INFO] Started at: 2025-11-17 14:45:00
+2025-11-17 14:45:00,853 [INFO] ================================================================================
+
+2025-11-17 14:45:01,659 [INFO] ============================================================
+2025-11-17 14:45:01,660 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 14:45:01,660 [INFO] ============================================================
+2025-11-17 14:45:01,660 [INFO] Loading AntiyoyGame...
+2025-11-17 14:45:01,660 [INFO] Game Configuration:
+2025-11-17 14:45:01,660 [INFO]   Board size: (22, 5, 5)
+2025-11-17 14:45:01,660 [INFO]   Action size: 676
+2025-11-17 14:45:01,660 [INFO] Loading NNetWrapper...
+2025-11-17 14:45:01,871 [INFO] Neural Network Configuration:
+2025-11-17 14:45:01,872 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 14:45:01,872 [INFO]   Output size: 676 (possible actions)
+2025-11-17 14:45:01,872 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 14:45:01,898 [INFO] Checkpoint loaded successfully!
+2025-11-17 14:45:01,898 [INFO] Loading the Coach...
+2025-11-17 14:45:01,907 [INFO] Loading 'trainExamples' from file...
+2025-11-17 14:45:01,907 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 14:45:03,429 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 14:45:03,429 [INFO] 
+================================================================================
+2025-11-17 14:45:03,429 [INFO] Training stopped by user
+2025-11-17 14:45:03,429 [INFO] ================================================================================
+2025-11-17 14:46:24,624 [INFO] ================================================================================
+2025-11-17 14:46:24,624 [INFO] Starting robust training runner
+2025-11-17 14:46:24,624 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 14:46:24,624 [INFO] Press Ctrl+C to stop
+2025-11-17 14:46:24,624 [INFO] ================================================================================
+2025-11-17 14:46:24,624 [INFO] 
+================================================================================
+2025-11-17 14:46:24,624 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 14:46:24,624 [INFO] Started at: 2025-11-17 14:46:24
+2025-11-17 14:46:24,625 [INFO] ================================================================================
+
+2025-11-17 14:46:26,404 [INFO] ============================================================
+2025-11-17 14:46:26,404 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 14:46:26,404 [INFO] ============================================================
+2025-11-17 14:46:26,404 [INFO] Loading AntiyoyGame...
+2025-11-17 14:46:26,404 [INFO] Game Configuration:
+2025-11-17 14:46:26,404 [INFO]   Board size: (22, 5, 5)
+2025-11-17 14:46:26,404 [INFO]   Action size: 676
+2025-11-17 14:46:26,404 [INFO] Loading NNetWrapper...
+2025-11-17 14:46:26,607 [INFO] Neural Network Configuration:
+2025-11-17 14:46:26,607 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 14:46:26,607 [INFO]   Output size: 676 (possible actions)
+2025-11-17 14:46:26,607 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 14:46:26,636 [INFO] Checkpoint loaded successfully!
+2025-11-17 14:46:26,636 [INFO] Loading the Coach...
+2025-11-17 14:46:26,648 [INFO] Loading 'trainExamples' from file...
+2025-11-17 14:46:26,648 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 14:46:27,495 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 14:46:27,495 [INFO] 
+================================================================================
+2025-11-17 14:46:27,495 [INFO] Training stopped by user
+2025-11-17 14:46:27,495 [INFO] ================================================================================
+2025-11-17 15:19:05,594 [INFO] ================================================================================
+2025-11-17 15:19:05,594 [INFO] Starting robust training runner
+2025-11-17 15:19:05,594 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 15:19:05,594 [INFO] Press Ctrl+C to stop
+2025-11-17 15:19:05,594 [INFO] ================================================================================
+2025-11-17 15:19:05,594 [INFO] 
+================================================================================
+2025-11-17 15:19:05,594 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 15:19:05,594 [INFO] Started at: 2025-11-17 15:19:05
+2025-11-17 15:19:05,594 [INFO] ================================================================================
+
+2025-11-17 15:19:22,569 [INFO] ================================================================================
+2025-11-17 15:19:22,569 [INFO] Starting robust training runner
+2025-11-17 15:19:22,569 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 15:19:22,569 [INFO] Press Ctrl+C to stop
+2025-11-17 15:19:22,569 [INFO] ================================================================================
+2025-11-17 15:19:22,569 [INFO] 
+================================================================================
+2025-11-17 15:19:22,569 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 15:19:22,569 [INFO] Started at: 2025-11-17 15:19:22
+2025-11-17 15:19:22,569 [INFO] ================================================================================
+
+2025-11-17 15:19:24,102 [INFO] ============================================================
+2025-11-17 15:19:24,103 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 15:19:24,103 [INFO] ============================================================
+2025-11-17 15:19:24,103 [INFO] Loading AntiyoyGame...
+2025-11-17 15:19:24,103 [INFO] Game Configuration:
+2025-11-17 15:19:24,103 [INFO]   Board size: (22, 5, 5)
+2025-11-17 15:19:24,103 [INFO]   Action size: 676
+2025-11-17 15:19:24,103 [INFO] Loading NNetWrapper...
+2025-11-17 15:19:24,259 [INFO] Neural Network Configuration:
+2025-11-17 15:19:24,259 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 15:19:24,259 [INFO]   Output size: 676 (possible actions)
+2025-11-17 15:19:24,259 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 15:19:24,283 [INFO] Checkpoint loaded successfully!
+2025-11-17 15:19:24,284 [INFO] Loading the Coach...
+2025-11-17 15:19:24,295 [INFO] Loading 'trainExamples' from file...
+2025-11-17 15:19:24,295 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 15:19:26,047 [INFO] Previous training examples loaded successfully!
+2025-11-17 15:19:26,047 [INFO] ============================================================
+2025-11-17 15:19:26,047 [INFO] Starting the learning process 🎉
+2025-11-17 15:19:26,047 [INFO] ============================================================
+2025-11-17 15:19:26,047 [INFO] 
+2025-11-17 15:19:26,047 [INFO] Training Configuration:
+2025-11-17 15:19:26,047 [INFO]   Iterations: 1000
+2025-11-17 15:19:26,047 [INFO]   Self-play games per iteration: 50
+2025-11-17 15:19:26,047 [INFO]   MCTS simulations per move: 100
+2025-11-17 15:19:26,047 [INFO]   Arena games for evaluation: 25
+2025-11-17 15:19:26,047 [INFO]   Update threshold: 0.51
+2025-11-17 15:19:26,047 [INFO] 
+2025-11-17 15:19:26,047 [INFO] This will take a long time. You can:
+2025-11-17 15:19:26,047 [INFO]   - Monitor progress in the terminal
+2025-11-17 15:19:26,047 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 15:19:26,048 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 15:19:26,048 [INFO] 
+2025-11-17 15:19:26,048 [INFO] ============================================================
+2025-11-17 15:19:26,048 [INFO] Starting Iter #1 ...
+2025-11-17 15:22:31,908 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 15:22:31,911 [INFO] 
+================================================================================
+2025-11-17 15:22:31,911 [INFO] Training stopped by user
+2025-11-17 15:22:31,911 [INFO] ================================================================================
+2025-11-17 15:22:39,407 [INFO] ================================================================================
+2025-11-17 15:22:39,408 [INFO] Starting robust training runner
+2025-11-17 15:22:39,408 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 15:22:39,408 [INFO] Press Ctrl+C to stop
+2025-11-17 15:22:39,408 [INFO] ================================================================================
+2025-11-17 15:22:39,408 [INFO] 
+================================================================================
+2025-11-17 15:22:39,408 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 15:22:39,408 [INFO] Started at: 2025-11-17 15:22:39
+2025-11-17 15:22:39,408 [INFO] ================================================================================
+
+2025-11-17 15:22:40,215 [INFO] ============================================================
+2025-11-17 15:22:40,215 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 15:22:40,215 [INFO] ============================================================
+2025-11-17 15:22:40,215 [INFO] Loading AntiyoyGame...
+2025-11-17 15:22:40,215 [INFO] Game Configuration:
+2025-11-17 15:22:40,215 [INFO]   Board size: (22, 5, 5)
+2025-11-17 15:22:40,215 [INFO]   Action size: 676
+2025-11-17 15:22:40,215 [INFO] Loading NNetWrapper...
+2025-11-17 15:22:40,344 [INFO] Neural Network Configuration:
+2025-11-17 15:22:40,344 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 15:22:40,344 [INFO]   Output size: 676 (possible actions)
+2025-11-17 15:22:40,344 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 15:22:40,367 [INFO] Checkpoint loaded successfully!
+2025-11-17 15:22:40,368 [INFO] Loading the Coach...
+2025-11-17 15:22:40,378 [INFO] Loading 'trainExamples' from file...
+2025-11-17 15:22:40,378 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 15:22:42,453 [INFO] Previous training examples loaded successfully!
+2025-11-17 15:22:42,454 [INFO] ============================================================
+2025-11-17 15:22:42,454 [INFO] Starting the learning process 🎉
+2025-11-17 15:22:42,454 [INFO] ============================================================
+2025-11-17 15:22:42,454 [INFO] 
+2025-11-17 15:22:42,454 [INFO] Training Configuration:
+2025-11-17 15:22:42,454 [INFO]   Iterations: 1000
+2025-11-17 15:22:42,454 [INFO]   Self-play games per iteration: 50
+2025-11-17 15:22:42,454 [INFO]   MCTS simulations per move: 100
+2025-11-17 15:22:42,454 [INFO]   Arena games for evaluation: 25
+2025-11-17 15:22:42,454 [INFO]   Update threshold: 0.51
+2025-11-17 15:22:42,454 [INFO] 
+2025-11-17 15:22:42,454 [INFO] This will take a long time. You can:
+2025-11-17 15:22:42,454 [INFO]   - Monitor progress in the terminal
+2025-11-17 15:22:42,454 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 15:22:42,454 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 15:22:42,454 [INFO] 
+2025-11-17 15:22:42,454 [INFO] ============================================================
+2025-11-17 15:22:42,454 [INFO] Starting Iter #1 ...
+2025-11-17 15:35:29,622 [INFO] ================================================================================
+2025-11-17 15:35:29,622 [INFO] Starting robust training runner
+2025-11-17 15:35:29,622 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 15:35:29,622 [INFO] Press Ctrl+C to stop
+2025-11-17 15:35:29,622 [INFO] ================================================================================
+2025-11-17 15:35:29,622 [INFO] 
+================================================================================
+2025-11-17 15:35:29,622 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 15:35:29,622 [INFO] Started at: 2025-11-17 15:35:29
+2025-11-17 15:35:29,622 [INFO] ================================================================================
+
+2025-11-17 15:35:30,441 [INFO] ============================================================
+2025-11-17 15:35:30,441 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 15:35:30,441 [INFO] ============================================================
+2025-11-17 15:35:30,441 [INFO] Loading AntiyoyGame...
+2025-11-17 15:35:30,441 [INFO] Game Configuration:
+2025-11-17 15:35:30,441 [INFO]   Board size: (22, 5, 5)
+2025-11-17 15:35:30,441 [INFO]   Action size: 676
+2025-11-17 15:35:30,442 [INFO] Loading NNetWrapper...
+2025-11-17 15:35:30,569 [INFO] Neural Network Configuration:
+2025-11-17 15:35:30,569 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 15:35:30,570 [INFO]   Output size: 676 (possible actions)
+2025-11-17 15:35:30,570 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 15:35:30,588 [INFO] Checkpoint loaded successfully!
+2025-11-17 15:35:30,588 [INFO] Loading the Coach...
+2025-11-17 15:35:30,598 [INFO] Loading 'trainExamples' from file...
+2025-11-17 15:35:30,599 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 15:35:39,023 [INFO] Previous training examples loaded successfully!
+2025-11-17 15:35:39,023 [INFO] ============================================================
+2025-11-17 15:35:39,024 [INFO] Starting the learning process 🎉
+2025-11-17 15:35:39,024 [INFO] ============================================================
+2025-11-17 15:35:39,024 [INFO] 
+2025-11-17 15:35:39,024 [INFO] Training Configuration:
+2025-11-17 15:35:39,024 [INFO]   Iterations: 1000
+2025-11-17 15:35:39,024 [INFO]   Self-play games per iteration: 50
+2025-11-17 15:35:39,024 [INFO]   MCTS simulations per move: 100
+2025-11-17 15:35:39,024 [INFO]   Arena games for evaluation: 25
+2025-11-17 15:35:39,024 [INFO]   Update threshold: 0.51
+2025-11-17 15:35:39,024 [INFO] 
+2025-11-17 15:35:39,024 [INFO] This will take a long time. You can:
+2025-11-17 15:35:39,024 [INFO]   - Monitor progress in the terminal
+2025-11-17 15:35:39,024 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 15:35:39,024 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 15:35:39,024 [INFO] 
+2025-11-17 15:35:39,024 [INFO] ============================================================
+2025-11-17 15:35:39,024 [INFO] Starting Iter #1 ...
+2025-11-17 15:44:34,889 [INFO] ================================================================================
+2025-11-17 15:44:34,889 [INFO] Starting robust training runner
+2025-11-17 15:44:34,889 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 15:44:34,889 [INFO] Press Ctrl+C to stop
+2025-11-17 15:44:34,889 [INFO] ================================================================================
+2025-11-17 15:44:34,889 [INFO] 
+================================================================================
+2025-11-17 15:44:34,889 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 15:44:34,889 [INFO] Started at: 2025-11-17 15:44:34
+2025-11-17 15:44:34,890 [INFO] ================================================================================
+
+2025-11-17 15:44:35,773 [INFO] ============================================================
+2025-11-17 15:44:35,773 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 15:44:35,773 [INFO] ============================================================
+2025-11-17 15:44:35,773 [INFO] Loading AntiyoyGame...
+2025-11-17 15:44:35,773 [INFO] Game Configuration:
+2025-11-17 15:44:35,773 [INFO]   Board size: (22, 5, 5)
+2025-11-17 15:44:35,773 [INFO]   Action size: 676
+2025-11-17 15:44:35,773 [INFO] Loading NNetWrapper...
+2025-11-17 15:44:35,925 [INFO] Neural Network Configuration:
+2025-11-17 15:44:35,926 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 15:44:35,926 [INFO]   Output size: 676 (possible actions)
+2025-11-17 15:44:35,926 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 15:44:35,945 [INFO] Checkpoint loaded successfully!
+2025-11-17 15:44:35,945 [INFO] Loading the Coach...
+2025-11-17 15:44:35,956 [INFO] Loading 'trainExamples' from file...
+2025-11-17 15:44:35,957 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 15:44:38,057 [INFO] Previous training examples loaded successfully!
+2025-11-17 15:44:38,057 [INFO] ============================================================
+2025-11-17 15:44:38,058 [INFO] Starting the learning process 🎉
+2025-11-17 15:44:38,058 [INFO] ============================================================
+2025-11-17 15:44:38,058 [INFO] 
+2025-11-17 15:44:38,058 [INFO] Training Configuration:
+2025-11-17 15:44:38,058 [INFO]   Iterations: 1000
+2025-11-17 15:44:38,058 [INFO]   Self-play games per iteration: 50
+2025-11-17 15:44:38,058 [INFO]   MCTS simulations per move: 100
+2025-11-17 15:44:38,058 [INFO]   Arena games for evaluation: 25
+2025-11-17 15:44:38,058 [INFO]   Update threshold: 0.51
+2025-11-17 15:44:38,059 [INFO] 
+2025-11-17 15:44:38,059 [INFO] This will take a long time. You can:
+2025-11-17 15:44:38,059 [INFO]   - Monitor progress in the terminal
+2025-11-17 15:44:38,059 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 15:44:38,059 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 15:44:38,059 [INFO] 
+2025-11-17 15:44:38,059 [INFO] ============================================================
+2025-11-17 15:44:38,059 [INFO] Starting Iter #1 ...
+2025-11-17 16:27:20,100 [INFO] ================================================================================
+2025-11-17 16:27:20,101 [INFO] Starting robust training runner
+2025-11-17 16:27:20,101 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 16:27:20,101 [INFO] Press Ctrl+C to stop
+2025-11-17 16:27:20,101 [INFO] ================================================================================
+2025-11-17 16:27:20,101 [INFO] 
+================================================================================
+2025-11-17 16:27:20,101 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 16:27:20,102 [INFO] Started at: 2025-11-17 16:27:20
+2025-11-17 16:27:20,102 [INFO] ================================================================================
+
+2025-11-17 16:27:20,791 [INFO] ============================================================
+2025-11-17 16:27:20,791 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 16:27:20,791 [INFO] ============================================================
+2025-11-17 16:27:20,791 [INFO] Loading AntiyoyGame...
+2025-11-17 16:27:20,791 [INFO] Game Configuration:
+2025-11-17 16:27:20,791 [INFO]   Board size: (22, 5, 5)
+2025-11-17 16:27:20,791 [INFO]   Action size: 676
+2025-11-17 16:27:20,791 [INFO] Loading NNetWrapper...
+2025-11-17 16:27:21,058 [INFO] Neural Network Configuration:
+2025-11-17 16:27:21,058 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 16:27:21,058 [INFO]   Output size: 676 (possible actions)
+2025-11-17 16:27:21,058 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 16:27:21,089 [INFO] Checkpoint loaded successfully!
+2025-11-17 16:27:21,089 [INFO] Loading the Coach...
+2025-11-17 16:27:21,100 [INFO] Loading 'trainExamples' from file...
+2025-11-17 16:27:21,100 [WARNING] File "./temp/best.pth.tar.examples" with trainExamples not found!
+2025-11-17 16:27:22,564 [INFO] Previous training examples loaded successfully!
+2025-11-17 16:27:22,565 [INFO] ============================================================
+2025-11-17 16:27:22,565 [INFO] Starting the learning process 🎉
+2025-11-17 16:27:22,565 [INFO] ============================================================
+2025-11-17 16:27:22,565 [INFO] 
+2025-11-17 16:27:22,565 [INFO] Training Configuration:
+2025-11-17 16:27:22,565 [INFO]   Iterations: 1000
+2025-11-17 16:27:22,565 [INFO]   Self-play games per iteration: 50
+2025-11-17 16:27:22,565 [INFO]   MCTS simulations per move: 100
+2025-11-17 16:27:22,565 [INFO]   Arena games for evaluation: 25
+2025-11-17 16:27:22,565 [INFO]   Update threshold: 0.51
+2025-11-17 16:27:22,565 [INFO] 
+2025-11-17 16:27:22,565 [INFO] This will take a long time. You can:
+2025-11-17 16:27:22,565 [INFO]   - Monitor progress in the terminal
+2025-11-17 16:27:22,565 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 16:27:22,565 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 16:27:22,565 [INFO] 
+2025-11-17 16:27:22,565 [INFO] ============================================================
+2025-11-17 16:27:22,565 [INFO] Starting Iter #1 ...
+2025-11-17 16:56:46,523 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 17:15:55,017 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 24
+2025-11-17 17:15:55,021 [INFO] REJECTING NEW MODEL
+2025-11-17 17:15:55,200 [INFO] Starting Iter #2 ...
+2025-11-17 17:16:16,592 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 17:16:17,430 [INFO] 
+================================================================================
+2025-11-17 17:16:17,433 [INFO] Training stopped by user
+2025-11-17 17:16:17,433 [INFO] ================================================================================
+2025-11-17 20:03:12,636 [INFO] ================================================================================
+2025-11-17 20:03:12,637 [INFO] Starting robust training runner
+2025-11-17 20:03:12,637 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 20:03:12,637 [INFO] Press Ctrl+C to stop
+2025-11-17 20:03:12,637 [INFO] ================================================================================
+2025-11-17 20:03:12,637 [INFO] 
+================================================================================
+2025-11-17 20:03:12,637 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 20:03:12,637 [INFO] Started at: 2025-11-17 20:03:12
+2025-11-17 20:03:12,637 [INFO] ================================================================================
+
+2025-11-17 20:03:25,495 [INFO] ================================================================================
+2025-11-17 20:03:25,495 [INFO] Starting robust training runner
+2025-11-17 20:03:25,495 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 20:03:25,495 [INFO] Press Ctrl+C to stop
+2025-11-17 20:03:25,495 [INFO] ================================================================================
+2025-11-17 20:03:25,495 [INFO] 
+================================================================================
+2025-11-17 20:03:25,495 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 20:03:25,495 [INFO] Started at: 2025-11-17 20:03:25
+2025-11-17 20:03:25,495 [INFO] ================================================================================
+
+2025-11-17 20:03:26,990 [INFO] ============================================================
+2025-11-17 20:03:26,990 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:03:26,990 [INFO] ============================================================
+2025-11-17 20:03:26,990 [INFO] Loading AntiyoyGame...
+2025-11-17 20:03:26,990 [INFO] Game Configuration:
+2025-11-17 20:03:26,990 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:03:26,990 [INFO]   Action size: 433
+2025-11-17 20:03:26,990 [INFO] Loading NNetWrapper...
+2025-11-17 20:03:27,165 [INFO] Neural Network Configuration:
+2025-11-17 20:03:27,165 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:03:27,165 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:03:27,165 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 20:03:27,192 [ERROR] Training crashed with RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+2025-11-17 20:03:27,194 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/run_training.py", line 36, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/main.py", line 197, in main
+    nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/pytorch/NNet.py", line 387, in load_checkpoint
+    self.nnet.load_state_dict(checkpoint['state_dict'])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+
+2025-11-17 20:03:27,194 [WARNING] 
+================================================================================
+2025-11-17 20:03:27,194 [WARNING] Training crashed! This was crash #1
+2025-11-17 20:03:27,194 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 20:03:27,194 [WARNING] ================================================================================
+
+2025-11-17 20:03:32,195 [INFO] Restarting training from most recent checkpoint...
+2025-11-17 20:03:32,195 [INFO] 
+================================================================================
+2025-11-17 20:03:32,195 [INFO] Training attempt #2 (Total crashes: 1)
+2025-11-17 20:03:32,195 [INFO] Started at: 2025-11-17 20:03:32
+2025-11-17 20:03:32,195 [INFO] ================================================================================
+
+2025-11-17 20:03:32,195 [INFO] ============================================================
+2025-11-17 20:03:32,195 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:03:32,195 [INFO] ============================================================
+2025-11-17 20:03:32,195 [INFO] Loading AntiyoyGame...
+2025-11-17 20:03:32,195 [INFO] Game Configuration:
+2025-11-17 20:03:32,195 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:03:32,195 [INFO]   Action size: 433
+2025-11-17 20:03:32,195 [INFO] Loading NNetWrapper...
+2025-11-17 20:03:32,204 [INFO] Neural Network Configuration:
+2025-11-17 20:03:32,204 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:03:32,204 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:03:32,204 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 20:03:32,220 [ERROR] Training crashed with RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+2025-11-17 20:03:32,220 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/run_training.py", line 36, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/main.py", line 197, in main
+    nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/pytorch/NNet.py", line 387, in load_checkpoint
+    self.nnet.load_state_dict(checkpoint['state_dict'])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+
+2025-11-17 20:03:32,221 [WARNING] 
+================================================================================
+2025-11-17 20:03:32,221 [WARNING] Training crashed! This was crash #2
+2025-11-17 20:03:32,221 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 20:03:32,221 [WARNING] ================================================================================
+
+2025-11-17 20:03:37,226 [INFO] Restarting training from most recent checkpoint...
+2025-11-17 20:03:37,226 [INFO] 
+================================================================================
+2025-11-17 20:03:37,226 [INFO] Training attempt #3 (Total crashes: 2)
+2025-11-17 20:03:37,226 [INFO] Started at: 2025-11-17 20:03:37
+2025-11-17 20:03:37,226 [INFO] ================================================================================
+
+2025-11-17 20:03:37,226 [INFO] ============================================================
+2025-11-17 20:03:37,226 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:03:37,226 [INFO] ============================================================
+2025-11-17 20:03:37,226 [INFO] Loading AntiyoyGame...
+2025-11-17 20:03:37,226 [INFO] Game Configuration:
+2025-11-17 20:03:37,226 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:03:37,226 [INFO]   Action size: 433
+2025-11-17 20:03:37,226 [INFO] Loading NNetWrapper...
+2025-11-17 20:03:37,236 [INFO] Neural Network Configuration:
+2025-11-17 20:03:37,236 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:03:37,236 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:03:37,236 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 20:03:37,251 [ERROR] Training crashed with RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+2025-11-17 20:03:37,251 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/run_training.py", line 36, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/main.py", line 197, in main
+    nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/pytorch/NNet.py", line 387, in load_checkpoint
+    self.nnet.load_state_dict(checkpoint['state_dict'])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+
+2025-11-17 20:03:37,252 [WARNING] 
+================================================================================
+2025-11-17 20:03:37,252 [WARNING] Training crashed! This was crash #3
+2025-11-17 20:03:37,252 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 20:03:37,252 [WARNING] ================================================================================
+
+2025-11-17 20:03:43,846 [INFO] Restarting training from most recent checkpoint...
+2025-11-17 20:03:43,846 [INFO] 
+================================================================================
+2025-11-17 20:03:43,846 [INFO] Training attempt #4 (Total crashes: 3)
+2025-11-17 20:03:43,846 [INFO] Started at: 2025-11-17 20:03:43
+2025-11-17 20:03:43,846 [INFO] ================================================================================
+
+2025-11-17 20:03:43,846 [INFO] ============================================================
+2025-11-17 20:03:43,846 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:03:43,846 [INFO] ============================================================
+2025-11-17 20:03:43,846 [INFO] Loading AntiyoyGame...
+2025-11-17 20:03:43,846 [INFO] Game Configuration:
+2025-11-17 20:03:43,846 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:03:43,846 [INFO]   Action size: 433
+2025-11-17 20:03:43,846 [INFO] Loading NNetWrapper...
+2025-11-17 20:03:43,860 [INFO] Neural Network Configuration:
+2025-11-17 20:03:43,860 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:03:43,860 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:03:43,860 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 20:03:43,880 [ERROR] Training crashed with RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+2025-11-17 20:03:43,881 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/run_training.py", line 36, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/main.py", line 197, in main
+    nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/pytorch/NNet.py", line 387, in load_checkpoint
+    self.nnet.load_state_dict(checkpoint['state_dict'])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+
+2025-11-17 20:03:43,881 [WARNING] 
+================================================================================
+2025-11-17 20:03:43,881 [WARNING] Training crashed! This was crash #4
+2025-11-17 20:03:43,881 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 20:03:43,881 [WARNING] ================================================================================
+
+2025-11-17 20:03:48,886 [INFO] Restarting training from most recent checkpoint...
+2025-11-17 20:03:48,886 [INFO] 
+================================================================================
+2025-11-17 20:03:48,886 [INFO] Training attempt #5 (Total crashes: 4)
+2025-11-17 20:03:48,886 [INFO] Started at: 2025-11-17 20:03:48
+2025-11-17 20:03:48,886 [INFO] ================================================================================
+
+2025-11-17 20:03:48,886 [INFO] ============================================================
+2025-11-17 20:03:48,886 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:03:48,886 [INFO] ============================================================
+2025-11-17 20:03:48,886 [INFO] Loading AntiyoyGame...
+2025-11-17 20:03:48,886 [INFO] Game Configuration:
+2025-11-17 20:03:48,886 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:03:48,886 [INFO]   Action size: 433
+2025-11-17 20:03:48,886 [INFO] Loading NNetWrapper...
+2025-11-17 20:03:48,896 [INFO] Neural Network Configuration:
+2025-11-17 20:03:48,896 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:03:48,896 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:03:48,896 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 20:03:48,913 [ERROR] Training crashed with RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+2025-11-17 20:03:48,914 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/run_training.py", line 36, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/main.py", line 197, in main
+    nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/pytorch/NNet.py", line 387, in load_checkpoint
+    self.nnet.load_state_dict(checkpoint['state_dict'])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+
+2025-11-17 20:03:48,914 [WARNING] 
+================================================================================
+2025-11-17 20:03:48,914 [WARNING] Training crashed! This was crash #5
+2025-11-17 20:03:48,914 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 20:03:48,914 [WARNING] ================================================================================
+
+2025-11-17 20:03:53,919 [INFO] Restarting training from most recent checkpoint...
+2025-11-17 20:03:53,919 [INFO] 
+================================================================================
+2025-11-17 20:03:53,919 [INFO] Training attempt #6 (Total crashes: 5)
+2025-11-17 20:03:53,919 [INFO] Started at: 2025-11-17 20:03:53
+2025-11-17 20:03:53,919 [INFO] ================================================================================
+
+2025-11-17 20:03:53,919 [INFO] ============================================================
+2025-11-17 20:03:53,919 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:03:53,919 [INFO] ============================================================
+2025-11-17 20:03:53,919 [INFO] Loading AntiyoyGame...
+2025-11-17 20:03:53,919 [INFO] Game Configuration:
+2025-11-17 20:03:53,919 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:03:53,919 [INFO]   Action size: 433
+2025-11-17 20:03:53,919 [INFO] Loading NNetWrapper...
+2025-11-17 20:03:53,927 [INFO] Neural Network Configuration:
+2025-11-17 20:03:53,927 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:03:53,927 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:03:53,927 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 20:03:53,941 [ERROR] Training crashed with RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+2025-11-17 20:03:53,941 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/run_training.py", line 36, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/main.py", line 197, in main
+    nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/pytorch/NNet.py", line 387, in load_checkpoint
+    self.nnet.load_state_dict(checkpoint['state_dict'])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+
+2025-11-17 20:03:53,941 [WARNING] 
+================================================================================
+2025-11-17 20:03:53,942 [WARNING] Training crashed! This was crash #6
+2025-11-17 20:03:53,942 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 20:03:53,942 [WARNING] ================================================================================
+
+2025-11-17 20:03:58,946 [INFO] Restarting training from most recent checkpoint...
+2025-11-17 20:03:58,946 [INFO] 
+================================================================================
+2025-11-17 20:03:58,946 [INFO] Training attempt #7 (Total crashes: 6)
+2025-11-17 20:03:58,946 [INFO] Started at: 2025-11-17 20:03:58
+2025-11-17 20:03:58,946 [INFO] ================================================================================
+
+2025-11-17 20:03:58,946 [INFO] ============================================================
+2025-11-17 20:03:58,946 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:03:58,946 [INFO] ============================================================
+2025-11-17 20:03:58,946 [INFO] Loading AntiyoyGame...
+2025-11-17 20:03:58,946 [INFO] Game Configuration:
+2025-11-17 20:03:58,946 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:03:58,946 [INFO]   Action size: 433
+2025-11-17 20:03:58,946 [INFO] Loading NNetWrapper...
+2025-11-17 20:03:58,957 [INFO] Neural Network Configuration:
+2025-11-17 20:03:58,957 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:03:58,957 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:03:58,957 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 20:03:58,976 [ERROR] Training crashed with RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+2025-11-17 20:03:58,976 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/run_training.py", line 36, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/main.py", line 197, in main
+    nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/pytorch/NNet.py", line 387, in load_checkpoint
+    self.nnet.load_state_dict(checkpoint['state_dict'])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+
+2025-11-17 20:03:58,976 [WARNING] 
+================================================================================
+2025-11-17 20:03:58,977 [WARNING] Training crashed! This was crash #7
+2025-11-17 20:03:58,977 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 20:03:58,977 [WARNING] ================================================================================
+
+2025-11-17 20:04:03,981 [INFO] Restarting training from most recent checkpoint...
+2025-11-17 20:04:03,981 [INFO] 
+================================================================================
+2025-11-17 20:04:03,981 [INFO] Training attempt #8 (Total crashes: 7)
+2025-11-17 20:04:03,981 [INFO] Started at: 2025-11-17 20:04:03
+2025-11-17 20:04:03,981 [INFO] ================================================================================
+
+2025-11-17 20:04:03,981 [INFO] ============================================================
+2025-11-17 20:04:03,981 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:04:03,981 [INFO] ============================================================
+2025-11-17 20:04:03,981 [INFO] Loading AntiyoyGame...
+2025-11-17 20:04:03,981 [INFO] Game Configuration:
+2025-11-17 20:04:03,981 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:04:03,981 [INFO]   Action size: 433
+2025-11-17 20:04:03,981 [INFO] Loading NNetWrapper...
+2025-11-17 20:04:03,990 [INFO] Neural Network Configuration:
+2025-11-17 20:04:03,990 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:04:03,990 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:04:03,991 [INFO] Loading checkpoint "./temp//best.pth.tar"...
+2025-11-17 20:04:04,007 [ERROR] Training crashed with RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+2025-11-17 20:04:04,007 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/run_training.py", line 36, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/main.py", line 197, in main
+    args.load_folder_file[0], args.load_folder_file[1])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/pytorch/NNet.py", line 387, in load_checkpoint
+    self.nnet.load_state_dict(checkpoint['state_dict'])
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/.venv/lib/python3.10/site-packages/torch/nn/modules/module.py", line 2629, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for AntiyoyNNet:
+	size mismatch for policy_fc1.weight: copying a param with shape torch.Size([512, 800]) from checkpoint, the shape in current model is torch.Size([512, 512]).
+	size mismatch for policy_fc2.weight: copying a param with shape torch.Size([676, 512]) from checkpoint, the shape in current model is torch.Size([433, 512]).
+	size mismatch for policy_fc2.bias: copying a param with shape torch.Size([676]) from checkpoint, the shape in current model is torch.Size([433]).
+	size mismatch for value_fc1.weight: copying a param with shape torch.Size([256, 400]) from checkpoint, the shape in current model is torch.Size([256, 256]).
+
+2025-11-17 20:04:04,008 [WARNING] 
+================================================================================
+2025-11-17 20:04:04,008 [WARNING] Training crashed! This was crash #8
+2025-11-17 20:04:04,008 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-17 20:04:04,008 [WARNING] ================================================================================
+
+2025-11-17 20:04:18,390 [INFO] ================================================================================
+2025-11-17 20:04:18,390 [INFO] Starting robust training runner
+2025-11-17 20:04:18,390 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 20:04:18,390 [INFO] Press Ctrl+C to stop
+2025-11-17 20:04:18,390 [INFO] ================================================================================
+2025-11-17 20:04:18,390 [INFO] 
+================================================================================
+2025-11-17 20:04:18,390 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 20:04:18,390 [INFO] Started at: 2025-11-17 20:04:18
+2025-11-17 20:04:18,390 [INFO] ================================================================================
+
+2025-11-17 20:04:19,160 [INFO] ============================================================
+2025-11-17 20:04:19,160 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:04:19,160 [INFO] ============================================================
+2025-11-17 20:04:19,160 [INFO] Loading AntiyoyGame...
+2025-11-17 20:04:19,160 [INFO] Game Configuration:
+2025-11-17 20:04:19,160 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:04:19,160 [INFO]   Action size: 433
+2025-11-17 20:04:19,160 [INFO] Loading NNetWrapper...
+2025-11-17 20:04:19,282 [INFO] Neural Network Configuration:
+2025-11-17 20:04:19,282 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:04:19,282 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:04:19,282 [WARNING] Not loading a checkpoint - starting from scratch!
+2025-11-17 20:04:19,282 [WARNING] Training from scratch will take a long time.
+2025-11-17 20:04:19,282 [WARNING] Consider setting load_model=True to resume from a checkpoint.
+2025-11-17 20:04:19,282 [INFO] Loading the Coach...
+2025-11-17 20:04:19,295 [INFO] ============================================================
+2025-11-17 20:04:19,295 [INFO] Starting the learning process 🎉
+2025-11-17 20:04:19,296 [INFO] ============================================================
+2025-11-17 20:04:19,296 [INFO] 
+2025-11-17 20:04:19,296 [INFO] Training Configuration:
+2025-11-17 20:04:19,296 [INFO]   Iterations: 1000
+2025-11-17 20:04:19,296 [INFO]   Self-play games per iteration: 50
+2025-11-17 20:04:19,296 [INFO]   MCTS simulations per move: 100
+2025-11-17 20:04:19,296 [INFO]   Arena games for evaluation: 25
+2025-11-17 20:04:19,296 [INFO]   Update threshold: 0.51
+2025-11-17 20:04:19,296 [INFO] 
+2025-11-17 20:04:19,296 [INFO] This will take a long time. You can:
+2025-11-17 20:04:19,296 [INFO]   - Monitor progress in the terminal
+2025-11-17 20:04:19,297 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 20:04:19,297 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 20:04:19,297 [INFO] 
+2025-11-17 20:04:19,297 [INFO] ============================================================
+2025-11-17 20:04:19,297 [INFO] Starting Iter #1 ...
+2025-11-17 20:15:57,421 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 20:15:57,437 [INFO] 
+================================================================================
+2025-11-17 20:15:57,437 [INFO] Training stopped by user
+2025-11-17 20:15:57,437 [INFO] ================================================================================
+2025-11-17 20:16:12,133 [INFO] ================================================================================
+2025-11-17 20:16:12,133 [INFO] Starting robust training runner
+2025-11-17 20:16:12,133 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 20:16:12,133 [INFO] Press Ctrl+C to stop
+2025-11-17 20:16:12,133 [INFO] ================================================================================
+2025-11-17 20:16:12,133 [INFO] 
+================================================================================
+2025-11-17 20:16:12,133 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 20:16:12,133 [INFO] Started at: 2025-11-17 20:16:12
+2025-11-17 20:16:12,133 [INFO] ================================================================================
+
+2025-11-17 20:16:12,990 [INFO] ============================================================
+2025-11-17 20:16:12,990 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:16:12,990 [INFO] ============================================================
+2025-11-17 20:16:12,990 [INFO] Loading AntiyoyGame...
+2025-11-17 20:16:12,990 [INFO] Game Configuration:
+2025-11-17 20:16:12,990 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:16:12,990 [INFO]   Action size: 433
+2025-11-17 20:16:12,990 [INFO] Loading NNetWrapper...
+2025-11-17 20:16:13,103 [INFO] Neural Network Configuration:
+2025-11-17 20:16:13,104 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:16:13,104 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:16:13,104 [WARNING] Not loading a checkpoint - starting from scratch!
+2025-11-17 20:16:13,104 [WARNING] Training from scratch will take a long time.
+2025-11-17 20:16:13,105 [WARNING] Consider setting load_model=True to resume from a checkpoint.
+2025-11-17 20:16:13,105 [INFO] Loading the Coach...
+2025-11-17 20:16:13,111 [INFO] ============================================================
+2025-11-17 20:16:13,111 [INFO] Starting the learning process 🎉
+2025-11-17 20:16:13,111 [INFO] ============================================================
+2025-11-17 20:16:13,111 [INFO] 
+2025-11-17 20:16:13,111 [INFO] Training Configuration:
+2025-11-17 20:16:13,111 [INFO]   Iterations: 1000
+2025-11-17 20:16:13,111 [INFO]   Self-play games per iteration: 10
+2025-11-17 20:16:13,111 [INFO]   MCTS simulations per move: 25
+2025-11-17 20:16:13,111 [INFO]   Arena games for evaluation: 25
+2025-11-17 20:16:13,111 [INFO]   Update threshold: 0.51
+2025-11-17 20:16:13,111 [INFO] 
+2025-11-17 20:16:13,111 [INFO] This will take a long time. You can:
+2025-11-17 20:16:13,111 [INFO]   - Monitor progress in the terminal
+2025-11-17 20:16:13,112 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 20:16:13,112 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 20:16:13,112 [INFO] 
+2025-11-17 20:16:13,112 [INFO] ============================================================
+2025-11-17 20:16:13,112 [INFO] Starting Iter #1 ...
+2025-11-17 20:16:33,942 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:17:04,142 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 20:17:04,154 [INFO] 
+================================================================================
+2025-11-17 20:17:04,154 [INFO] Training stopped by user
+2025-11-17 20:17:04,154 [INFO] ================================================================================
+2025-11-17 20:17:06,064 [INFO] ================================================================================
+2025-11-17 20:17:06,065 [INFO] Starting robust training runner
+2025-11-17 20:17:06,065 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 20:17:06,066 [INFO] Press Ctrl+C to stop
+2025-11-17 20:17:06,066 [INFO] ================================================================================
+2025-11-17 20:17:06,066 [INFO] 
+================================================================================
+2025-11-17 20:17:06,066 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 20:17:06,067 [INFO] Started at: 2025-11-17 20:17:06
+2025-11-17 20:17:06,067 [INFO] ================================================================================
+
+2025-11-17 20:17:06,894 [INFO] ============================================================
+2025-11-17 20:17:06,894 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:17:06,894 [INFO] ============================================================
+2025-11-17 20:17:06,894 [INFO] Loading AntiyoyGame...
+2025-11-17 20:17:06,894 [INFO] Game Configuration:
+2025-11-17 20:17:06,894 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:17:06,894 [INFO]   Action size: 433
+2025-11-17 20:17:06,894 [INFO] Loading NNetWrapper...
+2025-11-17 20:17:07,012 [INFO] Neural Network Configuration:
+2025-11-17 20:17:07,012 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:17:07,012 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:17:07,012 [WARNING] Not loading a checkpoint - starting from scratch!
+2025-11-17 20:17:07,012 [WARNING] Training from scratch will take a long time.
+2025-11-17 20:17:07,012 [WARNING] Consider setting load_model=True to resume from a checkpoint.
+2025-11-17 20:17:07,012 [INFO] Loading the Coach...
+2025-11-17 20:17:07,020 [INFO] ============================================================
+2025-11-17 20:17:07,020 [INFO] Starting the learning process 🎉
+2025-11-17 20:17:07,020 [INFO] ============================================================
+2025-11-17 20:17:07,020 [INFO] 
+2025-11-17 20:17:07,020 [INFO] Training Configuration:
+2025-11-17 20:17:07,020 [INFO]   Iterations: 1000
+2025-11-17 20:17:07,020 [INFO]   Self-play games per iteration: 10
+2025-11-17 20:17:07,021 [INFO]   MCTS simulations per move: 25
+2025-11-17 20:17:07,021 [INFO]   Arena games for evaluation: 25
+2025-11-17 20:17:07,021 [INFO]   Update threshold: 0.51
+2025-11-17 20:17:07,021 [INFO] 
+2025-11-17 20:17:07,021 [INFO] This will take a long time. You can:
+2025-11-17 20:17:07,021 [INFO]   - Monitor progress in the terminal
+2025-11-17 20:17:07,021 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 20:17:07,021 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 20:17:07,021 [INFO] 
+2025-11-17 20:17:07,021 [INFO] ============================================================
+2025-11-17 20:17:07,021 [INFO] Starting Iter #1 ...
+2025-11-17 20:17:32,121 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:18:28,585 [INFO] NEW/PREV WINS : 2 / 6 ; DRAWS : 16
+2025-11-17 20:18:28,585 [INFO] REJECTING NEW MODEL
+2025-11-17 20:18:28,598 [INFO] Starting Iter #2 ...
+2025-11-17 20:18:36,070 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 20:18:36,091 [INFO] 
+================================================================================
+2025-11-17 20:18:36,091 [INFO] Training stopped by user
+2025-11-17 20:18:36,091 [INFO] ================================================================================
+2025-11-17 20:20:02,863 [INFO] ================================================================================
+2025-11-17 20:20:02,864 [INFO] Starting robust training runner
+2025-11-17 20:20:02,864 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 20:20:02,864 [INFO] Press Ctrl+C to stop
+2025-11-17 20:20:02,864 [INFO] ================================================================================
+2025-11-17 20:20:02,864 [INFO] 
+================================================================================
+2025-11-17 20:20:02,864 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 20:20:02,864 [INFO] Started at: 2025-11-17 20:20:02
+2025-11-17 20:20:02,864 [INFO] ================================================================================
+
+2025-11-17 20:20:03,647 [INFO] ============================================================
+2025-11-17 20:20:03,647 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:20:03,647 [INFO] ============================================================
+2025-11-17 20:20:03,647 [INFO] Loading AntiyoyGame...
+2025-11-17 20:20:03,647 [INFO] Game Configuration:
+2025-11-17 20:20:03,647 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:20:03,647 [INFO]   Action size: 433
+2025-11-17 20:20:03,647 [INFO] Loading NNetWrapper...
+2025-11-17 20:20:03,761 [INFO] Neural Network Configuration:
+2025-11-17 20:20:03,761 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:20:03,761 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:20:03,761 [WARNING] Not loading a checkpoint - starting from scratch!
+2025-11-17 20:20:03,762 [WARNING] Training from scratch will take a long time.
+2025-11-17 20:20:03,762 [WARNING] Consider setting load_model=True to resume from a checkpoint.
+2025-11-17 20:20:03,762 [INFO] Loading the Coach...
+2025-11-17 20:20:03,768 [INFO] ============================================================
+2025-11-17 20:20:03,768 [INFO] Starting the learning process 🎉
+2025-11-17 20:20:03,768 [INFO] ============================================================
+2025-11-17 20:20:03,768 [INFO] 
+2025-11-17 20:20:03,768 [INFO] Training Configuration:
+2025-11-17 20:20:03,769 [INFO]   Iterations: 1000
+2025-11-17 20:20:03,769 [INFO]   Self-play games per iteration: 10
+2025-11-17 20:20:03,769 [INFO]   MCTS simulations per move: 25
+2025-11-17 20:20:03,769 [INFO]   Arena games for evaluation: 10
+2025-11-17 20:20:03,769 [INFO]   Update threshold: 0.51
+2025-11-17 20:20:03,769 [INFO] 
+2025-11-17 20:20:03,769 [INFO] This will take a long time. You can:
+2025-11-17 20:20:03,769 [INFO]   - Monitor progress in the terminal
+2025-11-17 20:20:03,769 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 20:20:03,769 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 20:20:03,769 [INFO] 
+2025-11-17 20:20:03,769 [INFO] ============================================================
+2025-11-17 20:20:03,769 [INFO] Starting Iter #1 ...
+2025-11-17 20:20:29,167 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:20:45,565 [INFO] NEW/PREV WINS : 3 / 3 ; DRAWS : 4
+2025-11-17 20:20:45,565 [INFO] REJECTING NEW MODEL
+2025-11-17 20:20:45,577 [INFO] Starting Iter #2 ...
+2025-11-17 20:21:06,424 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:21:36,969 [INFO] NEW/PREV WINS : 2 / 1 ; DRAWS : 7
+2025-11-17 20:21:36,969 [INFO] ACCEPTING NEW MODEL
+2025-11-17 20:21:36,987 [INFO] Starting Iter #3 ...
+2025-11-17 20:22:10,533 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:22:57,034 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 20:22:57,034 [INFO] REJECTING NEW MODEL
+2025-11-17 20:22:57,048 [INFO] Starting Iter #4 ...
+2025-11-17 20:23:33,001 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:24:22,517 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 20:24:22,517 [INFO] REJECTING NEW MODEL
+2025-11-17 20:24:22,529 [INFO] Starting Iter #5 ...
+2025-11-17 20:24:56,761 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:25:45,430 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 20:25:45,430 [INFO] REJECTING NEW MODEL
+2025-11-17 20:25:45,444 [INFO] Starting Iter #6 ...
+2025-11-17 20:50:11,521 [INFO] ================================================================================
+2025-11-17 20:50:11,521 [INFO] Starting robust training runner
+2025-11-17 20:50:11,521 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 20:50:11,521 [INFO] Press Ctrl+C to stop
+2025-11-17 20:50:11,521 [INFO] ================================================================================
+2025-11-17 20:50:11,521 [INFO] 
+================================================================================
+2025-11-17 20:50:11,521 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 20:50:11,521 [INFO] Started at: 2025-11-17 20:50:11
+2025-11-17 20:50:11,521 [INFO] ================================================================================
+
+2025-11-17 20:50:12,943 [INFO] ============================================================
+2025-11-17 20:50:12,943 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 20:50:12,943 [INFO] ============================================================
+2025-11-17 20:50:12,943 [INFO] Loading AntiyoyGame...
+2025-11-17 20:50:12,943 [INFO] Game Configuration:
+2025-11-17 20:50:12,943 [INFO]   Board size: (22, 4, 4)
+2025-11-17 20:50:12,943 [INFO]   Action size: 433
+2025-11-17 20:50:12,943 [INFO] Loading NNetWrapper...
+2025-11-17 20:50:13,131 [INFO] Neural Network Configuration:
+2025-11-17 20:50:13,131 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 20:50:13,131 [INFO]   Output size: 433 (possible actions)
+2025-11-17 20:50:13,131 [WARNING] Not loading a checkpoint - starting from scratch!
+2025-11-17 20:50:13,131 [WARNING] Training from scratch will take a long time.
+2025-11-17 20:50:13,131 [WARNING] Consider setting load_model=True to resume from a checkpoint.
+2025-11-17 20:50:13,131 [INFO] Loading the Coach...
+2025-11-17 20:50:13,138 [INFO] ============================================================
+2025-11-17 20:50:13,138 [INFO] Starting the learning process 🎉
+2025-11-17 20:50:13,138 [INFO] ============================================================
+2025-11-17 20:50:13,138 [INFO] 
+2025-11-17 20:50:13,138 [INFO] Training Configuration:
+2025-11-17 20:50:13,138 [INFO]   Iterations: 1000
+2025-11-17 20:50:13,138 [INFO]   Self-play games per iteration: 10
+2025-11-17 20:50:13,138 [INFO]   MCTS simulations per move: 25
+2025-11-17 20:50:13,138 [INFO]   Arena games for evaluation: 10
+2025-11-17 20:50:13,138 [INFO]   Update threshold: 0.51
+2025-11-17 20:50:13,138 [INFO] 
+2025-11-17 20:50:13,138 [INFO] This will take a long time. You can:
+2025-11-17 20:50:13,138 [INFO]   - Monitor progress in the terminal
+2025-11-17 20:50:13,138 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 20:50:13,138 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 20:50:13,138 [INFO] 
+2025-11-17 20:50:13,138 [INFO] ============================================================
+2025-11-17 20:50:13,139 [INFO] Starting Iter #1 ...
+2025-11-17 20:50:34,662 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:50:57,793 [INFO] NEW/PREV WINS : 2 / 1 ; DRAWS : 7
+2025-11-17 20:50:57,793 [INFO] ACCEPTING NEW MODEL
+2025-11-17 20:50:57,807 [INFO] Starting Iter #2 ...
+2025-11-17 20:51:24,559 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:51:52,344 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 20:51:52,344 [INFO] REJECTING NEW MODEL
+2025-11-17 20:51:52,356 [INFO] Starting Iter #3 ...
+2025-11-17 20:52:11,872 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:52:40,468 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 20:52:40,468 [INFO] REJECTING NEW MODEL
+2025-11-17 20:52:40,477 [INFO] Starting Iter #4 ...
+2025-11-17 20:53:04,684 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:53:34,816 [INFO] NEW/PREV WINS : 0 / 1 ; DRAWS : 9
+2025-11-17 20:53:34,816 [INFO] REJECTING NEW MODEL
+2025-11-17 20:53:34,825 [INFO] Starting Iter #5 ...
+2025-11-17 20:53:55,438 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:54:23,036 [INFO] NEW/PREV WINS : 1 / 0 ; DRAWS : 9
+2025-11-17 20:54:23,036 [INFO] ACCEPTING NEW MODEL
+2025-11-17 20:54:23,049 [INFO] Starting Iter #6 ...
+2025-11-17 20:54:59,464 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:55:35,952 [INFO] NEW/PREV WINS : 0 / 1 ; DRAWS : 9
+2025-11-17 20:55:35,952 [INFO] REJECTING NEW MODEL
+2025-11-17 20:55:35,964 [INFO] Starting Iter #7 ...
+2025-11-17 20:56:03,829 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:56:42,781 [INFO] NEW/PREV WINS : 0 / 1 ; DRAWS : 9
+2025-11-17 20:56:42,781 [INFO] REJECTING NEW MODEL
+2025-11-17 20:56:42,793 [INFO] Starting Iter #8 ...
+2025-11-17 20:57:21,817 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:57:48,329 [INFO] NEW/PREV WINS : 0 / 3 ; DRAWS : 7
+2025-11-17 20:57:48,329 [INFO] REJECTING NEW MODEL
+2025-11-17 20:57:48,338 [INFO] Starting Iter #9 ...
+2025-11-17 20:58:21,474 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 20:58:49,599 [INFO] NEW/PREV WINS : 0 / 3 ; DRAWS : 7
+2025-11-17 20:58:49,599 [INFO] REJECTING NEW MODEL
+2025-11-17 20:58:49,609 [INFO] Starting Iter #10 ...
+2025-11-17 20:59:24,734 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:00:06,337 [INFO] NEW/PREV WINS : 0 / 1 ; DRAWS : 9
+2025-11-17 21:00:06,337 [INFO] REJECTING NEW MODEL
+2025-11-17 21:00:06,348 [INFO] Starting Iter #11 ...
+2025-11-17 21:00:45,413 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:01:23,509 [INFO] NEW/PREV WINS : 0 / 1 ; DRAWS : 9
+2025-11-17 21:01:23,509 [INFO] REJECTING NEW MODEL
+2025-11-17 21:01:23,520 [INFO] Starting Iter #12 ...
+2025-11-17 21:01:56,404 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:02:22,481 [INFO] NEW/PREV WINS : 0 / 3 ; DRAWS : 7
+2025-11-17 21:02:22,481 [INFO] REJECTING NEW MODEL
+2025-11-17 21:02:22,492 [INFO] Starting Iter #13 ...
+2025-11-17 21:03:00,235 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:03:39,895 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:03:39,896 [INFO] REJECTING NEW MODEL
+2025-11-17 21:03:39,906 [INFO] Starting Iter #14 ...
+2025-11-17 21:04:15,348 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:04:46,946 [INFO] NEW/PREV WINS : 0 / 3 ; DRAWS : 7
+2025-11-17 21:04:46,946 [INFO] REJECTING NEW MODEL
+2025-11-17 21:04:46,955 [INFO] Starting Iter #15 ...
+2025-11-17 21:05:24,665 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:06:01,553 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:06:01,553 [INFO] REJECTING NEW MODEL
+2025-11-17 21:06:01,564 [INFO] Starting Iter #16 ...
+2025-11-17 21:06:33,325 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:07:02,644 [INFO] NEW/PREV WINS : 1 / 2 ; DRAWS : 7
+2025-11-17 21:07:02,644 [INFO] REJECTING NEW MODEL
+2025-11-17 21:07:02,655 [INFO] Starting Iter #17 ...
+2025-11-17 21:07:28,183 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:07:54,680 [INFO] NEW/PREV WINS : 0 / 4 ; DRAWS : 6
+2025-11-17 21:07:54,680 [INFO] REJECTING NEW MODEL
+2025-11-17 21:07:54,688 [INFO] Starting Iter #18 ...
+2025-11-17 21:08:31,327 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:08:56,216 [INFO] NEW/PREV WINS : 0 / 4 ; DRAWS : 6
+2025-11-17 21:08:56,216 [INFO] REJECTING NEW MODEL
+2025-11-17 21:08:56,227 [INFO] Starting Iter #19 ...
+2025-11-17 21:09:36,713 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:10:06,589 [INFO] NEW/PREV WINS : 0 / 2 ; DRAWS : 8
+2025-11-17 21:10:06,589 [INFO] REJECTING NEW MODEL
+2025-11-17 21:10:06,598 [INFO] Starting Iter #20 ...
+2025-11-17 21:10:41,952 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:11:19,972 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:11:19,972 [INFO] REJECTING NEW MODEL
+2025-11-17 21:11:19,986 [INFO] Starting Iter #21 ...
+2025-11-17 21:11:54,948 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:11:55,992 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:12:35,995 [INFO] NEW/PREV WINS : 0 / 2 ; DRAWS : 8
+2025-11-17 21:12:35,995 [INFO] REJECTING NEW MODEL
+2025-11-17 21:12:36,005 [INFO] Starting Iter #22 ...
+2025-11-17 21:13:04,397 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:13:05,454 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:13:42,988 [INFO] NEW/PREV WINS : 1 / 0 ; DRAWS : 9
+2025-11-17 21:13:42,988 [INFO] ACCEPTING NEW MODEL
+2025-11-17 21:13:43,001 [INFO] Starting Iter #23 ...
+2025-11-17 21:14:18,973 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:14:20,022 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:14:59,038 [INFO] NEW/PREV WINS : 0 / 1 ; DRAWS : 9
+2025-11-17 21:14:59,038 [INFO] REJECTING NEW MODEL
+2025-11-17 21:14:59,049 [INFO] Starting Iter #24 ...
+2025-11-17 21:15:39,653 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:15:40,730 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:16:26,092 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:16:26,092 [INFO] REJECTING NEW MODEL
+2025-11-17 21:16:26,105 [INFO] Starting Iter #25 ...
+2025-11-17 21:17:09,202 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:17:10,275 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:17:47,655 [INFO] NEW/PREV WINS : 0 / 2 ; DRAWS : 8
+2025-11-17 21:17:47,655 [INFO] REJECTING NEW MODEL
+2025-11-17 21:17:47,667 [INFO] Starting Iter #26 ...
+2025-11-17 21:18:30,900 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:18:32,003 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:19:09,683 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:19:09,683 [INFO] REJECTING NEW MODEL
+2025-11-17 21:19:09,693 [INFO] Starting Iter #27 ...
+2025-11-17 21:19:47,399 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:19:48,520 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:20:32,224 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:20:32,224 [INFO] REJECTING NEW MODEL
+2025-11-17 21:20:32,235 [INFO] Starting Iter #28 ...
+2025-11-17 21:21:09,597 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:21:10,695 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:21:52,850 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:21:52,850 [INFO] REJECTING NEW MODEL
+2025-11-17 21:21:52,863 [INFO] Starting Iter #29 ...
+2025-11-17 21:22:37,481 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:22:38,538 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:23:18,694 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:23:18,694 [INFO] REJECTING NEW MODEL
+2025-11-17 21:23:18,705 [INFO] Starting Iter #30 ...
+2025-11-17 21:24:05,622 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:24:06,725 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:24:44,191 [INFO] NEW/PREV WINS : 0 / 1 ; DRAWS : 9
+2025-11-17 21:24:44,191 [INFO] REJECTING NEW MODEL
+2025-11-17 21:24:44,201 [INFO] Starting Iter #31 ...
+2025-11-17 21:25:22,638 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:25:23,735 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:25:59,782 [INFO] NEW/PREV WINS : 1 / 0 ; DRAWS : 9
+2025-11-17 21:25:59,782 [INFO] ACCEPTING NEW MODEL
+2025-11-17 21:25:59,794 [INFO] Starting Iter #32 ...
+2025-11-17 21:26:39,427 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:26:40,458 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:27:13,821 [INFO] NEW/PREV WINS : 0 / 1 ; DRAWS : 9
+2025-11-17 21:27:13,822 [INFO] REJECTING NEW MODEL
+2025-11-17 21:27:13,833 [INFO] Starting Iter #33 ...
+2025-11-17 21:27:57,342 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:27:58,404 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:28:35,884 [INFO] NEW/PREV WINS : 1 / 0 ; DRAWS : 9
+2025-11-17 21:28:35,884 [INFO] ACCEPTING NEW MODEL
+2025-11-17 21:28:35,897 [INFO] Starting Iter #34 ...
+2025-11-17 21:29:24,500 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:29:25,596 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:30:10,235 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:30:10,235 [INFO] REJECTING NEW MODEL
+2025-11-17 21:30:10,244 [INFO] Starting Iter #35 ...
+2025-11-17 21:30:49,472 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:30:50,537 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:31:34,366 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:31:34,366 [INFO] REJECTING NEW MODEL
+2025-11-17 21:31:34,381 [INFO] Starting Iter #36 ...
+2025-11-17 21:32:20,686 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:32:21,843 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:33:03,276 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:33:03,276 [INFO] REJECTING NEW MODEL
+2025-11-17 21:33:03,286 [INFO] Starting Iter #37 ...
+2025-11-17 21:33:45,166 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:33:46,223 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:34:25,590 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:34:25,591 [INFO] REJECTING NEW MODEL
+2025-11-17 21:34:25,602 [INFO] Starting Iter #38 ...
+2025-11-17 21:35:13,437 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:35:14,630 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:35:57,392 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:35:57,392 [INFO] REJECTING NEW MODEL
+2025-11-17 21:35:57,404 [INFO] Starting Iter #39 ...
+2025-11-17 21:36:41,800 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:36:42,874 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:37:18,619 [INFO] NEW/PREV WINS : 1 / 1 ; DRAWS : 8
+2025-11-17 21:37:18,619 [INFO] REJECTING NEW MODEL
+2025-11-17 21:37:18,631 [INFO] Starting Iter #40 ...
+2025-11-17 21:38:03,976 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:38:05,062 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:38:41,784 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:38:41,784 [INFO] REJECTING NEW MODEL
+2025-11-17 21:38:41,795 [INFO] Starting Iter #41 ...
+2025-11-17 21:39:26,149 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:39:27,262 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:40:07,820 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:40:07,821 [INFO] REJECTING NEW MODEL
+2025-11-17 21:40:07,832 [INFO] Starting Iter #42 ...
+2025-11-17 21:40:52,462 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:40:53,574 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:41:39,985 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:41:39,985 [INFO] REJECTING NEW MODEL
+2025-11-17 21:41:39,998 [INFO] Starting Iter #43 ...
+2025-11-17 21:42:20,452 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:42:21,566 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:42:59,460 [INFO] NEW/PREV WINS : 0 / 2 ; DRAWS : 8
+2025-11-17 21:42:59,460 [INFO] REJECTING NEW MODEL
+2025-11-17 21:42:59,471 [INFO] Starting Iter #44 ...
+2025-11-17 21:43:39,737 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:43:40,792 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:44:20,115 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:44:20,116 [INFO] REJECTING NEW MODEL
+2025-11-17 21:44:20,127 [INFO] Starting Iter #45 ...
+2025-11-17 21:44:55,999 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:44:57,050 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 21:45:41,005 [INFO] NEW/PREV WINS : 0 / 0 ; DRAWS : 10
+2025-11-17 21:45:41,005 [INFO] REJECTING NEW MODEL
+2025-11-17 21:45:41,015 [INFO] Starting Iter #46 ...
+2025-11-17 21:46:19,870 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-17 21:46:21,001 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:10:33,321 [INFO] ================================================================================
+2025-11-17 22:10:33,321 [INFO] Starting robust training runner
+2025-11-17 22:10:33,321 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:10:33,321 [INFO] Press Ctrl+C to stop
+2025-11-17 22:10:33,321 [INFO] ================================================================================
+2025-11-17 22:10:33,321 [INFO] 
+================================================================================
+2025-11-17 22:10:33,321 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:10:33,322 [INFO] Started at: 2025-11-17 22:10:33
+2025-11-17 22:10:33,322 [INFO] ================================================================================
+
+2025-11-17 22:10:34,906 [INFO] ============================================================
+2025-11-17 22:10:34,906 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 22:10:34,907 [INFO] ============================================================
+2025-11-17 22:10:34,907 [INFO] Loading AntiyoyGame...
+2025-11-17 22:10:34,907 [INFO] Game Configuration:
+2025-11-17 22:10:34,907 [INFO]   Board size: (22, 4, 4)
+2025-11-17 22:10:34,907 [INFO]   Action size: 433
+2025-11-17 22:10:34,907 [INFO] Loading NNetWrapper...
+2025-11-17 22:10:35,078 [INFO] Neural Network Configuration:
+2025-11-17 22:10:35,078 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 22:10:35,078 [INFO]   Output size: 433 (possible actions)
+2025-11-17 22:10:35,079 [WARNING] Not loading a checkpoint - starting from scratch!
+2025-11-17 22:10:35,079 [WARNING] Training from scratch will take a long time.
+2025-11-17 22:10:35,079 [WARNING] Consider setting load_model=True to resume from a checkpoint.
+2025-11-17 22:10:35,079 [INFO] Loading the Coach...
+2025-11-17 22:10:35,086 [INFO] ============================================================
+2025-11-17 22:10:35,086 [INFO] Starting the learning process 🎉
+2025-11-17 22:10:35,086 [INFO] ============================================================
+2025-11-17 22:10:35,086 [INFO] 
+2025-11-17 22:10:35,086 [INFO] Training Configuration:
+2025-11-17 22:10:35,086 [INFO]   Iterations: 1000
+2025-11-17 22:10:35,086 [INFO]   Self-play games per iteration: 10
+2025-11-17 22:10:35,086 [INFO]   MCTS simulations per move: 25
+2025-11-17 22:10:35,086 [INFO]   Arena games for evaluation: 10
+2025-11-17 22:10:35,086 [INFO]   Update threshold: 0.51
+2025-11-17 22:10:35,086 [INFO] 
+2025-11-17 22:10:35,086 [INFO] This will take a long time. You can:
+2025-11-17 22:10:35,086 [INFO]   - Monitor progress in the terminal
+2025-11-17 22:10:35,086 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 22:10:35,086 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 22:10:35,086 [INFO] 
+2025-11-17 22:10:35,086 [INFO] ============================================================
+2025-11-17 22:10:35,086 [INFO] Starting Iter #1 ...
+2025-11-17 22:10:54,561 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:11:16,894 [INFO] NEW/PREV WINS : 1 / 5 ; DRAWS : 4
+2025-11-17 22:11:16,895 [INFO] REJECTING NEW MODEL
+2025-11-17 22:11:16,906 [INFO] Starting Iter #2 ...
+2025-11-17 22:11:38,857 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:11:47,202 [INFO] NEW/PREV WINS : 3 / 5 ; DRAWS : 2
+2025-11-17 22:11:47,202 [INFO] REJECTING NEW MODEL
+2025-11-17 22:11:47,212 [INFO] Starting Iter #3 ...
+2025-11-17 22:12:09,869 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:12:17,678 [INFO] NEW/PREV WINS : 3 / 5 ; DRAWS : 2
+2025-11-17 22:12:17,678 [INFO] REJECTING NEW MODEL
+2025-11-17 22:12:17,688 [INFO] Starting Iter #4 ...
+2025-11-17 22:12:36,333 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:12:58,971 [INFO] NEW/PREV WINS : 3 / 1 ; DRAWS : 6
+2025-11-17 22:12:58,971 [INFO] ACCEPTING NEW MODEL
+2025-11-17 22:12:58,991 [INFO] Starting Iter #5 ...
+2025-11-17 22:13:28,445 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:13:57,965 [INFO] NEW/PREV WINS : 2 / 3 ; DRAWS : 5
+2025-11-17 22:13:57,965 [INFO] REJECTING NEW MODEL
+2025-11-17 22:13:57,976 [INFO] Starting Iter #6 ...
+2025-11-17 22:14:32,443 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:15:04,807 [INFO] NEW/PREV WINS : 0 / 2 ; DRAWS : 8
+2025-11-17 22:15:04,807 [INFO] REJECTING NEW MODEL
+2025-11-17 22:15:04,818 [INFO] Starting Iter #7 ...
+2025-11-17 22:15:38,443 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:16:05,456 [INFO] NEW/PREV WINS : 1 / 2 ; DRAWS : 7
+2025-11-17 22:16:05,456 [INFO] REJECTING NEW MODEL
+2025-11-17 22:16:05,470 [INFO] Starting Iter #8 ...
+2025-11-17 22:16:38,795 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:17:03,868 [INFO] NEW/PREV WINS : 0 / 2 ; DRAWS : 8
+2025-11-17 22:17:03,868 [INFO] REJECTING NEW MODEL
+2025-11-17 22:17:03,879 [INFO] Starting Iter #9 ...
+2025-11-17 22:17:40,026 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:18:12,791 [INFO] NEW/PREV WINS : 0 / 1 ; DRAWS : 9
+2025-11-17 22:18:12,791 [INFO] REJECTING NEW MODEL
+2025-11-17 22:18:12,801 [INFO] Starting Iter #10 ...
+2025-11-17 22:18:48,593 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:19:11,309 [INFO] NEW/PREV WINS : 2 / 1 ; DRAWS : 7
+2025-11-17 22:19:11,309 [INFO] ACCEPTING NEW MODEL
+2025-11-17 22:19:11,324 [INFO] Starting Iter #11 ...
+2025-11-17 22:19:53,578 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:20:17,962 [INFO] NEW/PREV WINS : 1 / 4 ; DRAWS : 5
+2025-11-17 22:20:17,962 [INFO] REJECTING NEW MODEL
+2025-11-17 22:20:17,972 [INFO] Starting Iter #12 ...
+2025-11-17 22:21:04,834 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:21:37,753 [INFO] NEW/PREV WINS : 0 / 3 ; DRAWS : 7
+2025-11-17 22:21:37,753 [INFO] REJECTING NEW MODEL
+2025-11-17 22:21:37,762 [INFO] Starting Iter #13 ...
+2025-11-17 22:22:16,684 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:22:53,318 [INFO] NEW/PREV WINS : 1 / 0 ; DRAWS : 9
+2025-11-17 22:22:53,318 [INFO] ACCEPTING NEW MODEL
+2025-11-17 22:22:53,331 [INFO] Starting Iter #14 ...
+2025-11-17 22:23:27,010 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 22:23:27,029 [INFO] 
+================================================================================
+2025-11-17 22:23:27,030 [INFO] Training stopped by user
+2025-11-17 22:23:27,030 [INFO] ================================================================================
+2025-11-17 22:23:28,941 [INFO] ================================================================================
+2025-11-17 22:23:28,941 [INFO] Starting robust training runner
+2025-11-17 22:23:28,941 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:23:28,941 [INFO] Press Ctrl+C to stop
+2025-11-17 22:23:28,941 [INFO] ================================================================================
+2025-11-17 22:23:28,941 [INFO] 
+================================================================================
+2025-11-17 22:23:28,941 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:23:28,941 [INFO] Started at: 2025-11-17 22:23:28
+2025-11-17 22:23:28,941 [INFO] ================================================================================
+
+2025-11-17 22:23:29,696 [INFO] ============================================================
+2025-11-17 22:23:29,696 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 22:23:29,696 [INFO] ============================================================
+2025-11-17 22:23:29,696 [INFO] Loading AntiyoyGame...
+2025-11-17 22:23:29,696 [INFO] Game Configuration:
+2025-11-17 22:23:29,696 [INFO]   Board size: (22, 4, 4)
+2025-11-17 22:23:29,696 [INFO]   Action size: 433
+2025-11-17 22:23:29,696 [INFO] Loading NNetWrapper...
+2025-11-17 22:23:29,811 [INFO] Neural Network Configuration:
+2025-11-17 22:23:29,811 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 22:23:29,811 [INFO]   Output size: 433 (possible actions)
+2025-11-17 22:23:29,811 [WARNING] Not loading a checkpoint - starting from scratch!
+2025-11-17 22:23:29,811 [WARNING] Training from scratch will take a long time.
+2025-11-17 22:23:29,811 [WARNING] Consider setting load_model=True to resume from a checkpoint.
+2025-11-17 22:23:29,811 [INFO] Loading the Coach...
+2025-11-17 22:23:29,818 [INFO] ============================================================
+2025-11-17 22:23:29,818 [INFO] Starting the learning process 🎉
+2025-11-17 22:23:29,818 [INFO] ============================================================
+2025-11-17 22:23:29,818 [INFO] 
+2025-11-17 22:23:29,818 [INFO] Training Configuration:
+2025-11-17 22:23:29,818 [INFO]   Iterations: 1000
+2025-11-17 22:23:29,818 [INFO]   Self-play games per iteration: 10
+2025-11-17 22:23:29,819 [INFO]   MCTS simulations per move: 25
+2025-11-17 22:23:29,819 [INFO]   Arena games for evaluation: 10
+2025-11-17 22:23:29,819 [INFO]   Update threshold: 0.51
+2025-11-17 22:23:29,819 [INFO] 
+2025-11-17 22:23:29,819 [INFO] This will take a long time. You can:
+2025-11-17 22:23:29,819 [INFO]   - Monitor progress in the terminal
+2025-11-17 22:23:29,819 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 22:23:29,819 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 22:23:29,819 [INFO] 
+2025-11-17 22:23:29,819 [INFO] ============================================================
+2025-11-17 22:23:29,819 [INFO] Saving initial model as best.pth.tar
+2025-11-17 22:23:29,827 [INFO] Starting Iter #1 ...
+2025-11-17 22:23:59,841 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:24:17,948 [INFO] NEW/PREV WINS : 4 / 2 ; DRAWS : 4
+2025-11-17 22:24:17,948 [INFO] ACCEPTING NEW MODEL
+2025-11-17 22:24:17,961 [INFO] Starting Iter #2 ...
+2025-11-17 22:24:53,363 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-17 22:25:34,883 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-17 22:25:34,892 [INFO] 
+================================================================================
+2025-11-17 22:25:34,893 [INFO] Training stopped by user
+2025-11-17 22:25:34,893 [INFO] ================================================================================
+2025-11-17 22:25:42,470 [INFO] ================================================================================
+2025-11-17 22:25:42,470 [INFO] Starting robust training runner
+2025-11-17 22:25:42,471 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:25:42,471 [INFO] Press Ctrl+C to stop
+2025-11-17 22:25:42,471 [INFO] ================================================================================
+2025-11-17 22:25:42,471 [INFO] 
+================================================================================
+2025-11-17 22:25:42,471 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:25:42,471 [INFO] Started at: 2025-11-17 22:25:42
+2025-11-17 22:25:42,471 [INFO] ================================================================================
+
+2025-11-17 22:25:50,790 [INFO] ================================================================================
+2025-11-17 22:25:50,790 [INFO] Starting robust training runner
+2025-11-17 22:25:50,790 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:25:50,791 [INFO] Press Ctrl+C to stop
+2025-11-17 22:25:50,791 [INFO] ================================================================================
+2025-11-17 22:25:50,791 [INFO] 
+================================================================================
+2025-11-17 22:25:50,791 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:25:50,791 [INFO] Started at: 2025-11-17 22:25:50
+2025-11-17 22:25:50,791 [INFO] ================================================================================
+
+2025-11-17 22:26:03,733 [INFO] ================================================================================
+2025-11-17 22:26:03,733 [INFO] Starting robust training runner
+2025-11-17 22:26:03,733 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:26:03,733 [INFO] Press Ctrl+C to stop
+2025-11-17 22:26:03,733 [INFO] ================================================================================
+2025-11-17 22:26:03,733 [INFO] 
+================================================================================
+2025-11-17 22:26:03,733 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:26:03,733 [INFO] Started at: 2025-11-17 22:26:03
+2025-11-17 22:26:03,733 [INFO] ================================================================================
+
+2025-11-17 22:26:34,821 [INFO] ================================================================================
+2025-11-17 22:26:34,821 [INFO] Starting robust training runner
+2025-11-17 22:26:34,821 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:26:34,822 [INFO] Press Ctrl+C to stop
+2025-11-17 22:26:34,822 [INFO] ================================================================================
+2025-11-17 22:26:34,822 [INFO] 
+================================================================================
+2025-11-17 22:26:34,822 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:26:34,822 [INFO] Started at: 2025-11-17 22:26:34
+2025-11-17 22:26:34,822 [INFO] ================================================================================
+
+2025-11-17 22:26:40,997 [INFO] ================================================================================
+2025-11-17 22:26:40,997 [INFO] Starting robust training runner
+2025-11-17 22:26:40,997 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:26:40,997 [INFO] Press Ctrl+C to stop
+2025-11-17 22:26:40,997 [INFO] ================================================================================
+2025-11-17 22:26:40,997 [INFO] 
+================================================================================
+2025-11-17 22:26:40,997 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:26:40,997 [INFO] Started at: 2025-11-17 22:26:40
+2025-11-17 22:26:40,997 [INFO] ================================================================================
+
+2025-11-17 22:27:01,961 [INFO] ================================================================================
+2025-11-17 22:27:01,961 [INFO] Starting robust training runner
+2025-11-17 22:27:01,961 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:27:01,961 [INFO] Press Ctrl+C to stop
+2025-11-17 22:27:01,961 [INFO] ================================================================================
+2025-11-17 22:27:01,961 [INFO] 
+================================================================================
+2025-11-17 22:27:01,961 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:27:01,961 [INFO] Started at: 2025-11-17 22:27:01
+2025-11-17 22:27:01,961 [INFO] ================================================================================
+
+2025-11-17 22:27:03,606 [INFO] ================================================================================
+2025-11-17 22:27:03,606 [INFO] Starting robust training runner
+2025-11-17 22:27:03,606 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:27:03,606 [INFO] Press Ctrl+C to stop
+2025-11-17 22:27:03,606 [INFO] ================================================================================
+2025-11-17 22:27:03,606 [INFO] 
+================================================================================
+2025-11-17 22:27:03,606 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:27:03,606 [INFO] Started at: 2025-11-17 22:27:03
+2025-11-17 22:27:03,606 [INFO] ================================================================================
+
+2025-11-17 22:27:12,412 [INFO] ================================================================================
+2025-11-17 22:27:12,412 [INFO] Starting robust training runner
+2025-11-17 22:27:12,412 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:27:12,412 [INFO] Press Ctrl+C to stop
+2025-11-17 22:27:12,412 [INFO] ================================================================================
+2025-11-17 22:27:12,412 [INFO] 
+================================================================================
+2025-11-17 22:27:12,412 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:27:12,412 [INFO] Started at: 2025-11-17 22:27:12
+2025-11-17 22:27:12,412 [INFO] ================================================================================
+
+2025-11-17 22:27:42,918 [INFO] ================================================================================
+2025-11-17 22:27:42,918 [INFO] Starting robust training runner
+2025-11-17 22:27:42,918 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:27:42,918 [INFO] Press Ctrl+C to stop
+2025-11-17 22:27:42,918 [INFO] ================================================================================
+2025-11-17 22:27:42,918 [INFO] 
+================================================================================
+2025-11-17 22:27:42,918 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:27:42,918 [INFO] Started at: 2025-11-17 22:27:42
+2025-11-17 22:27:42,918 [INFO] ================================================================================
+
+2025-11-17 22:27:49,043 [INFO] ================================================================================
+2025-11-17 22:27:49,043 [INFO] Starting robust training runner
+2025-11-17 22:27:49,043 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-17 22:27:49,043 [INFO] Press Ctrl+C to stop
+2025-11-17 22:27:49,043 [INFO] ================================================================================
+2025-11-17 22:27:49,043 [INFO] 
+================================================================================
+2025-11-17 22:27:49,043 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-17 22:27:49,043 [INFO] Started at: 2025-11-17 22:27:49
+2025-11-17 22:27:49,043 [INFO] ================================================================================
+
+2025-11-17 22:27:49,779 [INFO] ============================================================
+2025-11-17 22:27:49,779 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-17 22:27:49,779 [INFO] ============================================================
+2025-11-17 22:27:49,779 [INFO] Loading AntiyoyGame...
+2025-11-17 22:27:49,779 [INFO] Game Configuration:
+2025-11-17 22:27:49,779 [INFO]   Board size: (22, 4, 4)
+2025-11-17 22:27:49,780 [INFO]   Action size: 433
+2025-11-17 22:27:49,780 [INFO] Loading NNetWrapper...
+2025-11-17 22:27:49,894 [INFO] Neural Network Configuration:
+2025-11-17 22:27:49,894 [INFO]   Input channels: 22 (board state encoding)
+2025-11-17 22:27:49,894 [INFO]   Output size: 433 (possible actions)
+2025-11-17 22:27:49,894 [WARNING] Checkpoint "./temp/best.pth.tar" not found!
+2025-11-17 22:27:49,894 [WARNING] Starting from scratch instead.
+2025-11-17 22:27:49,894 [INFO] Loading the Coach...
+2025-11-17 22:27:49,900 [INFO] ============================================================
+2025-11-17 22:27:49,900 [INFO] Starting the learning process 🎉
+2025-11-17 22:27:49,900 [INFO] ============================================================
+2025-11-17 22:27:49,900 [INFO] 
+2025-11-17 22:27:49,900 [INFO] Training Configuration:
+2025-11-17 22:27:49,901 [INFO]   Iterations: 1000
+2025-11-17 22:27:49,901 [INFO]   Self-play games per iteration: 50
+2025-11-17 22:27:49,901 [INFO]   MCTS simulations per move: 25
+2025-11-17 22:27:49,901 [INFO]   Arena games for evaluation: 25
+2025-11-17 22:27:49,901 [INFO]   Update threshold: 0.51
+2025-11-17 22:27:49,901 [INFO] 
+2025-11-17 22:27:49,901 [INFO] This will take a long time. You can:
+2025-11-17 22:27:49,901 [INFO]   - Monitor progress in the terminal
+2025-11-17 22:27:49,901 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-17 22:27:49,901 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-17 22:27:49,901 [INFO] 
+2025-11-17 22:27:49,901 [INFO] ============================================================
+2025-11-17 22:27:49,901 [INFO] Saving initial model as best.pth.tar
+2025-11-17 22:27:49,907 [INFO] Starting Iter #1 ...
+2025-11-17 22:29:58,646 [INFO] PITTING AGAINST PREVIOUS VERSION

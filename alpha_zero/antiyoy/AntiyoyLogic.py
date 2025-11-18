@@ -31,8 +31,8 @@ class Board:
     """
 
     # Board dimensions
-    HEIGHT = 5
-    WIDTH = 5
+    HEIGHT = 4
+    WIDTH = 4
 
     # Number of channels in the encoded board state
     # Channel 21 is reserved for action counter (encoded as scalar across all tiles)
@@ -49,8 +49,8 @@ class Board:
 
     # Maximum total turns before forcing a draw
     # Prevents infinite games where players just pass
-    # Reduced to 50 to help MCTS terminate sooner
-    MAX_GAME_TURNS = 100  # Increased to allow games to finish naturally
+    # REDUCED FOR FASTER TRAINING: 50 to shorten games
+    MAX_GAME_TURNS = 50
 
     # Calculate action space size
     NUM_TILES = HEIGHT * WIDTH
@@ -111,6 +111,7 @@ class Board:
         factions = [faction1, faction2]
 
         # Generate a random scenario with balanced starting positions
+        # For 4x4: ~9 land tiles out of 16 total, with each faction starting with 3 tiles
         # For 5x5: ~14 land tiles out of 25 total, with each faction starting with 3 tiles
         # For 6x6: ~20 land tiles out of 36 total, with each faction starting with 3 tiles
         total_tiles = self.WIDTH * self.HEIGHT

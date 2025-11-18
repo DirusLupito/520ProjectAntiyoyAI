@@ -10,6 +10,9 @@ This script wraps the main training loop with automatic recovery:
 """
 
 import sys
+# Increase Python recursion limit to reduce RecursionError in deep recursion paths
+# (keep this moderate to avoid C stack overflow). Adjust if necessary.
+sys.setrecursionlimit(2000)
 import time
 import logging
 import traceback
