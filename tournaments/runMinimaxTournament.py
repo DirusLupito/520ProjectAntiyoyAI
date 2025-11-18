@@ -32,7 +32,7 @@ def runMinimaxTournament() -> None:
 
     # Shared configuration parameters for every matchup we run.
     baseTournamentArgs = {
-        "roundCount": 500,
+        "roundCount": 50,
         "dimension": 4,
         "targetLandTiles": 16,
         "initialProvinceSize": 4,
