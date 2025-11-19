@@ -27,15 +27,16 @@ class Arena():
         self.game = game
         self.display = display
 
-    def playGame(self, verbose=False):
+    def playGame(self, verbose=False, debug=False):
         """
         Executes one episode of a game.
 
         Returns:
-            either
-                winner: player who won the game (1 if player1, -1 if player2)
-            or
-                draw result returned from the game that is neither 1, -1, nor 0.
+            game_result: dict containing:
+                - winner: 1 if player1 won, -1 if player2 won, or draw value
+                - turns: number of turns played
+                - final_eval_p1: position evaluation from player1's perspective
+                - final_eval_p2: position evaluation from player2's perspective
         """
         players = [self.player2, None, self.player1]
         curPlayer = 1
@@ -46,12 +47,20 @@ class Arena():
             if hasattr(player, "startGame"):
                 player.startGame()
 
+        if debug:
+            log.info(f"[Arena] Starting new game")
+
         while self.game.getGameEnded(board, curPlayer) == 0:
             it += 1
             if verbose:
-                assert self.display
                 print("Turn ", str(it), "Player ", str(curPlayer))
-                self.display(board)
+
+            if debug and it % 10 == 0:
+                # Show position evaluation every 10 turns
+                eval_p1 = self.game.evaluatePosition(board, 1)
+                eval_p2 = self.game.evaluatePosition(board, -1)
+                log.info(f"[Arena] Turn {it}: eval_p1={eval_p1:.3f}, eval_p2={eval_p2:.3f}")
+
             action = players[curPlayer + 1](self.game.getCanonicalForm(board, curPlayer))
 
             valids = self.game.getValidMoves(self.game.getCanonicalForm(board, curPlayer), 1)
@@ -72,45 +81,148 @@ class Arena():
             if hasattr(player, "endGame"):
                 player.endGame()
 
-        if verbose:
-            assert self.display
-            print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
-            self.display(board)
-        return curPlayer * self.game.getGameEnded(board, curPlayer)
+        # Get final game result
+        game_ended_value = self.game.getGameEnded(board, 1)
+        winner = curPlayer * self.game.getGameEnded(board, curPlayer)
 
-    def playGames(self, num, verbose=False):
+        # Evaluate final position from both players' perspectives
+        final_eval_p1 = self.game.evaluatePosition(board, 1)
+        final_eval_p2 = self.game.evaluatePosition(board, -1)
+
+        if verbose or debug:
+            # Player 1 = Previous/Old network (P), Player 2 = New network (N)
+            result_str = "PREVIOUS (P) WINS" if winner == 1 else "NEW (N) WINS" if winner == -1 else f"DRAW ({game_ended_value})"
+            print(f"\n{'='*60}")
+            print(f"Game over: Turn {it}, Result: {result_str}")
+            print(f"  Final eval P (old): {final_eval_p1:.3f}, N (new): {final_eval_p2:.3f}")
+            print(f"  (Board ownership: P=1, N=2)")
+            print(f"{'='*60}")
+
+            # Print final board state using Scenario.printMap()
+            # Convert from canonical form (always player 1 perspective) to actual board state
+            try:
+                # Import Board to access from_numpy
+                from alpha_zero.antiyoy.AntiyoyLogic import Board
+
+                # Convert numpy board to Board object (use player 1 as reference)
+                board_obj = Board.from_numpy(board, player=1)
+
+                # Print the actual game scenario
+                print("\nFinal Board State:")
+                board_obj.scenario.printMap()
+                print("")
+            except Exception as e:
+                log.error(f"Failed to print board state: {e}")
+                # Fallback to built-in display if available
+                if hasattr(self.game, 'display'):
+                    self.game.display(board)
+
+        if debug:
+            log.info(f"[Arena] Game finished in {it} turns, winner={winner}, "
+                    f"eval_p1={final_eval_p1:.3f}, eval_p2={final_eval_p2:.3f}")
+
+        return {
+            'winner': winner,
+            'turns': it,
+            'final_eval_p1': final_eval_p1,
+            'final_eval_p2': final_eval_p2,
+            'game_ended_value': game_ended_value
+        }
+
+    def playGames(self, num, verbose=False, debug=False):
         """
-        Plays num games in which player1 starts num/2 games and player2 starts
-        num/2 games.
+        Plays num games, alternating which player goes first each game.
+
+        Game 1: player1 (PREVIOUS) goes first
+        Game 2: player2 (NEW) goes first
+        Game 3: player1 (PREVIOUS) goes first
+        ...and so on
 
         Returns:
-            oneWon: games won by player1
-            twoWon: games won by player2
+            oneWon: games won by player1 (PREVIOUS network)
+            twoWon: games won by player2 (NEW network)
             draws:  games won by nobody
+
+        If debug=True, also logs detailed statistics.
         """
 
-        num = int(num / 2)
         oneWon = 0
         twoWon = 0
         draws = 0
-        for _ in tqdm(range(num), desc="Arena.playGames (1)"):
-            gameResult = self.playGame(verbose=verbose)
-            if gameResult == 1:
-                oneWon += 1
-            elif gameResult == -1:
-                twoWon += 1
-            else:
-                draws += 1
 
-        self.player1, self.player2 = self.player2, self.player1
+        # Track detailed statistics
+        total_turns = []
+        p1_evals = []
+        p2_evals = []
+        draw_results = []
 
-        for _ in tqdm(range(num), desc="Arena.playGames (2)"):
-            gameResult = self.playGame(verbose=verbose)
-            if gameResult == -1:
-                oneWon += 1
-            elif gameResult == 1:
-                twoWon += 1
+        # Store original players
+        original_player1 = self.player1
+        original_player2 = self.player2
+
+        for game_num in tqdm(range(num), desc="Arena.playGames"):
+            # Alternate who goes first each game
+            if game_num % 2 == 1:
+                # Odd games: swap so player2 (NEW) goes first
+                self.player1, self.player2 = self.player2, self.player1
+
+            result = self.playGame(verbose=verbose, debug=debug)
+
+            # Extract winner from result dict
+            winner = result['winner']
+
+            # Count wins relative to ORIGINAL player assignments
+            # (accounting for the swap on odd games)
+            if game_num % 2 == 0:
+                # Even games: normal assignment (player1 = PREVIOUS went first)
+                if winner == 1:
+                    oneWon += 1
+                elif winner == -1:
+                    twoWon += 1
+                else:
+                    draws += 1
+                    draw_results.append(result['game_ended_value'])
             else:
-                draws += 1
+                # Odd games: players were swapped (player2 = NEW went first as player1)
+                if winner == 1:
+                    twoWon += 1  # player1 won, but it's actually NEW after swap
+                elif winner == -1:
+                    oneWon += 1  # player2 won, but it's actually PREVIOUS after swap
+                else:
+                    draws += 1
+                    draw_results.append(result['game_ended_value'])
+
+                # Restore original assignment for next game
+                self.player1, self.player2 = original_player1, original_player2
+
+            # Track statistics
+            total_turns.append(result['turns'])
+            p1_evals.append(result['final_eval_p1'])
+            p2_evals.append(result['final_eval_p2'])
+
+            if debug and (game_num + 1) % 5 == 0:
+                log.info(f"[Arena] Game {game_num+1}/{num}: PREV={oneWon}, NEW={twoWon}, Draws={draws}")
+
+        # Ensure players are restored to original
+        self.player1 = original_player1
+        self.player2 = original_player2
+
+        # Log detailed statistics
+        if debug or draws > 0:
+            import numpy as np
+            avg_turns = np.mean(total_turns)
+            avg_p1_eval = np.mean(p1_evals)
+            avg_p2_eval = np.mean(p2_evals)
+
+            log.info(f"[Arena] ========== ARENA RESULTS ==========")
+            log.info(f"[Arena] PREVIOUS wins: {oneWon}/{num} ({100*oneWon/num:.1f}%)")
+            log.info(f"[Arena] NEW wins: {twoWon}/{num} ({100*twoWon/num:.1f}%)")
+            log.info(f"[Arena] Draws: {draws}/{num} ({100*draws/num:.1f}%)")
+            log.info(f"[Arena] Average game length: {avg_turns:.1f} turns")
+            log.info(f"[Arena] Average final eval P (old): {avg_p1_eval:.3f}")
+            log.info(f"[Arena] Average final eval N (new): {avg_p2_eval:.3f}")
+            if draws > 0:
+                log.info(f"[Arena] Draw results: {draw_results}")
+            log.info(f"[Arena] =====================================")
 
         return oneWon, twoWon, draws

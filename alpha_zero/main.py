@@ -64,7 +64,7 @@ args = dotdict({
     # After N moves use temperature=0 (exploitation/greedy)
     # Higher = more exploration in opening
     # Typical range: 10-20
-    'tempThreshold': 15,
+    'tempThreshold': 20,
 
     # Number of MCTS simulations per move
     # More simulations = better move quality but slower
@@ -110,7 +110,8 @@ args = dotdict({
     # Higher = more conservative (only accept clearly better networks)
     # Lower = more aggressive (accept marginally better networks)
     # Typical range: 0.55-0.60
-    'updateThreshold': 0.51,
+    # Set to 0.48 to accept networks that win ~48%+ (more aggressive acceptance)
+    'updateThreshold': 0.48,
 
     # Number of games to play in arena for evaluation
     # More games = more reliable evaluation but slower

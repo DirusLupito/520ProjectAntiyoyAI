@@ -50,23 +50,87 @@ class Coach():
         self.curPlayer = 1
         episodeStep = 0
 
+        # Track cumulative step rewards for each player
+        cumulative_rewards = {1: 0.0, -1: 0.0}
+
         while True:
             episodeStep += 1
-            canonicalBoard = self.game.getCanonicalForm(board, self.curPlayer)
-            temp = int(episodeStep < self.args.tempThreshold)
 
-            pi = self.mcts.getActionProb(canonicalBoard, temp=temp)
-            sym = self.game.getSymmetries(canonicalBoard, pi)
-            for b, p in sym:
-                trainExamples.append([b, self.curPlayer, p, None])
+            try:
+                log.debug(f"[Episode] Step {episodeStep}: Getting canonical board for player {self.curPlayer}")
+                canonicalBoard = self.game.getCanonicalForm(board, self.curPlayer)
+                temp = int(episodeStep < self.args.tempThreshold)
 
-            action = np.random.choice(len(pi), p=pi)
-            board, self.curPlayer = self.game.getNextState(board, self.curPlayer, action)
+                log.debug(f"[Episode] Step {episodeStep}: Calling MCTS.getActionProb (temp={temp})")
+                pi = self.mcts.getActionProb(canonicalBoard, temp=temp)
 
-            r = self.game.getGameEnded(board, self.curPlayer)
+                # Check for NaN/Inf in policy
+                if np.any(np.isnan(pi)) or np.any(np.isinf(pi)):
+                    log.error(f"[CRITICAL] Invalid policy from MCTS at step {episodeStep}: pi has NaN/Inf")
+                    log.error(f"  pi min={np.min(pi)}, max={np.max(pi)}, sum={np.sum(pi)}")
+                    raise ValueError("Invalid policy from MCTS")
+
+                log.debug(f"[Episode] Step {episodeStep}: Getting symmetries")
+                sym = self.game.getSymmetries(canonicalBoard, pi)
+                for b, p in sym:
+                    trainExamples.append([b, self.curPlayer, p, None])
+
+                log.debug(f"[Episode] Step {episodeStep}: Selecting action from policy")
+                action = np.random.choice(len(pi), p=pi)
+
+                log.debug(f"[Episode] Step {episodeStep}: Applying action {action}")
+                board, self.curPlayer = self.game.getNextState(board, self.curPlayer, action)
+
+                # Calculate and accumulate step reward for the player who just moved
+                # Note: curPlayer has switched after getNextState, so we need the previous player
+                previous_player = -self.curPlayer
+                log.debug(f"[Episode] Step {episodeStep}: Calculating step reward")
+                step_reward = self.game.getStepReward(board, previous_player)
+
+                # Safety check for NaN/Inf in step rewards
+                if np.isnan(step_reward) or np.isinf(step_reward):
+                    log.error(f"Invalid step_reward detected: {step_reward} at episodeStep {episodeStep}")
+                    step_reward = 0.0
+
+                cumulative_rewards[previous_player] += step_reward
+
+                log.debug(f"[Episode] Step {episodeStep}: Checking if game ended")
+                r = self.game.getGameEnded(board, self.curPlayer)
+
+            except Exception as e:
+                log.error(f"[CRITICAL] Exception in episode at step {episodeStep}: {type(e).__name__}: {e}")
+                log.error(f"  curPlayer={self.curPlayer}, action={action if 'action' in locals() else 'N/A'}")
+                log.error(f"  Episode will be terminated early")
+                import traceback
+                traceback.print_exc()
+                raise
 
             if r != 0:
-                return [(x[0], x[2], r * ((-1) ** (x[1] != self.curPlayer))) for x in trainExamples]
+                # Add cumulative rewards to final outcome
+                # Each example gets: (final outcome from their perspective) + (their cumulative reward)
+                final_values = []
+                for x in trainExamples:
+                    outcome = r * ((-1) ** (x[1] != self.curPlayer))
+                    cumulative = cumulative_rewards[x[1]]
+                    final_value = outcome + cumulative
+
+                    # Safety check for NaN/Inf in final values
+                    if np.isnan(final_value) or np.isinf(final_value):
+                        log.error(f"Invalid final_value: {final_value} (outcome={outcome}, cumulative={cumulative})")
+                        final_value = outcome  # Fall back to just the outcome
+
+                    # Clamp extreme values to prevent gradient explosion
+                    final_value = np.clip(final_value, -10.0, 10.0)
+
+                    final_values.append((x[0], x[2], final_value))
+
+                # Log reward statistics for debugging
+                avg_p1 = cumulative_rewards[1] / max(1, episodeStep // 2)
+                avg_p2 = cumulative_rewards[-1] / max(1, episodeStep // 2)
+                log.debug(f"Episode ended: steps={episodeStep}, cumulative_p1={cumulative_rewards[1]:.2f}, "
+                         f"cumulative_p2={cumulative_rewards[-1]:.2f}, avg_p1={avg_p1:.3f}, avg_p2={avg_p2:.3f}")
+
+                return final_values
 
     def learn(self):
         """
@@ -120,9 +184,12 @@ class Coach():
             nmcts = MCTS(self.game, self.nnet, self.args)
 
             log.info('PITTING AGAINST PREVIOUS VERSION')
-            arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, temp=0)),
-                          lambda x: np.argmax(nmcts.getActionProb(x, temp=0)), self.game)
-            pwins, nwins, draws = arena.playGames(self.args.arenaCompare)
+            # Use temp=1.0 for arena to add significant randomness and reduce draws
+            # temp=0 (greedy) causes many draws when networks are similar
+            # temp=1.0 adds substantial randomness for more decisive, varied games
+            arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, temp=.30)),
+                          lambda x: np.argmax(nmcts.getActionProb(x, temp=.30)), self.game)
+            pwins, nwins, draws = arena.playGames(self.args.arenaCompare, debug=True)
 
             log.info('NEW/PREV WINS : %d / %d ; DRAWS : %d' % (nwins, pwins, draws))
             if pwins + nwins == 0 or float(nwins) / (pwins + nwins) < self.args.updateThreshold:
@@ -150,16 +217,6 @@ class Coach():
         examplesFile = modelFile + ".examples"
         if not os.path.isfile(examplesFile):
             log.warning(f'File "{examplesFile}" with trainExamples not found!')
-
-            # Check if running in interactive mode (has a terminal)
-            if sys.stdin.isatty():
-                r = input("Continue? [y|n]")
-                if r != "y":
-                    sys.exit()
-            else:
-                # Non-interactive mode (background job, remote execution, etc.)
-                # Automatically continue without examples - training will start from scratch
-                log.info("Running in non-interactive mode, automatically continuing without examples...")
         else:
             log.info("File with trainExamples found. Loading it...")
             with open(examplesFile, "rb") as f:

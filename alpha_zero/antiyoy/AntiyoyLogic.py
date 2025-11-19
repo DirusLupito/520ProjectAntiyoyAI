@@ -49,7 +49,6 @@ class Board:
 
     # Maximum total turns before forcing a draw
     # Prevents infinite games where players just pass
-    # REDUCED FOR FASTER TRAINING: 50 to shorten games
     MAX_GAME_TURNS = 50
 
     # Calculate action space size
@@ -111,24 +110,19 @@ class Board:
         factions = [faction1, faction2]
 
         # Generate a random scenario with balanced starting positions
-        # For 4x4: ~9 land tiles out of 16 total, with each faction starting with 3 tiles
-        # For 5x5: ~14 land tiles out of 25 total, with each faction starting with 3 tiles
-        # For 6x6: ~20 land tiles out of 36 total, with each faction starting with 3 tiles
         total_tiles = self.WIDTH * self.HEIGHT
-        target_land = int(total_tiles * 0.56)  # ~56% land coverage
+        target_land = self.WIDTH * self.HEIGHT
         scenario = generateRandomScenario(
             dimension=self.WIDTH,
             targetNumberOfLandTiles=target_land,
             factions=factions,
-            initialProvinceSize=3,
+            initialProvinceSize=4,
             randomSeed=None  # Can set for reproducibility
         )
 
-        # CRITICAL FIX: Give starting resources so games actually progress
-        # Without resources, players can only pass turns indefinitely
         for faction in scenario.factions:
             for province in faction.provinces:
-                province.resources = 30  # Enough to build some units
+                province.resources = 10
 
         return scenario
 
@@ -716,8 +710,18 @@ class Board:
                                 print(f"[ValidMoves Debug] Error checking capture for ({neighbor.row},{neighbor.col}): {e}")
                             pass  # Skip if there's an error
 
-        # End turn is always valid
-        valid[-1] = 1.0
+        # End turn handling: prevent END_TURN if no actions have been taken yet
+        # and other valid moves exist (forced action behavior)
+        num_valid_before_end = int(np.sum(valid[:-1]))  # Count non-END_TURN valid moves
+
+        if self.actions_this_turn == 0 and num_valid_before_end > 0:
+            # Don't allow ending turn if we haven't taken any actions yet
+            # and we have other valid moves available
+            if debug:
+                print(f"[ValidMoves Debug] END_TURN masked (actions_taken=0, {num_valid_before_end} alternatives exist)")
+        else:
+            # Allow END_TURN normally
+            valid[-1] = 1.0
 
         if debug:
             print(f"[ValidMoves Debug] Found {num_move_actions} move actions, {num_build_actions} build actions")
@@ -850,16 +854,18 @@ class Board:
                 score = total_tiles + (total_resources / 10.0)
                 faction_scores.append(score)
 
-            # Determine winner
+            # Determine winner based on score
             if abs(faction_scores[0] - faction_scores[1]) < 0.5:
                 # Very close game, call it a draw
                 return 1e-4
             elif faction_scores[0] > faction_scores[1]:
                 # factions[0] is ahead (current player's perspective)
-                return 0.5  # Small win (not as good as actual victory)
+                # Return 1 for decisive win (same as normal victory)
+                return 1.0
             else:
                 # factions[1] is ahead (opponent's perspective)
-                return -0.5  # Small loss
+                # Return -1 for decisive loss (same as normal loss)
+                return -1.0
 
         # Count active factions
         active_factions = []
@@ -931,6 +937,104 @@ class Board:
         # ratio=1.0 (all income) -> 1
         # ratio=0.0 (no income) -> -1
         return 2.0 * ratio - 1.0
+
+    def get_step_reward(self, player):
+        """
+        Calculate intermediate reward for the current board state.
+
+        Rewards are based on:
+        - Tiles owned (valuable for territory control)
+        - Trees are OBSTACLES that reduce productivity (BAD!)
+        - Capturing tree tiles removes obstacles (GOOD!)
+
+        Reward structure (from player's perspective):
+        - Each tile owned by player: +1
+        - Each tile owned by opponent: -1
+        - Each tree on player tile: -1 (BAD - trees hurt you!)
+        - Each tree on opponent tile: +1 (GOOD - trees hurt them!)
+        - Each tree on neutral tile: +0.5 (capturing removes obstacle)
+
+        Args:
+            player: 1 or -1 (player from whose perspective to calculate reward)
+
+        Returns:
+            float: Reward value scaled to be significant but not overwhelming
+        """
+        reward = 0.0
+
+        # Get factions (in canonical form, factions[0] is always current player)
+        player_faction = self.scenario.factions[0]
+        opponent_faction = self.scenario.factions[1]
+
+        # Count tiles and trees for each faction
+        player_tiles = 0
+        player_trees = 0  # Trees on YOUR tiles (BAD!)
+        opponent_tiles = 0
+        opponent_trees = 0  # Trees on THEIR tiles (GOOD - hurts them!)
+        neutral_trees = 0
+
+        for faction in self.scenario.factions:
+            is_player_faction = (faction == player_faction)
+
+            for province in faction.provinces:
+                if not province.active:
+                    continue
+
+                for tile in province.tiles:
+                    if is_player_faction:
+                        player_tiles += 1
+                        # Check for tree on player tile (BAD!)
+                        if tile.unit is not None and tile.unit.unitType == "tree":
+                            player_trees += 1
+                    else:
+                        opponent_tiles += 1
+                        # Check for tree on opponent tile (GOOD - hurts them!)
+                        if tile.unit is not None and tile.unit.unitType == "tree":
+                            opponent_trees += 1
+
+        # Count neutral tiles with trees
+        # (tiles not owned by either faction but have trees)
+        for row in range(self.HEIGHT):
+            for col in range(self.WIDTH):
+                tile = self.scenario.mapData[row][col]
+                if tile is None:
+                    continue
+
+                # Check if tile is neutral (no faction ownership)
+                tile_is_neutral = True
+                for faction in self.scenario.factions:
+                    for province in faction.provinces:
+                        if province.active and tile in province.tiles:
+                            tile_is_neutral = False
+                            break
+                    if not tile_is_neutral:
+                        break
+
+                if tile_is_neutral and tile.unit is not None and tile.unit.unitType == "tree":
+                    neutral_trees += 1
+
+        # Calculate reward components
+        tile_reward = player_tiles - opponent_tiles
+        tree_punish = -player_trees  # Penalty for having trees on your tiles
+        neutral_tree_reward = neutral_trees * 0.5
+
+        total_reward = tile_reward + tree_punish + neutral_tree_reward
+
+        # Scale by 0.05 to keep rewards meaningful but not overwhelming compared to win/loss
+        # Win/loss is +1/-1, so we want cumulative step rewards to be < 1.0
+        # With ~20 turns/game and full board control (~5 tiles), total would be ~5.0
+        # After scaling by 0.05, that's ~0.25, which guides learning without dominating win/loss
+        scaled_reward = total_reward * 0.05
+
+        # Safety check: ensure reward is not NaN or Inf (can cause segfaults)
+        if np.isnan(scaled_reward) or np.isinf(scaled_reward):
+            import logging
+            log = logging.getLogger(__name__)
+            log.error(f"Invalid reward detected! tile_reward={tile_reward}, tree_punish={tree_punish}, "
+                     f"neutral_tree_reward={neutral_tree_reward}, total={total_reward}, scaled={scaled_reward}")
+            return 0.0
+
+        return scaled_reward
 
 
 def _calculateFactionIncome(faction):

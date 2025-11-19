@@ -130,6 +130,23 @@ class AntiyoyGame(Game):
         b = self._board_from_numpy(board, player)
         return b.check_game_ended(player)
 
+    def getStepReward(self, board, player):
+        """
+        Calculate intermediate reward for the current board state.
+
+        This is called after each action to provide learning signals based on
+        tile ownership, tree control, and strategic positioning.
+
+        Input:
+            board: current board (numpy array)
+            player: current player (1 or -1)
+
+        Returns:
+            float: Reward value for the current state (scaled to be significant)
+        """
+        b = self._board_from_numpy(board, player)
+        return b.get_step_reward(player)
+
     def evaluatePosition(self, board, player):
         """
         Evaluate a non-terminal board position using a heuristic function.

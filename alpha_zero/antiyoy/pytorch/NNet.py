@@ -34,7 +34,7 @@ args = dotdict({
     # Lower = more stable but slower convergence
     # Higher = faster but may be unstable
     # Typical range: 0.0001 - 0.01
-    'lr': 0.001,
+    'lr': 0.005,
 
     # Dropout rate for regularization
     # Prevents overfitting by randomly dropping connections during training
@@ -50,8 +50,8 @@ args = dotdict({
     # Batch size for training
     # Larger = more stable gradients but uses more memory
     # Smaller = more updates but noisier gradients
-    # REDUCED TO 32: With only 10 episodes (~200 examples), 256 creates 0 batches
-    'batch_size': 32,
+    # 64 is safer for GPU memory while still providing stable gradients
+    'batch_size': 64,
 
     # Use GPU if available
     # GPU training is much faster for neural networks
@@ -59,12 +59,10 @@ args = dotdict({
 
     # Number of convolutional filters (network width)
     # More = more capacity but slower and may overfit
-    # REDUCED FOR FASTER TRAINING: 64 for quick iteration
     'num_channels': 64,
 
     # Number of residual blocks (network depth)
     # More = can learn more complex patterns but slower
-    # REDUCED FOR FASTER TRAINING: 2 for quick iteration
     'num_res_blocks': 2,
 })
 
@@ -219,8 +217,17 @@ class NNetWrapper(NeuralNet):
                 # Update progress bar with current losses
                 t.set_postfix(Loss_pi=pi_losses, Loss_v=v_losses)
 
+                # Clean up GPU memory after each batch to prevent accumulation
+                if args.cuda:
+                    del boards, target_pis, target_vs, out_pi, out_v, l_pi, l_v, total_loss
+                    torch.cuda.empty_cache()
+
             # Print epoch summary
             print(f'Epoch {epoch + 1} complete - Policy Loss: {pi_losses}, Value Loss: {v_losses}')
+
+            # Clean up GPU memory after each epoch
+            if args.cuda:
+                torch.cuda.empty_cache()
 
     def predict(self, board):
         """
@@ -273,26 +280,42 @@ class NNetWrapper(NeuralNet):
         # Temperature = 1.0 = no scaling (default AlphaZero behavior)
         temperature = 0.6  # Adjust for desired exploration level
 
+        # CRITICAL: Clamp log-probabilities to prevent extreme values
+        # This prevents overflow/underflow that can cause segfaults
+        pi = torch.clamp(pi, min=-50.0, max=50.0)
+
         # Apply temperature scaling BEFORE exp for numerical stability
         # Working in log-space prevents underflow
         pi = pi / temperature
 
-        # Convert to probabilities
-        pi = torch.exp(pi)
+        # Clamp again after temperature scaling
+        pi = torch.clamp(pi, min=-50.0, max=50.0)
 
-        # Check for underflow and handle edge case
-        pi_sum = pi.sum()
-        if pi_sum > 1e-8:  # Small threshold to avoid division by near-zero
-            pi = pi / pi_sum
-        else:
+        # Convert to probabilities with numerical stability
+        # Use log-softmax trick: subtract max before exp
+        pi_max = pi.max(dim=1, keepdim=True)[0]
+        pi = torch.exp(pi - pi_max)
+
+        # Normalize to sum to 1.0
+        pi_sum = pi.sum(dim=1, keepdim=True)
+
+        # Check for underflow/NaN and handle edge cases
+        if torch.isnan(pi_sum).any() or torch.isinf(pi_sum).any() or (pi_sum < 1e-10).any():
             # Fallback: uniform distribution over all actions
-            # This prevents NaN from division by zero
+            pi = torch.ones_like(pi) / pi.size(1)
+        else:
+            pi = pi / pi_sum
+
+        # Final safety check: ensure no NaN/Inf
+        if torch.isnan(pi).any() or torch.isinf(pi).any():
             pi = torch.ones_like(pi) / pi.size(1)
 
         # Convert to numpy
         pi = pi.data.cpu().numpy()[0]
 
         # Value is already in [-1, 1] range from tanh
+        # But add safety clamp just in case
+        v = torch.clamp(v, min=-1.0, max=1.0)
         v = v.data.cpu().numpy()[0]
 
         return pi, v
