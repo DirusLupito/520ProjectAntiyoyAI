@@ -5913,3 +5913,2246 @@ AssertionError
 2025-11-19 03:12:23,086 [INFO] ============================================================
 2025-11-19 03:12:23,086 [INFO] Saving initial model as best.pth.tar
 2025-11-19 03:12:23,094 [INFO] Starting Iter #1 ...
+2025-11-19 03:15:57,936 [INFO] Training interrupted by user (Ctrl+C)
+2025-11-19 03:15:57,942 [INFO] 
+================================================================================
+2025-11-19 03:15:57,942 [INFO] Training stopped by user
+2025-11-19 03:15:57,942 [INFO] ================================================================================
+2025-11-19 03:16:04,464 [INFO] ================================================================================
+2025-11-19 03:16:04,464 [INFO] Starting robust training runner
+2025-11-19 03:16:04,465 [INFO] Training will automatically restart from checkpoints on failure
+2025-11-19 03:16:04,465 [INFO] Press Ctrl+C to stop
+2025-11-19 03:16:04,465 [INFO] ================================================================================
+2025-11-19 03:16:04,465 [INFO] 
+================================================================================
+2025-11-19 03:16:04,465 [INFO] Training attempt #1 (Total crashes: 0)
+2025-11-19 03:16:04,465 [INFO] Started at: 2025-11-19 03:16:04
+2025-11-19 03:16:04,465 [INFO] ================================================================================
+
+2025-11-19 03:16:05,325 [INFO] ============================================================
+2025-11-19 03:16:05,325 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-19 03:16:05,325 [INFO] ============================================================
+2025-11-19 03:16:05,326 [INFO] Loading AntiyoyGame...
+2025-11-19 03:16:05,326 [INFO] Game Configuration:
+2025-11-19 03:16:05,326 [INFO]   Board size: (22, 4, 4)
+2025-11-19 03:16:05,326 [INFO]   Action size: 433
+2025-11-19 03:16:05,326 [INFO] Loading NNetWrapper...
+2025-11-19 03:16:05,433 [INFO] Neural Network Configuration:
+2025-11-19 03:16:05,433 [INFO]   Input channels: 22 (board state encoding)
+2025-11-19 03:16:05,433 [INFO]   Output size: 433 (possible actions)
+2025-11-19 03:16:05,433 [WARNING] Checkpoint "./temp/best.pth.tar" not found!
+2025-11-19 03:16:05,433 [WARNING] Starting from scratch instead.
+2025-11-19 03:16:05,433 [INFO] Loading the Coach...
+2025-11-19 03:16:05,439 [INFO] ============================================================
+2025-11-19 03:16:05,439 [INFO] Starting the learning process 🎉
+2025-11-19 03:16:05,439 [INFO] ============================================================
+2025-11-19 03:16:05,439 [INFO] 
+2025-11-19 03:16:05,439 [INFO] Training Configuration:
+2025-11-19 03:16:05,439 [INFO]   Iterations: 1000
+2025-11-19 03:16:05,439 [INFO]   Self-play games per iteration: 20
+2025-11-19 03:16:05,439 [INFO]   MCTS simulations per move: 25
+2025-11-19 03:16:05,439 [INFO]   Arena games for evaluation: 10
+2025-11-19 03:16:05,439 [INFO]   Update threshold: 0.48
+2025-11-19 03:16:05,439 [INFO] 
+2025-11-19 03:16:05,440 [INFO] This will take a long time. You can:
+2025-11-19 03:16:05,440 [INFO]   - Monitor progress in the terminal
+2025-11-19 03:16:05,440 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-19 03:16:05,440 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-19 03:16:05,440 [INFO] 
+2025-11-19 03:16:05,440 [INFO] ============================================================
+2025-11-19 03:16:05,440 [INFO] Saving initial model as best.pth.tar
+2025-11-19 03:16:05,448 [INFO] Starting Iter #1 ...
+2025-11-19 03:17:43,496 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:17:43,496 [INFO] [Arena] Starting new game
+2025-11-19 03:17:44,326 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:17:45,182 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:17:46,133 [INFO] [Arena] Turn 30: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:17:47,336 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:17:48,542 [INFO] [Arena] Turn 50: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:17:48,572 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:17:48,573 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:17:48,574 [INFO] [Arena] Starting new game
+2025-11-19 03:17:49,585 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:17:50,452 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:17:51,311 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:17:52,293 [INFO] [Arena] Turn 40: eval_p1=-0.400, eval_p2=-0.400
+2025-11-19 03:17:53,107 [INFO] [Arena] Turn 50: eval_p1=-0.400, eval_p2=-0.400
+2025-11-19 03:17:53,122 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:17:53,123 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.400, eval_p2=-0.400
+2025-11-19 03:17:53,123 [INFO] [Arena] Starting new game
+2025-11-19 03:17:54,027 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:17:54,944 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:17:55,937 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:17:56,878 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:17:57,739 [INFO] [Arena] Turn 50: eval_p1=0.300, eval_p2=0.300
+2025-11-19 03:17:57,753 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:17:57,754 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.300, eval_p2=0.300
+2025-11-19 03:17:57,754 [INFO] [Arena] Starting new game
+2025-11-19 03:17:58,585 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:17:59,489 [INFO] [Arena] Turn 20: eval_p1=0.100, eval_p2=0.100
+2025-11-19 03:18:00,382 [INFO] [Arena] Turn 30: eval_p1=0.100, eval_p2=0.100
+2025-11-19 03:18:01,271 [INFO] [Arena] Turn 40: eval_p1=0.100, eval_p2=0.100
+2025-11-19 03:18:05,056 [INFO] [Arena] Turn 50: eval_p1=0.100, eval_p2=0.100
+2025-11-19 03:18:05,073 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:18:05,074 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.100, eval_p2=0.100
+2025-11-19 03:18:05,074 [INFO] [Arena] Starting new game
+2025-11-19 03:18:05,878 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:18:06,764 [INFO] [Arena] Turn 20: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:18:07,633 [INFO] [Arena] Turn 30: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:18:08,568 [INFO] [Arena] Turn 40: eval_p1=0.467, eval_p2=0.467
+2025-11-19 03:18:09,392 [INFO] [Arena] Turn 50: eval_p1=0.600, eval_p2=0.600
+2025-11-19 03:18:09,411 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:18:09,412 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.600, eval_p2=0.600
+2025-11-19 03:18:09,412 [INFO] [Arena] Game 5/10: PREV=5, NEW=0, Draws=0
+2025-11-19 03:18:09,412 [INFO] [Arena] Starting new game
+2025-11-19 03:18:10,381 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:18:11,346 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:18:12,381 [INFO] [Arena] Turn 30: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:18:13,282 [INFO] [Arena] Turn 40: eval_p1=-0.333, eval_p2=-0.333
+2025-11-19 03:18:14,066 [INFO] [Arena] Turn 50: eval_p1=-0.444, eval_p2=-0.444
+2025-11-19 03:18:14,078 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:18:14,079 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.444, eval_p2=-0.444
+2025-11-19 03:18:14,079 [INFO] [Arena] Starting new game
+2025-11-19 03:18:14,917 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:18:15,848 [INFO] [Arena] Turn 20: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:18:16,791 [INFO] [Arena] Turn 30: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:18:17,733 [INFO] [Arena] Turn 40: eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:18:18,615 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:18:18,635 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:18:18,635 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:18:18,636 [INFO] [Arena] Starting new game
+2025-11-19 03:18:19,548 [INFO] [Arena] Turn 10: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:18:20,459 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:18:21,441 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:18:22,443 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:18:23,307 [INFO] [Arena] Turn 50: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:18:23,322 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:18:23,323 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.250, eval_p2=-0.250
+2025-11-19 03:18:23,323 [INFO] [Arena] Starting new game
+2025-11-19 03:18:24,259 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:18:25,237 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:18:26,243 [INFO] [Arena] Turn 30: eval_p1=0.455, eval_p2=0.455
+2025-11-19 03:18:27,162 [INFO] [Arena] Turn 40: eval_p1=0.391, eval_p2=0.391
+2025-11-19 03:18:27,959 [INFO] [Arena] Turn 50: eval_p1=0.565, eval_p2=0.565
+2025-11-19 03:18:27,977 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:18:27,978 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.565, eval_p2=0.565
+2025-11-19 03:18:27,978 [INFO] [Arena] Starting new game
+2025-11-19 03:18:28,846 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:18:29,786 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:18:30,851 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:18:31,879 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:18:32,661 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:18:32,677 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:18:32,678 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.158, eval_p2=-0.158
+2025-11-19 03:18:32,678 [INFO] [Arena] Game 10/10: PREV=10, NEW=0, Draws=0
+2025-11-19 03:18:32,678 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:18:32,678 [INFO] [Arena] PREVIOUS wins: 10/10 (100.0%)
+2025-11-19 03:18:32,678 [INFO] [Arena] NEW wins: 0/10 (0.0%)
+2025-11-19 03:18:32,678 [INFO] [Arena] Draws: 0/10 (0.0%)
+2025-11-19 03:18:32,678 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:18:32,678 [INFO] [Arena] Average final eval P (old): 0.060
+2025-11-19 03:18:32,678 [INFO] [Arena] Average final eval N (new): 0.060
+2025-11-19 03:18:32,678 [INFO] [Arena] =====================================
+2025-11-19 03:18:32,678 [INFO] NEW/PREV WINS : 0 / 10 ; DRAWS : 0
+2025-11-19 03:18:32,678 [INFO] REJECTING NEW MODEL
+2025-11-19 03:18:32,690 [INFO] Starting Iter #2 ...
+2025-11-19 03:20:06,936 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:20:06,937 [INFO] [Arena] Starting new game
+2025-11-19 03:20:07,798 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:20:08,726 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:20:09,586 [INFO] [Arena] Turn 30: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:20:10,458 [INFO] [Arena] Turn 40: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:20:11,342 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:20:11,356 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:20:11,356 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:20:11,357 [INFO] [Arena] Starting new game
+2025-11-19 03:20:12,192 [INFO] [Arena] Turn 10: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:20:12,991 [INFO] [Arena] Turn 20: eval_p1=-0.333, eval_p2=-0.333
+2025-11-19 03:20:13,827 [INFO] [Arena] Turn 30: eval_p1=-0.250, eval_p2=-0.250
+2025-11-19 03:20:14,648 [INFO] [Arena] Turn 40: eval_p1=-0.250, eval_p2=-0.250
+2025-11-19 03:20:15,455 [INFO] [Arena] Turn 50: eval_p1=-0.250, eval_p2=-0.250
+2025-11-19 03:20:15,471 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:20:15,472 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.250, eval_p2=-0.250
+2025-11-19 03:20:15,473 [INFO] [Arena] Starting new game
+2025-11-19 03:20:16,265 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:20:17,063 [INFO] [Arena] Turn 20: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:20:17,880 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:20:18,743 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:20:19,540 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:20:19,553 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:20:19,554 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:20:19,554 [INFO] [Arena] Starting new game
+2025-11-19 03:20:20,409 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:20:21,242 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:20:22,082 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:20:25,811 [INFO] [Arena] Turn 40: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:20:26,621 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:20:26,642 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:20:26,642 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:20:26,643 [INFO] [Arena] Starting new game
+2025-11-19 03:20:27,417 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:20:28,245 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:20:29,069 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:20:29,850 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:20:30,627 [INFO] [Arena] Turn 50: eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:20:30,641 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:20:30,642 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:20:30,642 [INFO] [Arena] Game 5/10: PREV=5, NEW=0, Draws=0
+2025-11-19 03:20:30,643 [INFO] [Arena] Starting new game
+2025-11-19 03:20:31,492 [INFO] [Arena] Turn 10: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:20:32,286 [INFO] [Arena] Turn 20: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:20:33,208 [INFO] [Arena] Turn 30: eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:20:34,029 [INFO] [Arena] Turn 40: eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:20:34,844 [INFO] [Arena] Turn 50: eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:20:34,864 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:20:34,865 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:20:34,866 [INFO] [Arena] Starting new game
+2025-11-19 03:20:35,643 [INFO] [Arena] Turn 10: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:20:36,432 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:20:37,211 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:20:38,142 [INFO] [Arena] Turn 40: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:20:38,992 [INFO] [Arena] Turn 50: eval_p1=0.467, eval_p2=0.467
+2025-11-19 03:20:39,007 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:20:39,008 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.467, eval_p2=0.467
+2025-11-19 03:20:39,008 [INFO] [Arena] Starting new game
+2025-11-19 03:20:39,921 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:20:40,735 [INFO] [Arena] Turn 20: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:20:41,612 [INFO] [Arena] Turn 30: eval_p1=-0.286, eval_p2=-0.286
+2025-11-19 03:20:42,478 [INFO] [Arena] Turn 40: eval_p1=-0.571, eval_p2=-0.571
+2025-11-19 03:20:43,378 [INFO] [Arena] Turn 50: eval_p1=-0.333, eval_p2=-0.333
+2025-11-19 03:20:43,395 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:20:43,396 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.333, eval_p2=-0.333
+2025-11-19 03:20:43,396 [INFO] [Arena] Starting new game
+2025-11-19 03:20:44,198 [INFO] [Arena] Turn 10: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:20:45,048 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:20:45,892 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:20:46,722 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:20:47,539 [INFO] [Arena] Turn 50: eval_p1=0.429, eval_p2=0.429
+2025-11-19 03:20:47,556 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:20:47,556 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.429, eval_p2=0.429
+2025-11-19 03:20:47,556 [INFO] [Arena] Starting new game
+2025-11-19 03:20:48,405 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:20:49,306 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:20:50,173 [INFO] [Arena] Turn 30: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:20:51,017 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:20:51,784 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:20:51,798 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:20:51,798 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:20:51,798 [INFO] [Arena] Game 10/10: PREV=8, NEW=2, Draws=0
+2025-11-19 03:20:51,799 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:20:51,799 [INFO] [Arena] PREVIOUS wins: 8/10 (80.0%)
+2025-11-19 03:20:51,799 [INFO] [Arena] NEW wins: 2/10 (20.0%)
+2025-11-19 03:20:51,799 [INFO] [Arena] Draws: 0/10 (0.0%)
+2025-11-19 03:20:51,799 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:20:51,799 [INFO] [Arena] Average final eval P (old): 0.059
+2025-11-19 03:20:51,799 [INFO] [Arena] Average final eval N (new): 0.059
+2025-11-19 03:20:51,799 [INFO] [Arena] =====================================
+2025-11-19 03:20:51,799 [INFO] NEW/PREV WINS : 2 / 8 ; DRAWS : 0
+2025-11-19 03:20:51,799 [INFO] REJECTING NEW MODEL
+2025-11-19 03:20:51,812 [INFO] Starting Iter #3 ...
+2025-11-19 03:22:28,412 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:22:28,413 [INFO] [Arena] Starting new game
+2025-11-19 03:22:29,259 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:22:30,142 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:22:31,011 [INFO] [Arena] Turn 30: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:22:31,933 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:22:32,749 [INFO] [Arena] Turn 50: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:22:32,764 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:22:32,764 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:22:32,765 [INFO] [Arena] Starting new game
+2025-11-19 03:22:33,582 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:22:34,575 [INFO] [Arena] Turn 20: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:22:35,427 [INFO] [Arena] Turn 30: eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:22:36,267 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:22:37,090 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:22:37,106 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:22:37,106 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:22:37,106 [INFO] [Arena] Starting new game
+2025-11-19 03:22:37,926 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:22:38,799 [INFO] [Arena] Turn 20: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:22:39,641 [INFO] [Arena] Turn 30: eval_p1=0.375, eval_p2=0.375
+2025-11-19 03:22:40,512 [INFO] [Arena] Turn 40: eval_p1=0.500, eval_p2=0.500
+2025-11-19 03:22:41,342 [INFO] [Arena] Turn 50: eval_p1=0.500, eval_p2=0.500
+2025-11-19 03:22:41,360 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:22:41,361 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.500, eval_p2=0.500
+2025-11-19 03:22:41,361 [INFO] [Arena] Starting new game
+2025-11-19 03:22:42,235 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:22:43,066 [INFO] [Arena] Turn 20: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:22:46,886 [INFO] [Arena] Turn 30: eval_p1=-0.053, eval_p2=-0.053
+2025-11-19 03:22:47,738 [INFO] [Arena] Turn 40: eval_p1=-0.053, eval_p2=-0.053
+2025-11-19 03:22:48,550 [INFO] [Arena] Turn 50: eval_p1=-0.053, eval_p2=-0.053
+2025-11-19 03:22:48,567 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:22:48,567 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=-0.053, eval_p2=-0.053
+2025-11-19 03:22:48,567 [INFO] [Arena] Starting new game
+2025-11-19 03:22:49,366 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:22:50,236 [INFO] [Arena] Turn 20: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:22:51,077 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:22:51,923 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:22:52,738 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:22:52,753 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:22:52,753 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:22:52,753 [INFO] [Arena] Game 5/10: PREV=3, NEW=2, Draws=0
+2025-11-19 03:22:52,754 [INFO] [Arena] Starting new game
+2025-11-19 03:22:53,756 [INFO] [Arena] Turn 10: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:22:54,756 [INFO] [Arena] Turn 20: eval_p1=-0.333, eval_p2=-0.333
+2025-11-19 03:22:55,648 [INFO] [Arena] Turn 30: eval_p1=-0.500, eval_p2=-0.500
+2025-11-19 03:22:56,509 [INFO] [Arena] Turn 40: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:22:57,262 [INFO] [Arena] Turn 50: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:22:57,278 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:22:57,279 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:22:57,279 [INFO] [Arena] Starting new game
+2025-11-19 03:22:58,057 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:22:58,873 [INFO] [Arena] Turn 20: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:22:59,709 [INFO] [Arena] Turn 30: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:23:00,527 [INFO] [Arena] Turn 40: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:23:01,309 [INFO] [Arena] Turn 50: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:23:01,332 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:23:01,333 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:23:01,333 [INFO] [Arena] Starting new game
+2025-11-19 03:23:02,100 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:23:02,918 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:23:03,734 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:23:04,573 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:23:05,407 [INFO] [Arena] Turn 50: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:23:05,424 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:23:05,425 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:23:05,425 [INFO] [Arena] Starting new game
+2025-11-19 03:23:06,247 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:23:07,080 [INFO] [Arena] Turn 20: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:23:07,952 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:23:08,794 [INFO] [Arena] Turn 40: eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:23:09,590 [INFO] [Arena] Turn 50: eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:23:09,604 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:23:09,604 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:23:09,605 [INFO] [Arena] Starting new game
+2025-11-19 03:23:10,412 [INFO] [Arena] Turn 10: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:23:11,186 [INFO] [Arena] Turn 20: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:23:11,939 [INFO] [Arena] Turn 30: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:23:12,715 [INFO] [Arena] Turn 40: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:23:13,500 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:23:13,523 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:23:13,524 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:23:13,524 [INFO] [Arena] Game 10/10: PREV=6, NEW=4, Draws=0
+2025-11-19 03:23:13,524 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:23:13,524 [INFO] [Arena] PREVIOUS wins: 6/10 (60.0%)
+2025-11-19 03:23:13,524 [INFO] [Arena] NEW wins: 4/10 (40.0%)
+2025-11-19 03:23:13,524 [INFO] [Arena] Draws: 0/10 (0.0%)
+2025-11-19 03:23:13,524 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:23:13,524 [INFO] [Arena] Average final eval P (old): 0.092
+2025-11-19 03:23:13,524 [INFO] [Arena] Average final eval N (new): 0.092
+2025-11-19 03:23:13,525 [INFO] [Arena] =====================================
+2025-11-19 03:23:13,525 [INFO] NEW/PREV WINS : 4 / 6 ; DRAWS : 0
+2025-11-19 03:23:13,525 [INFO] REJECTING NEW MODEL
+2025-11-19 03:23:13,535 [INFO] Starting Iter #4 ...
+2025-11-19 03:24:46,376 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:24:46,377 [INFO] [Arena] Starting new game
+2025-11-19 03:24:47,170 [INFO] [Arena] Turn 10: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:24:48,014 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:24:48,902 [INFO] [Arena] Turn 30: eval_p1=0.538, eval_p2=0.538
+2025-11-19 03:24:49,751 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:24:50,591 [INFO] [Arena] Turn 50: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:24:50,606 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:24:50,607 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:24:50,607 [INFO] [Arena] Starting new game
+2025-11-19 03:24:51,424 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:24:52,298 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:24:53,148 [INFO] [Arena] Turn 30: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:24:54,102 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:24:54,927 [INFO] [Arena] Turn 50: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:24:54,944 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:24:54,944 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:24:54,945 [INFO] [Arena] Starting new game
+2025-11-19 03:24:55,746 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:24:56,656 [INFO] [Arena] Turn 20: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:24:57,733 [INFO] [Arena] Turn 30: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:24:58,858 [INFO] [Arena] Turn 40: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:25:00,003 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:25:00,027 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:25:00,027 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:25:00,027 [INFO] [Arena] Starting new game
+2025-11-19 03:25:01,190 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:25:02,523 [INFO] [Arena] Turn 20: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:25:03,747 [INFO] [Arena] Turn 30: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:25:07,889 [INFO] [Arena] Turn 40: eval_p1=0.600, eval_p2=0.600
+2025-11-19 03:25:08,907 [INFO] [Arena] Turn 50: eval_p1=0.467, eval_p2=0.467
+2025-11-19 03:25:08,923 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:25:08,923 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.467, eval_p2=0.467
+2025-11-19 03:25:08,924 [INFO] [Arena] Starting new game
+2025-11-19 03:25:09,921 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:25:10,942 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:25:11,999 [INFO] [Arena] Turn 30: eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:25:13,075 [INFO] [Arena] Turn 40: eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:25:14,175 [INFO] [Arena] Turn 50: eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:25:14,194 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:25:14,195 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:25:14,195 [INFO] [Arena] Game 5/10: PREV=3, NEW=2, Draws=0
+2025-11-19 03:25:14,195 [INFO] [Arena] Starting new game
+2025-11-19 03:25:15,223 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:25:16,274 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:25:17,312 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:25:18,318 [INFO] [Arena] Turn 40: eval_p1=0.250, eval_p2=0.250
+2025-11-19 03:25:19,271 [INFO] [Arena] Turn 50: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:25:19,294 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:25:19,295 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:25:19,295 [INFO] [Arena] Starting new game
+2025-11-19 03:25:20,269 [INFO] [Arena] Turn 10: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:25:21,360 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:25:22,434 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:25:23,681 [INFO] [Arena] Turn 40: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:25:24,687 [INFO] [Arena] Turn 50: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:25:24,703 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:25:24,704 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:25:24,704 [INFO] [Arena] Starting new game
+2025-11-19 03:25:25,769 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:25:26,835 [INFO] [Arena] Turn 20: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:25:27,958 [INFO] [Arena] Turn 30: eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 03:25:29,148 [INFO] [Arena] Turn 40: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:25:30,117 [INFO] [Arena] Turn 50: eval_p1=-0.571, eval_p2=-0.571
+2025-11-19 03:25:30,132 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:25:30,133 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.571, eval_p2=-0.571
+2025-11-19 03:25:30,134 [INFO] [Arena] Starting new game
+2025-11-19 03:25:31,066 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:25:32,075 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:25:33,029 [INFO] [Arena] Turn 30: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:25:33,903 [INFO] [Arena] Turn 40: eval_p1=-0.375, eval_p2=-0.375
+2025-11-19 03:25:34,799 [INFO] [Arena] Turn 50: eval_p1=-0.375, eval_p2=-0.375
+2025-11-19 03:25:34,817 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:25:34,818 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.375, eval_p2=-0.375
+2025-11-19 03:25:34,818 [INFO] [Arena] Starting new game
+2025-11-19 03:25:35,753 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:25:36,719 [INFO] [Arena] Turn 20: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:25:37,628 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:25:38,652 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:25:42,585 [INFO] [Arena] Turn 50: eval_p1=-0.250, eval_p2=-0.250
+2025-11-19 03:25:42,602 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:25:42,602 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.250, eval_p2=-0.250
+2025-11-19 03:25:42,602 [INFO] [Arena] Game 10/10: PREV=5, NEW=5, Draws=0
+2025-11-19 03:25:42,603 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:25:42,603 [INFO] [Arena] PREVIOUS wins: 5/10 (50.0%)
+2025-11-19 03:25:42,603 [INFO] [Arena] NEW wins: 5/10 (50.0%)
+2025-11-19 03:25:42,603 [INFO] [Arena] Draws: 0/10 (0.0%)
+2025-11-19 03:25:42,603 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:25:42,603 [INFO] [Arena] Average final eval P (old): -0.022
+2025-11-19 03:25:42,603 [INFO] [Arena] Average final eval N (new): -0.022
+2025-11-19 03:25:42,603 [INFO] [Arena] =====================================
+2025-11-19 03:25:42,603 [INFO] NEW/PREV WINS : 5 / 5 ; DRAWS : 0
+2025-11-19 03:25:42,603 [INFO] ACCEPTING NEW MODEL
+2025-11-19 03:25:42,623 [INFO] Starting Iter #5 ...
+2025-11-19 03:27:59,590 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:27:59,591 [INFO] [Arena] Starting new game
+2025-11-19 03:28:03,513 [INFO] [Arena] Turn 10: eval_p1=-0.111, eval_p2=-0.111
+2025-11-19 03:28:04,529 [INFO] [Arena] Turn 20: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:28:05,582 [INFO] [Arena] Turn 30: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:28:06,620 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:28:07,443 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:28:07,460 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:28:07,460 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:28:07,460 [INFO] [Arena] Starting new game
+2025-11-19 03:28:08,408 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:28:09,355 [INFO] [Arena] Turn 20: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:28:10,534 [INFO] [Arena] Turn 30: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:28:11,563 [INFO] [Arena] Turn 40: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:28:12,505 [INFO] [Arena] Turn 50: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:28:12,518 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:28:12,519 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:28:12,519 [INFO] [Arena] Starting new game
+2025-11-19 03:28:13,454 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:28:14,578 [INFO] [Arena] Turn 20: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:28:15,729 [INFO] [Arena] Turn 30: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:28:16,773 [INFO] [Arena] Turn 40: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:28:17,675 [INFO] [Arena] Turn 50: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:28:17,688 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:28:17,688 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:28:17,689 [INFO] [Arena] Starting new game
+2025-11-19 03:28:18,592 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:28:19,485 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:28:20,486 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:28:21,486 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:28:22,374 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:28:22,389 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:28:22,390 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:28:22,390 [INFO] [Arena] Starting new game
+2025-11-19 03:28:23,569 [INFO] [Arena] Turn 10: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:28:24,699 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:28:25,829 [INFO] [Arena] Turn 30: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:28:26,880 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:28:27,913 [INFO] [Arena] Turn 50: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:28:27,929 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:28:27,929 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:28:27,929 [INFO] [Arena] Game 5/10: PREV=4, NEW=0, Draws=1
+2025-11-19 03:28:27,930 [INFO] [Arena] Starting new game
+2025-11-19 03:28:29,169 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:28:30,083 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:28:31,171 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:28:32,277 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:28:33,262 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:28:33,280 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:28:33,280 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:28:33,280 [INFO] [Arena] Starting new game
+2025-11-19 03:28:34,346 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:28:38,340 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:28:39,337 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:28:40,458 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:28:41,305 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:28:41,320 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:28:41,321 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:28:41,321 [INFO] [Arena] Starting new game
+2025-11-19 03:28:42,483 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:28:43,366 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:28:44,510 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:28:45,518 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:28:46,469 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:28:46,485 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:28:46,485 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:28:46,486 [INFO] [Arena] Starting new game
+2025-11-19 03:28:47,539 [INFO] [Arena] Turn 10: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:28:48,575 [INFO] [Arena] Turn 20: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:28:49,425 [INFO] [Arena] Turn 30: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:28:50,356 [INFO] [Arena] Turn 40: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:28:51,100 [INFO] [Arena] Turn 50: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:28:51,114 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:28:51,115 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:28:51,115 [INFO] [Arena] Starting new game
+2025-11-19 03:28:52,258 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:28:53,571 [INFO] [Arena] Turn 20: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:28:54,688 [INFO] [Arena] Turn 30: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:28:55,742 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:28:56,683 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:28:56,701 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:28:56,702 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:28:56,702 [INFO] [Arena] Game 10/10: PREV=8, NEW=1, Draws=1
+2025-11-19 03:28:56,702 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:28:56,702 [INFO] [Arena] PREVIOUS wins: 8/10 (80.0%)
+2025-11-19 03:28:56,702 [INFO] [Arena] NEW wins: 1/10 (10.0%)
+2025-11-19 03:28:56,702 [INFO] [Arena] Draws: 1/10 (10.0%)
+2025-11-19 03:28:56,702 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:28:56,702 [INFO] [Arena] Average final eval P (old): 0.063
+2025-11-19 03:28:56,702 [INFO] [Arena] Average final eval N (new): 0.063
+2025-11-19 03:28:56,703 [INFO] [Arena] Draw results: [0.0001]
+2025-11-19 03:28:56,703 [INFO] [Arena] =====================================
+2025-11-19 03:28:56,703 [INFO] NEW/PREV WINS : 1 / 8 ; DRAWS : 1
+2025-11-19 03:28:56,703 [INFO] REJECTING NEW MODEL
+2025-11-19 03:28:56,719 [INFO] Starting Iter #6 ...
+2025-11-19 03:31:06,133 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:31:06,134 [INFO] [Arena] Starting new game
+2025-11-19 03:31:07,035 [INFO] [Arena] Turn 10: eval_p1=0.273, eval_p2=0.273
+2025-11-19 03:31:07,963 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:31:08,938 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:31:09,818 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:31:10,699 [INFO] [Arena] Turn 50: eval_p1=0.250, eval_p2=0.250
+2025-11-19 03:31:10,721 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:31:10,722 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:31:10,722 [INFO] [Arena] Starting new game
+2025-11-19 03:31:11,716 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:12,801 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:13,691 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:14,787 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:15,622 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:15,635 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:31:15,635 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:15,636 [INFO] [Arena] Starting new game
+2025-11-19 03:31:16,565 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:17,540 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:18,495 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:19,592 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:20,321 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:31:20,334 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:31:20,335 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:31:20,335 [INFO] [Arena] Starting new game
+2025-11-19 03:31:21,758 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:22,665 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:23,826 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:24,837 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:25,760 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:31:25,774 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:31:25,774 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:25,774 [INFO] [Arena] Starting new game
+2025-11-19 03:31:26,700 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:31:27,617 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:28,551 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:31:29,606 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:31:30,307 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:31:30,321 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:31:30,322 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:31:30,322 [INFO] [Arena] Game 5/10: PREV=4, NEW=1, Draws=0
+2025-11-19 03:31:30,322 [INFO] [Arena] Starting new game
+2025-11-19 03:31:34,203 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:31:35,179 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:36,142 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:37,147 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:37,973 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:37,988 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:31:37,988 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:31:37,989 [INFO] [Arena] Starting new game
+2025-11-19 03:31:38,993 [INFO] [Arena] Turn 10: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:31:40,233 [INFO] [Arena] Turn 20: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:31:41,299 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:31:42,351 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:43,135 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:43,149 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:31:43,150 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:43,150 [INFO] [Arena] Starting new game
+2025-11-19 03:31:44,439 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:45,883 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:46,852 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:31:47,905 [INFO] [Arena] Turn 40: eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 03:31:48,872 [INFO] [Arena] Turn 50: eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 03:31:48,886 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:31:48,887 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 03:31:48,887 [INFO] [Arena] Starting new game
+2025-11-19 03:31:49,871 [INFO] [Arena] Turn 10: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:31:50,944 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:51,853 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:52,907 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:53,663 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:53,677 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:31:53,677 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:31:53,677 [INFO] [Arena] Starting new game
+2025-11-19 03:31:54,590 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:31:55,716 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:31:56,685 [INFO] [Arena] Turn 30: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:31:57,589 [INFO] [Arena] Turn 40: eval_p1=0.385, eval_p2=0.385
+2025-11-19 03:31:58,503 [INFO] [Arena] Turn 50: eval_p1=0.412, eval_p2=0.412
+2025-11-19 03:31:58,521 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:31:58,522 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.412, eval_p2=0.412
+2025-11-19 03:31:58,522 [INFO] [Arena] Game 10/10: PREV=6, NEW=2, Draws=2
+2025-11-19 03:31:58,522 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:31:58,522 [INFO] [Arena] PREVIOUS wins: 6/10 (60.0%)
+2025-11-19 03:31:58,522 [INFO] [Arena] NEW wins: 2/10 (20.0%)
+2025-11-19 03:31:58,522 [INFO] [Arena] Draws: 2/10 (20.0%)
+2025-11-19 03:31:58,522 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:31:58,522 [INFO] [Arena] Average final eval P (old): 0.057
+2025-11-19 03:31:58,522 [INFO] [Arena] Average final eval N (new): 0.057
+2025-11-19 03:31:58,522 [INFO] [Arena] Draw results: [0.0001, 0.0001]
+2025-11-19 03:31:58,522 [INFO] [Arena] =====================================
+2025-11-19 03:31:58,522 [INFO] NEW/PREV WINS : 2 / 6 ; DRAWS : 2
+2025-11-19 03:31:58,522 [INFO] REJECTING NEW MODEL
+2025-11-19 03:31:58,534 [INFO] Starting Iter #7 ...
+2025-11-19 03:34:06,037 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:34:06,038 [INFO] [Arena] Starting new game
+2025-11-19 03:34:06,907 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:34:07,903 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:34:08,901 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:34:10,034 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:34:10,895 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:34:10,909 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:34:10,910 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:34:10,910 [INFO] [Arena] Starting new game
+2025-11-19 03:34:11,861 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:34:12,903 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:34:13,822 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:34:14,803 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:34:15,633 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:34:15,647 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:34:15,647 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:34:15,648 [INFO] [Arena] Starting new game
+2025-11-19 03:34:16,626 [INFO] [Arena] Turn 10: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:34:17,626 [INFO] [Arena] Turn 20: eval_p1=0.273, eval_p2=0.273
+2025-11-19 03:34:18,663 [INFO] [Arena] Turn 30: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:34:19,732 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:34:20,664 [INFO] [Arena] Turn 50: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:34:20,678 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:34:20,679 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:34:20,679 [INFO] [Arena] Starting new game
+2025-11-19 03:34:21,873 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:34:22,839 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:34:23,696 [INFO] [Arena] Turn 30: eval_p1=0.250, eval_p2=0.250
+2025-11-19 03:34:24,723 [INFO] [Arena] Turn 40: eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:34:25,629 [INFO] [Arena] Turn 50: eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:34:25,643 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:34:25,643 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.250, eval_p2=-0.250
+2025-11-19 03:34:25,643 [INFO] [Arena] Starting new game
+2025-11-19 03:34:26,557 [INFO] [Arena] Turn 10: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:34:30,374 [INFO] [Arena] Turn 20: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:34:31,418 [INFO] [Arena] Turn 30: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:34:32,518 [INFO] [Arena] Turn 40: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:34:33,565 [INFO] [Arena] Turn 50: eval_p1=0.368, eval_p2=0.368
+2025-11-19 03:34:33,578 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:34:33,578 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.368, eval_p2=0.368
+2025-11-19 03:34:33,578 [INFO] [Arena] Game 5/10: PREV=4, NEW=0, Draws=1
+2025-11-19 03:34:33,579 [INFO] [Arena] Starting new game
+2025-11-19 03:34:34,626 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:34:35,884 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:34:36,923 [INFO] [Arena] Turn 30: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:34:37,968 [INFO] [Arena] Turn 40: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:34:38,879 [INFO] [Arena] Turn 50: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:34:38,891 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:34:38,891 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.286, eval_p2=-0.286
+2025-11-19 03:34:38,893 [INFO] [Arena] Starting new game
+2025-11-19 03:34:39,999 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:34:40,901 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:34:42,004 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:34:43,021 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:34:43,827 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:34:43,842 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:34:43,842 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:34:43,843 [INFO] [Arena] Starting new game
+2025-11-19 03:34:45,045 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:34:46,380 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:34:47,389 [INFO] [Arena] Turn 30: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:34:48,358 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:34:49,254 [INFO] [Arena] Turn 50: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:34:49,267 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:34:49,268 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:34:49,268 [INFO] [Arena] Starting new game
+2025-11-19 03:34:50,466 [INFO] [Arena] Turn 10: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:34:51,511 [INFO] [Arena] Turn 20: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:34:52,587 [INFO] [Arena] Turn 30: eval_p1=0.385, eval_p2=0.385
+2025-11-19 03:34:53,600 [INFO] [Arena] Turn 40: eval_p1=0.250, eval_p2=0.250
+2025-11-19 03:34:54,518 [INFO] [Arena] Turn 50: eval_p1=0.375, eval_p2=0.375
+2025-11-19 03:34:54,534 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:34:54,534 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.375, eval_p2=0.375
+2025-11-19 03:34:54,535 [INFO] [Arena] Starting new game
+2025-11-19 03:34:55,682 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:34:56,656 [INFO] [Arena] Turn 20: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:34:57,616 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:34:58,576 [INFO] [Arena] Turn 40: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:34:59,437 [INFO] [Arena] Turn 50: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:34:59,456 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:34:59,457 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:34:59,457 [INFO] [Arena] Game 10/10: PREV=8, NEW=0, Draws=2
+2025-11-19 03:34:59,457 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:34:59,458 [INFO] [Arena] PREVIOUS wins: 8/10 (80.0%)
+2025-11-19 03:34:59,458 [INFO] [Arena] NEW wins: 0/10 (0.0%)
+2025-11-19 03:34:59,458 [INFO] [Arena] Draws: 2/10 (20.0%)
+2025-11-19 03:34:59,458 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:34:59,458 [INFO] [Arena] Average final eval P (old): 0.009
+2025-11-19 03:34:59,458 [INFO] [Arena] Average final eval N (new): 0.009
+2025-11-19 03:34:59,458 [INFO] [Arena] Draw results: [0.0001, 0.0001]
+2025-11-19 03:34:59,458 [INFO] [Arena] =====================================
+2025-11-19 03:34:59,458 [INFO] NEW/PREV WINS : 0 / 8 ; DRAWS : 2
+2025-11-19 03:34:59,458 [INFO] REJECTING NEW MODEL
+2025-11-19 03:34:59,470 [INFO] Starting Iter #8 ...
+2025-11-19 03:37:04,384 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:37:04,385 [INFO] [Arena] Starting new game
+2025-11-19 03:37:05,427 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:37:06,457 [INFO] [Arena] Turn 20: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:37:07,471 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:37:08,588 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:37:09,455 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:37:09,472 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:37:09,473 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:37:09,473 [INFO] [Arena] Starting new game
+2025-11-19 03:37:10,536 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:11,582 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:37:12,791 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:37:14,162 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:37:15,082 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:37:15,100 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:37:15,100 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:37:15,100 [INFO] [Arena] Starting new game
+2025-11-19 03:37:16,055 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:17,093 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:37:18,126 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:37:19,157 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:37:19,957 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:37:19,969 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:37:19,969 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:37:19,970 [INFO] [Arena] Starting new game
+2025-11-19 03:37:21,091 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:22,474 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:37:26,616 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:37:27,725 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:37:28,484 [INFO] [Arena] Turn 50: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:37:28,495 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:37:28,496 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:37:28,496 [INFO] [Arena] Starting new game
+2025-11-19 03:37:29,400 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:30,335 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:37:31,193 [INFO] [Arena] Turn 30: eval_p1=0.538, eval_p2=0.538
+2025-11-19 03:37:32,067 [INFO] [Arena] Turn 40: eval_p1=0.400, eval_p2=0.400
+2025-11-19 03:37:32,823 [INFO] [Arena] Turn 50: eval_p1=0.556, eval_p2=0.556
+2025-11-19 03:37:32,840 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:37:32,842 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.500, eval_p2=0.500
+2025-11-19 03:37:32,843 [INFO] [Arena] Game 5/10: PREV=2, NEW=0, Draws=3
+2025-11-19 03:37:32,843 [INFO] [Arena] Starting new game
+2025-11-19 03:37:33,778 [INFO] [Arena] Turn 10: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:37:34,847 [INFO] [Arena] Turn 20: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:37:35,957 [INFO] [Arena] Turn 30: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:37:36,832 [INFO] [Arena] Turn 40: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:37:37,644 [INFO] [Arena] Turn 50: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:37:37,656 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:37:37,656 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:37:37,657 [INFO] [Arena] Starting new game
+2025-11-19 03:37:38,823 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:39,753 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:40,741 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:41,761 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:37:42,497 [INFO] [Arena] Turn 50: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:37:42,511 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:37:42,511 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:37:42,512 [INFO] [Arena] Starting new game
+2025-11-19 03:37:43,588 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:37:44,551 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:37:45,413 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:46,262 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:47,087 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:47,101 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:37:47,102 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:37:47,102 [INFO] [Arena] Starting new game
+2025-11-19 03:37:48,345 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:49,498 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:37:50,625 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:37:51,629 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:37:52,379 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:37:52,393 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:37:52,394 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:37:52,394 [INFO] [Arena] Starting new game
+2025-11-19 03:37:53,486 [INFO] [Arena] Turn 10: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:37:54,498 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:37:55,655 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:37:56,614 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:37:57,480 [INFO] [Arena] Turn 50: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:37:57,493 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:37:57,494 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:37:57,494 [INFO] [Arena] Game 10/10: PREV=4, NEW=2, Draws=4
+2025-11-19 03:37:57,494 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:37:57,494 [INFO] [Arena] PREVIOUS wins: 4/10 (40.0%)
+2025-11-19 03:37:57,494 [INFO] [Arena] NEW wins: 2/10 (20.0%)
+2025-11-19 03:37:57,494 [INFO] [Arena] Draws: 4/10 (40.0%)
+2025-11-19 03:37:57,494 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:37:57,494 [INFO] [Arena] Average final eval P (old): 0.032
+2025-11-19 03:37:57,494 [INFO] [Arena] Average final eval N (new): 0.032
+2025-11-19 03:37:57,494 [INFO] [Arena] Draw results: [0.0001, 0.0001, 0.0001, 0.0001]
+2025-11-19 03:37:57,495 [INFO] [Arena] =====================================
+2025-11-19 03:37:57,495 [INFO] NEW/PREV WINS : 2 / 4 ; DRAWS : 4
+2025-11-19 03:37:57,495 [INFO] REJECTING NEW MODEL
+2025-11-19 03:37:57,507 [INFO] Starting Iter #9 ...
+2025-11-19 03:39:59,325 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:39:59,326 [INFO] [Arena] Starting new game
+2025-11-19 03:40:00,238 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:40:01,119 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:40:02,452 [INFO] [Arena] Turn 30: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:40:03,457 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:40:04,260 [INFO] [Arena] Turn 50: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:40:04,277 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:40:04,277 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:40:04,278 [INFO] [Arena] Starting new game
+2025-11-19 03:40:05,208 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:40:06,163 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:40:07,154 [INFO] [Arena] Turn 30: eval_p1=-0.385, eval_p2=-0.385
+2025-11-19 03:40:08,170 [INFO] [Arena] Turn 40: eval_p1=-0.385, eval_p2=-0.385
+2025-11-19 03:40:09,149 [INFO] [Arena] Turn 50: eval_p1=-0.385, eval_p2=-0.385
+2025-11-19 03:40:09,163 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:40:09,163 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.385, eval_p2=-0.385
+2025-11-19 03:40:09,164 [INFO] [Arena] Starting new game
+2025-11-19 03:40:10,091 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:40:11,184 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:40:12,548 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:40:13,427 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:40:14,343 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:40:14,358 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:40:14,359 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:40:14,359 [INFO] [Arena] Starting new game
+2025-11-19 03:40:15,175 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:40:16,128 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:40:17,018 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:40:17,924 [INFO] [Arena] Turn 40: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:40:18,702 [INFO] [Arena] Turn 50: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:40:18,715 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:40:18,715 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:40:18,716 [INFO] [Arena] Starting new game
+2025-11-19 03:40:22,542 [INFO] [Arena] Turn 10: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:40:23,359 [INFO] [Arena] Turn 20: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:40:24,329 [INFO] [Arena] Turn 30: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:40:25,263 [INFO] [Arena] Turn 40: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:40:26,048 [INFO] [Arena] Turn 50: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:40:26,061 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:40:26,061 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:40:26,061 [INFO] [Arena] Game 5/10: PREV=4, NEW=1, Draws=0
+2025-11-19 03:40:26,061 [INFO] [Arena] Starting new game
+2025-11-19 03:40:27,149 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:40:28,164 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:40:29,250 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:40:30,166 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:40:30,956 [INFO] [Arena] Turn 50: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:40:30,971 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:40:30,972 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:40:30,972 [INFO] [Arena] Starting new game
+2025-11-19 03:40:31,857 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:40:32,895 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:40:33,757 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:40:34,709 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:40:35,473 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:40:35,490 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:40:35,491 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:40:35,491 [INFO] [Arena] Starting new game
+2025-11-19 03:40:36,353 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:40:37,266 [INFO] [Arena] Turn 20: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:40:38,242 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:40:39,179 [INFO] [Arena] Turn 40: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:40:40,038 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:40:40,051 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:40:40,052 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:40:40,052 [INFO] [Arena] Starting new game
+2025-11-19 03:40:40,945 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:40:41,820 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:40:42,874 [INFO] [Arena] Turn 30: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:40:43,950 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:40:44,674 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:40:44,688 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:40:44,688 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:40:44,689 [INFO] [Arena] Starting new game
+2025-11-19 03:40:45,908 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:40:46,894 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:40:47,730 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:40:48,783 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:40:49,700 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:40:49,714 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:40:49,715 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:40:49,715 [INFO] [Arena] Game 10/10: PREV=5, NEW=2, Draws=3
+2025-11-19 03:40:49,715 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:40:49,715 [INFO] [Arena] PREVIOUS wins: 5/10 (50.0%)
+2025-11-19 03:40:49,715 [INFO] [Arena] NEW wins: 2/10 (20.0%)
+2025-11-19 03:40:49,715 [INFO] [Arena] Draws: 3/10 (30.0%)
+2025-11-19 03:40:49,715 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:40:49,715 [INFO] [Arena] Average final eval P (old): 0.052
+2025-11-19 03:40:49,715 [INFO] [Arena] Average final eval N (new): 0.052
+2025-11-19 03:40:49,715 [INFO] [Arena] Draw results: [0.0001, 0.0001, 0.0001]
+2025-11-19 03:40:49,715 [INFO] [Arena] =====================================
+2025-11-19 03:40:49,715 [INFO] NEW/PREV WINS : 2 / 5 ; DRAWS : 3
+2025-11-19 03:40:49,715 [INFO] REJECTING NEW MODEL
+2025-11-19 03:40:49,727 [INFO] Starting Iter #10 ...
+2025-11-19 03:42:52,538 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:42:52,539 [INFO] [Arena] Starting new game
+2025-11-19 03:42:53,401 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:42:54,329 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:42:55,255 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:42:56,225 [INFO] [Arena] Turn 40: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:42:57,020 [INFO] [Arena] Turn 50: eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:42:57,031 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:42:57,031 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.125, eval_p2=0.125
+2025-11-19 03:42:57,032 [INFO] [Arena] Starting new game
+2025-11-19 03:42:57,976 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:42:59,150 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:43:00,169 [INFO] [Arena] Turn 30: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:43:01,318 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:43:02,196 [INFO] [Arena] Turn 50: eval_p1=0.250, eval_p2=0.250
+2025-11-19 03:43:02,212 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:43:02,212 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.250, eval_p2=0.250
+2025-11-19 03:43:02,213 [INFO] [Arena] Starting new game
+2025-11-19 03:43:03,020 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:43:04,066 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:43:05,033 [INFO] [Arena] Turn 30: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:43:05,913 [INFO] [Arena] Turn 40: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:43:06,735 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:43:06,748 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:43:06,748 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:43:06,749 [INFO] [Arena] Starting new game
+2025-11-19 03:43:08,092 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:43:09,272 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:43:10,432 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:43:11,318 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:43:12,148 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:43:12,160 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:43:12,160 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:43:12,160 [INFO] [Arena] Starting new game
+2025-11-19 03:43:13,080 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:43:14,064 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:43:17,981 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:43:19,003 [INFO] [Arena] Turn 40: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:43:19,889 [INFO] [Arena] Turn 50: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:43:19,901 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:43:19,901 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:43:19,901 [INFO] [Arena] Game 5/10: PREV=4, NEW=1, Draws=0
+2025-11-19 03:43:19,902 [INFO] [Arena] Starting new game
+2025-11-19 03:43:20,891 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:43:21,925 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:43:22,904 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:43:23,865 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:43:24,731 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:43:24,743 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:43:24,744 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:43:24,744 [INFO] [Arena] Starting new game
+2025-11-19 03:43:25,895 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:43:27,133 [INFO] [Arena] Turn 20: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:43:28,074 [INFO] [Arena] Turn 30: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:43:29,104 [INFO] [Arena] Turn 40: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:43:29,923 [INFO] [Arena] Turn 50: eval_p1=0.385, eval_p2=0.385
+2025-11-19 03:43:29,936 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:43:29,937 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.385, eval_p2=0.385
+2025-11-19 03:43:29,937 [INFO] [Arena] Starting new game
+2025-11-19 03:43:30,915 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:43:31,956 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:43:32,927 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:43:33,950 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:43:34,781 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:43:34,796 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:43:34,796 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:43:34,797 [INFO] [Arena] Starting new game
+2025-11-19 03:43:35,731 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:43:36,652 [INFO] [Arena] Turn 20: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:43:37,478 [INFO] [Arena] Turn 30: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:43:38,602 [INFO] [Arena] Turn 40: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:43:39,495 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:43:39,509 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:43:39,510 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:43:39,510 [INFO] [Arena] Starting new game
+2025-11-19 03:43:40,650 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:43:41,610 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:43:42,571 [INFO] [Arena] Turn 30: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:43:43,505 [INFO] [Arena] Turn 40: eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:43:44,335 [INFO] [Arena] Turn 50: eval_p1=-0.375, eval_p2=-0.375
+2025-11-19 03:43:44,353 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:43:44,353 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.375, eval_p2=-0.375
+2025-11-19 03:43:44,353 [INFO] [Arena] Game 10/10: PREV=8, NEW=1, Draws=1
+2025-11-19 03:43:44,354 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:43:44,354 [INFO] [Arena] PREVIOUS wins: 8/10 (80.0%)
+2025-11-19 03:43:44,354 [INFO] [Arena] NEW wins: 1/10 (10.0%)
+2025-11-19 03:43:44,354 [INFO] [Arena] Draws: 1/10 (10.0%)
+2025-11-19 03:43:44,354 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:43:44,354 [INFO] [Arena] Average final eval P (old): 0.069
+2025-11-19 03:43:44,354 [INFO] [Arena] Average final eval N (new): 0.069
+2025-11-19 03:43:44,355 [INFO] [Arena] Draw results: [0.0001]
+2025-11-19 03:43:44,355 [INFO] [Arena] =====================================
+2025-11-19 03:43:44,355 [INFO] NEW/PREV WINS : 1 / 8 ; DRAWS : 1
+2025-11-19 03:43:44,355 [INFO] REJECTING NEW MODEL
+2025-11-19 03:43:44,368 [INFO] Starting Iter #11 ...
+2025-11-19 03:45:46,079 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:45:46,081 [INFO] [Arena] Starting new game
+2025-11-19 03:45:46,988 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:45:48,041 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:45:49,425 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:45:50,658 [INFO] [Arena] Turn 40: eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 03:45:51,510 [INFO] [Arena] Turn 50: eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 03:45:51,521 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:45:51,521 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 03:45:51,522 [INFO] [Arena] Starting new game
+2025-11-19 03:45:52,492 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:45:53,607 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:45:54,584 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:45:55,504 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:45:56,346 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:45:56,357 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:45:56,358 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:45:56,358 [INFO] [Arena] Starting new game
+2025-11-19 03:45:57,360 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:45:58,439 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:45:59,515 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:46:00,648 [INFO] [Arena] Turn 40: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:46:01,505 [INFO] [Arena] Turn 50: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:46:01,519 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:46:01,520 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:01,520 [INFO] [Arena] Starting new game
+2025-11-19 03:46:02,844 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:46:04,398 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:46:05,270 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:06,253 [INFO] [Arena] Turn 40: eval_p1=-0.286, eval_p2=-0.286
+2025-11-19 03:46:07,094 [INFO] [Arena] Turn 50: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:46:07,106 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:46:07,106 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:46:07,107 [INFO] [Arena] Starting new game
+2025-11-19 03:46:07,952 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:08,820 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:46:09,843 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:13,746 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:46:14,501 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:46:14,513 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:46:14,514 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:14,514 [INFO] [Arena] Game 5/10: PREV=1, NEW=4, Draws=0
+2025-11-19 03:46:14,516 [INFO] [Arena] Starting new game
+2025-11-19 03:46:15,418 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:46:16,507 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:46:17,666 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:46:18,739 [INFO] [Arena] Turn 40: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:46:19,569 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:19,581 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:46:19,581 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:19,581 [INFO] [Arena] Starting new game
+2025-11-19 03:46:20,536 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:46:21,449 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:46:22,398 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:46:23,372 [INFO] [Arena] Turn 40: eval_p1=-0.273, eval_p2=-0.273
+2025-11-19 03:46:24,180 [INFO] [Arena] Turn 50: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:46:24,192 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:46:24,193 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:46:24,193 [INFO] [Arena] Starting new game
+2025-11-19 03:46:25,112 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:46:26,163 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:46:27,313 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:46:28,546 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:46:29,391 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:29,402 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:46:29,403 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:29,403 [INFO] [Arena] Starting new game
+2025-11-19 03:46:30,362 [INFO] [Arena] Turn 10: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:46:31,253 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:46:32,398 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:46:33,626 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:46:34,483 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:46:34,496 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:46:34,496 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:34,497 [INFO] [Arena] Starting new game
+2025-11-19 03:46:35,390 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:36,448 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:37,590 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:46:38,464 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:46:39,314 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:46:39,326 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:46:39,326 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:46:39,327 [INFO] [Arena] Game 10/10: PREV=3, NEW=5, Draws=2
+2025-11-19 03:46:39,327 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:46:39,327 [INFO] [Arena] PREVIOUS wins: 3/10 (30.0%)
+2025-11-19 03:46:39,327 [INFO] [Arena] NEW wins: 5/10 (50.0%)
+2025-11-19 03:46:39,327 [INFO] [Arena] Draws: 2/10 (20.0%)
+2025-11-19 03:46:39,327 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:46:39,328 [INFO] [Arena] Average final eval P (old): -0.043
+2025-11-19 03:46:39,328 [INFO] [Arena] Average final eval N (new): -0.043
+2025-11-19 03:46:39,328 [INFO] [Arena] Draw results: [0.0001, 0.0001]
+2025-11-19 03:46:39,328 [INFO] [Arena] =====================================
+2025-11-19 03:46:39,328 [INFO] NEW/PREV WINS : 5 / 3 ; DRAWS : 2
+2025-11-19 03:46:39,328 [INFO] ACCEPTING NEW MODEL
+2025-11-19 03:46:39,344 [INFO] Starting Iter #12 ...
+2025-11-19 03:48:53,192 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:48:53,195 [INFO] [Arena] Starting new game
+2025-11-19 03:48:54,032 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:48:55,032 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:48:56,114 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:48:57,319 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:48:58,053 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:48:58,068 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:48:58,068 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:48:58,069 [INFO] [Arena] Starting new game
+2025-11-19 03:48:59,147 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:49:00,492 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:49:01,650 [INFO] [Arena] Turn 30: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:49:02,793 [INFO] [Arena] Turn 40: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:49:03,822 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:03,837 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:49:03,837 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:49:03,837 [INFO] [Arena] Starting new game
+2025-11-19 03:49:05,182 [INFO] [Arena] Turn 10: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:49:06,395 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:49:10,573 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:11,763 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:49:12,640 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:49:12,652 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:49:12,653 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:49:12,653 [INFO] [Arena] Starting new game
+2025-11-19 03:49:13,893 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:49:15,257 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:49:16,298 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:17,447 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:18,308 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:49:18,320 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:49:18,321 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:49:18,322 [INFO] [Arena] Starting new game
+2025-11-19 03:49:19,260 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:49:20,331 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:49:21,418 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:49:22,524 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:49:23,305 [INFO] [Arena] Turn 50: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:49:23,317 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:49:23,318 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:49:23,318 [INFO] [Arena] Game 5/10: PREV=1, NEW=2, Draws=2
+2025-11-19 03:49:23,318 [INFO] [Arena] Starting new game
+2025-11-19 03:49:24,443 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:25,731 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:26,699 [INFO] [Arena] Turn 30: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:49:27,906 [INFO] [Arena] Turn 40: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:49:28,707 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:28,719 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:49:28,720 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:28,720 [INFO] [Arena] Starting new game
+2025-11-19 03:49:29,683 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:49:30,616 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:49:31,642 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:32,728 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:33,609 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:49:33,622 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:49:33,623 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:49:33,623 [INFO] [Arena] Starting new game
+2025-11-19 03:49:34,618 [INFO] [Arena] Turn 10: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:49:35,835 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:36,874 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:37,983 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:49:38,683 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:38,698 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:49:38,699 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:49:38,699 [INFO] [Arena] Starting new game
+2025-11-19 03:49:39,843 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:49:41,071 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:44,991 [INFO] [Arena] Turn 30: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:49:46,071 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:49:46,875 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:49:46,888 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:49:46,889 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:49:46,889 [INFO] [Arena] Starting new game
+2025-11-19 03:49:48,163 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:49:49,326 [INFO] [Arena] Turn 20: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:49:50,365 [INFO] [Arena] Turn 30: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:49:51,509 [INFO] [Arena] Turn 40: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:49:52,298 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:49:52,312 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:49:52,313 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:49:52,313 [INFO] [Arena] Game 10/10: PREV=5, NEW=2, Draws=3
+2025-11-19 03:49:52,313 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:49:52,313 [INFO] [Arena] PREVIOUS wins: 5/10 (50.0%)
+2025-11-19 03:49:52,313 [INFO] [Arena] NEW wins: 2/10 (20.0%)
+2025-11-19 03:49:52,313 [INFO] [Arena] Draws: 3/10 (30.0%)
+2025-11-19 03:49:52,313 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:49:52,313 [INFO] [Arena] Average final eval P (old): -0.022
+2025-11-19 03:49:52,313 [INFO] [Arena] Average final eval N (new): -0.022
+2025-11-19 03:49:52,313 [INFO] [Arena] Draw results: [0.0001, 0.0001, 0.0001]
+2025-11-19 03:49:52,313 [INFO] [Arena] =====================================
+2025-11-19 03:49:52,313 [INFO] NEW/PREV WINS : 2 / 5 ; DRAWS : 3
+2025-11-19 03:49:52,313 [INFO] REJECTING NEW MODEL
+2025-11-19 03:49:52,325 [INFO] Starting Iter #13 ...
+2025-11-19 03:52:00,977 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:52:00,979 [INFO] [Arena] Starting new game
+2025-11-19 03:52:01,891 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:05,909 [INFO] [Arena] Turn 20: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 03:52:07,050 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:08,358 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:09,214 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:52:09,231 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:52:09,231 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:52:09,232 [INFO] [Arena] Starting new game
+2025-11-19 03:52:10,233 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:52:11,285 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:52:12,455 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:52:13,653 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:52:14,484 [INFO] [Arena] Turn 50: eval_p1=-0.385, eval_p2=-0.385
+2025-11-19 03:52:14,495 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:52:14,496 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.385, eval_p2=-0.385
+2025-11-19 03:52:14,496 [INFO] [Arena] Starting new game
+2025-11-19 03:52:15,778 [INFO] [Arena] Turn 10: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:52:16,916 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:52:18,219 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:19,440 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:52:20,322 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:52:20,334 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:52:20,335 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:52:20,336 [INFO] [Arena] Starting new game
+2025-11-19 03:52:21,213 [INFO] [Arena] Turn 10: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:52:22,320 [INFO] [Arena] Turn 20: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:52:23,330 [INFO] [Arena] Turn 30: eval_p1=0.273, eval_p2=0.273
+2025-11-19 03:52:24,543 [INFO] [Arena] Turn 40: eval_p1=0.273, eval_p2=0.273
+2025-11-19 03:52:25,311 [INFO] [Arena] Turn 50: eval_p1=0.273, eval_p2=0.273
+2025-11-19 03:52:25,323 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:52:25,324 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.273, eval_p2=0.273
+2025-11-19 03:52:25,324 [INFO] [Arena] Starting new game
+2025-11-19 03:52:26,521 [INFO] [Arena] Turn 10: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:52:27,877 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:29,268 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:30,340 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:31,105 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:52:31,118 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:52:31,119 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:52:31,119 [INFO] [Arena] Game 5/10: PREV=2, NEW=3, Draws=0
+2025-11-19 03:52:31,120 [INFO] [Arena] Starting new game
+2025-11-19 03:52:32,250 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:33,299 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:34,251 [INFO] [Arena] Turn 30: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:52:35,446 [INFO] [Arena] Turn 40: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:52:36,205 [INFO] [Arena] Turn 50: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:52:36,218 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:52:36,219 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:52:36,219 [INFO] [Arena] Starting new game
+2025-11-19 03:52:37,452 [INFO] [Arena] Turn 10: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:52:41,958 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:43,370 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:44,362 [INFO] [Arena] Turn 40: eval_p1=-0.286, eval_p2=-0.286
+2025-11-19 03:52:45,302 [INFO] [Arena] Turn 50: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:52:45,314 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:52:45,315 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:52:45,315 [INFO] [Arena] Starting new game
+2025-11-19 03:52:46,330 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:52:47,464 [INFO] [Arena] Turn 20: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:52:48,510 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:52:49,555 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:52:50,342 [INFO] [Arena] Turn 50: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:52:50,354 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:52:50,354 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:52:50,355 [INFO] [Arena] Starting new game
+2025-11-19 03:52:51,375 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:52:52,602 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:52:53,985 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:52:55,132 [INFO] [Arena] Turn 40: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:52:55,939 [INFO] [Arena] Turn 50: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:52:55,951 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:52:55,951 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:55,951 [INFO] [Arena] Starting new game
+2025-11-19 03:52:57,052 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:58,185 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:52:59,241 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:53:00,341 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:53:01,134 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:53:01,147 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:53:01,147 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:53:01,147 [INFO] [Arena] Game 10/10: PREV=4, NEW=5, Draws=1
+2025-11-19 03:53:01,148 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:53:01,148 [INFO] [Arena] PREVIOUS wins: 4/10 (40.0%)
+2025-11-19 03:53:01,148 [INFO] [Arena] NEW wins: 5/10 (50.0%)
+2025-11-19 03:53:01,148 [INFO] [Arena] Draws: 1/10 (10.0%)
+2025-11-19 03:53:01,148 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:53:01,148 [INFO] [Arena] Average final eval P (old): -0.036
+2025-11-19 03:53:01,148 [INFO] [Arena] Average final eval N (new): -0.036
+2025-11-19 03:53:01,148 [INFO] [Arena] Draw results: [0.0001]
+2025-11-19 03:53:01,148 [INFO] [Arena] =====================================
+2025-11-19 03:53:01,148 [INFO] NEW/PREV WINS : 5 / 4 ; DRAWS : 1
+2025-11-19 03:53:01,148 [INFO] ACCEPTING NEW MODEL
+2025-11-19 03:53:01,167 [INFO] Starting Iter #14 ...
+2025-11-19 03:55:16,721 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:55:16,724 [INFO] [Arena] Starting new game
+2025-11-19 03:55:17,673 [INFO] [Arena] Turn 10: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:55:18,617 [INFO] [Arena] Turn 20: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 03:55:19,655 [INFO] [Arena] Turn 30: eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 03:55:20,751 [INFO] [Arena] Turn 40: eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 03:55:21,577 [INFO] [Arena] Turn 50: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:55:21,589 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:55:21,590 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:55:21,590 [INFO] [Arena] Starting new game
+2025-11-19 03:55:22,563 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:55:23,573 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:55:24,680 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:55:25,926 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:55:26,849 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:55:26,864 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:55:26,865 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:55:26,865 [INFO] [Arena] Starting new game
+2025-11-19 03:55:27,795 [INFO] [Arena] Turn 10: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:55:28,860 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:55:30,177 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:55:31,211 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:55:32,071 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:55:32,083 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:55:32,084 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:55:32,085 [INFO] [Arena] Starting new game
+2025-11-19 03:55:33,106 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:55:37,307 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:55:38,296 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:55:39,256 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:55:40,069 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:55:40,081 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:55:40,081 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:55:40,082 [INFO] [Arena] Starting new game
+2025-11-19 03:55:41,929 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:55:43,263 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:55:44,403 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:55:45,607 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:55:46,307 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:55:46,320 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:55:46,320 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:55:46,321 [INFO] [Arena] Game 5/10: PREV=0, NEW=3, Draws=2
+2025-11-19 03:55:46,321 [INFO] [Arena] Starting new game
+2025-11-19 03:55:47,482 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:55:48,369 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:55:49,621 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 03:55:50,678 [INFO] [Arena] Turn 40: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:55:51,333 [INFO] [Arena] Turn 50: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:55:51,345 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:55:51,345 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 03:55:51,346 [INFO] [Arena] Starting new game
+2025-11-19 03:55:52,287 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:55:53,317 [INFO] [Arena] Turn 20: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:55:54,263 [INFO] [Arena] Turn 30: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:55:55,277 [INFO] [Arena] Turn 40: eval_p1=-0.286, eval_p2=-0.286
+2025-11-19 03:55:55,979 [INFO] [Arena] Turn 50: eval_p1=-0.286, eval_p2=-0.286
+2025-11-19 03:55:55,991 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:55:55,992 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.286, eval_p2=-0.286
+2025-11-19 03:55:55,992 [INFO] [Arena] Starting new game
+2025-11-19 03:55:56,853 [INFO] [Arena] Turn 10: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:55:57,774 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 03:55:58,676 [INFO] [Arena] Turn 30: eval_p1=0.467, eval_p2=0.467
+2025-11-19 03:55:59,631 [INFO] [Arena] Turn 40: eval_p1=0.375, eval_p2=0.375
+2025-11-19 03:56:00,353 [INFO] [Arena] Turn 50: eval_p1=0.375, eval_p2=0.375
+2025-11-19 03:56:00,366 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:56:00,367 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.375, eval_p2=0.375
+2025-11-19 03:56:00,367 [INFO] [Arena] Starting new game
+2025-11-19 03:56:01,613 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:56:02,569 [INFO] [Arena] Turn 20: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:56:03,729 [INFO] [Arena] Turn 30: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:56:04,880 [INFO] [Arena] Turn 40: eval_p1=0.333, eval_p2=0.333
+2025-11-19 03:56:05,674 [INFO] [Arena] Turn 50: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:56:05,686 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:56:05,687 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:56:05,687 [INFO] [Arena] Starting new game
+2025-11-19 03:56:06,835 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:56:07,883 [INFO] [Arena] Turn 20: eval_p1=0.385, eval_p2=0.385
+2025-11-19 03:56:11,722 [INFO] [Arena] Turn 30: eval_p1=0.538, eval_p2=0.538
+2025-11-19 03:56:12,739 [INFO] [Arena] Turn 40: eval_p1=0.385, eval_p2=0.385
+2025-11-19 03:56:13,441 [INFO] [Arena] Turn 50: eval_p1=0.385, eval_p2=0.385
+2025-11-19 03:56:13,453 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:56:13,453 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.385, eval_p2=0.385
+2025-11-19 03:56:13,453 [INFO] [Arena] Game 10/10: PREV=1, NEW=6, Draws=3
+2025-11-19 03:56:13,454 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:56:13,454 [INFO] [Arena] PREVIOUS wins: 1/10 (10.0%)
+2025-11-19 03:56:13,454 [INFO] [Arena] NEW wins: 6/10 (60.0%)
+2025-11-19 03:56:13,454 [INFO] [Arena] Draws: 3/10 (30.0%)
+2025-11-19 03:56:13,454 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:56:13,454 [INFO] [Arena] Average final eval P (old): 0.004
+2025-11-19 03:56:13,454 [INFO] [Arena] Average final eval N (new): 0.004
+2025-11-19 03:56:13,454 [INFO] [Arena] Draw results: [0.0001, 0.0001, 0.0001]
+2025-11-19 03:56:13,454 [INFO] [Arena] =====================================
+2025-11-19 03:56:13,454 [INFO] NEW/PREV WINS : 6 / 1 ; DRAWS : 3
+2025-11-19 03:56:13,454 [INFO] ACCEPTING NEW MODEL
+2025-11-19 03:56:13,471 [INFO] Starting Iter #15 ...
+2025-11-19 03:58:24,976 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 03:58:24,978 [INFO] [Arena] Starting new game
+2025-11-19 03:58:25,855 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:58:27,091 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:58:28,325 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:58:32,366 [INFO] [Arena] Turn 40: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:58:33,224 [INFO] [Arena] Turn 50: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:58:33,236 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:58:33,237 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:58:33,237 [INFO] [Arena] Starting new game
+2025-11-19 03:58:34,270 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:58:35,408 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:58:36,487 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:58:38,521 [INFO] [Arena] Turn 40: eval_p1=-0.250, eval_p2=-0.250
+2025-11-19 03:58:39,469 [INFO] [Arena] Turn 50: eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:58:39,482 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:58:39,483 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 03:58:39,483 [INFO] [Arena] Starting new game
+2025-11-19 03:58:40,512 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:58:53,256 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:58:55,307 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:58:56,585 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:58:57,891 [INFO] [Arena] Turn 50: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:58:57,905 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:58:57,906 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 03:58:57,906 [INFO] [Arena] Starting new game
+2025-11-19 03:58:59,712 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:59:00,979 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:59:02,304 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:59:03,501 [INFO] [Arena] Turn 40: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:59:04,318 [INFO] [Arena] Turn 50: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:59:04,330 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:59:04,331 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:59:04,331 [INFO] [Arena] Starting new game
+2025-11-19 03:59:05,791 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:59:07,915 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:59:09,049 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:59:10,446 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:59:11,415 [INFO] [Arena] Turn 50: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:59:11,428 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:59:11,428 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 03:59:11,428 [INFO] [Arena] Game 5/10: PREV=1, NEW=3, Draws=1
+2025-11-19 03:59:11,428 [INFO] [Arena] Starting new game
+2025-11-19 03:59:12,689 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:59:13,958 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 03:59:15,303 [INFO] [Arena] Turn 30: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:59:16,701 [INFO] [Arena] Turn 40: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:59:17,507 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:59:17,520 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:59:17,521 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:59:17,521 [INFO] [Arena] Starting new game
+2025-11-19 03:59:18,478 [INFO] [Arena] Turn 10: eval_p1=0.231, eval_p2=0.231
+2025-11-19 03:59:19,453 [INFO] [Arena] Turn 20: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:59:20,550 [INFO] [Arena] Turn 30: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:59:21,626 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 03:59:22,468 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:59:22,487 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:59:22,488 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.200, eval_p2=0.200
+2025-11-19 03:59:22,489 [INFO] [Arena] Starting new game
+2025-11-19 03:59:26,631 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 03:59:27,833 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:59:29,180 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:59:30,644 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:59:31,552 [INFO] [Arena] Turn 50: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:59:31,566 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:59:31,567 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:59:31,567 [INFO] [Arena] Starting new game
+2025-11-19 03:59:32,710 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:59:34,254 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:59:35,749 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:59:36,954 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 03:59:37,805 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:59:37,820 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:59:37,820 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.077, eval_p2=0.077
+2025-11-19 03:59:37,821 [INFO] [Arena] Starting new game
+2025-11-19 03:59:39,354 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:59:41,005 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:59:42,213 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:59:43,435 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 03:59:44,439 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:59:44,454 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 03:59:44,454 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 03:59:44,454 [INFO] [Arena] Game 10/10: PREV=4, NEW=3, Draws=3
+2025-11-19 03:59:44,455 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 03:59:44,455 [INFO] [Arena] PREVIOUS wins: 4/10 (40.0%)
+2025-11-19 03:59:44,455 [INFO] [Arena] NEW wins: 3/10 (30.0%)
+2025-11-19 03:59:44,455 [INFO] [Arena] Draws: 3/10 (30.0%)
+2025-11-19 03:59:44,455 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 03:59:44,455 [INFO] [Arena] Average final eval P (old): -0.013
+2025-11-19 03:59:44,455 [INFO] [Arena] Average final eval N (new): -0.013
+2025-11-19 03:59:44,455 [INFO] [Arena] Draw results: [0.0001, 0.0001, 0.0001]
+2025-11-19 03:59:44,455 [INFO] [Arena] =====================================
+2025-11-19 03:59:44,455 [INFO] NEW/PREV WINS : 3 / 4 ; DRAWS : 3
+2025-11-19 03:59:44,455 [INFO] REJECTING NEW MODEL
+2025-11-19 03:59:44,473 [INFO] Starting Iter #16 ...
+2025-11-19 04:01:56,098 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 04:01:56,100 [INFO] [Arena] Starting new game
+2025-11-19 04:01:56,989 [INFO] [Arena] Turn 10: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 04:01:57,860 [INFO] [Arena] Turn 20: eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 04:01:59,009 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:02:00,098 [INFO] [Arena] Turn 40: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:02:01,076 [INFO] [Arena] Turn 50: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:02:01,088 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:02:01,088 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 04:02:01,088 [INFO] [Arena] Starting new game
+2025-11-19 04:02:02,098 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:02:03,393 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:02:04,425 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:02:05,737 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:02:06,484 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:02:06,496 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:02:06,496 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:02:06,497 [INFO] [Arena] Starting new game
+2025-11-19 04:02:07,465 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:02:08,722 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:02:10,283 [INFO] [Arena] Turn 30: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 04:02:11,536 [INFO] [Arena] Turn 40: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:02:12,477 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:02:12,490 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:02:12,491 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:02:12,491 [INFO] [Arena] Starting new game
+2025-11-19 04:02:13,491 [INFO] [Arena] Turn 10: eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:02:14,429 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:02:15,481 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:02:16,533 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:02:20,252 [INFO] [Arena] Turn 50: eval_p1=0.286, eval_p2=0.286
+2025-11-19 04:02:20,264 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:02:20,264 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:02:20,265 [INFO] [Arena] Starting new game
+2025-11-19 04:02:21,174 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:02:22,308 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:02:23,624 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:02:24,664 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 04:02:25,535 [INFO] [Arena] Turn 50: eval_p1=0.286, eval_p2=0.286
+2025-11-19 04:02:25,547 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:02:25,547 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.286, eval_p2=0.286
+2025-11-19 04:02:25,548 [INFO] [Arena] Game 5/10: PREV=2, NEW=3, Draws=0
+2025-11-19 04:02:25,548 [INFO] [Arena] Starting new game
+2025-11-19 04:02:26,858 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:02:27,963 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:02:29,103 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:02:30,422 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:02:31,119 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:02:31,130 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:02:31,131 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:02:31,131 [INFO] [Arena] Starting new game
+2025-11-19 04:02:32,660 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:02:34,287 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:02:35,244 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:02:36,161 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:02:37,019 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:02:37,032 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:02:37,033 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:02:37,034 [INFO] [Arena] Starting new game
+2025-11-19 04:02:38,315 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:02:39,310 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:02:40,263 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:02:41,279 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:02:42,106 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:02:42,118 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:02:42,119 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:02:42,119 [INFO] [Arena] Starting new game
+2025-11-19 04:02:43,024 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:02:44,071 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:02:45,021 [INFO] [Arena] Turn 30: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 04:02:46,045 [INFO] [Arena] Turn 40: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 04:02:46,727 [INFO] [Arena] Turn 50: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 04:02:46,739 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:02:46,740 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 04:02:46,740 [INFO] [Arena] Starting new game
+2025-11-19 04:02:48,142 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:02:49,811 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:02:50,935 [INFO] [Arena] Turn 30: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:02:51,862 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:02:55,484 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:02:55,497 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:02:55,498 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:02:55,498 [INFO] [Arena] Game 10/10: PREV=3, NEW=4, Draws=3
+2025-11-19 04:02:55,498 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 04:02:55,498 [INFO] [Arena] PREVIOUS wins: 3/10 (30.0%)
+2025-11-19 04:02:55,498 [INFO] [Arena] NEW wins: 4/10 (40.0%)
+2025-11-19 04:02:55,498 [INFO] [Arena] Draws: 3/10 (30.0%)
+2025-11-19 04:02:55,498 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 04:02:55,498 [INFO] [Arena] Average final eval P (old): 0.016
+2025-11-19 04:02:55,498 [INFO] [Arena] Average final eval N (new): 0.016
+2025-11-19 04:02:55,498 [INFO] [Arena] Draw results: [0.0001, 0.0001, 0.0001]
+2025-11-19 04:02:55,499 [INFO] [Arena] =====================================
+2025-11-19 04:02:55,499 [INFO] NEW/PREV WINS : 4 / 3 ; DRAWS : 3
+2025-11-19 04:02:55,499 [INFO] ACCEPTING NEW MODEL
+2025-11-19 04:02:55,513 [INFO] Starting Iter #17 ...
+2025-11-19 04:05:11,125 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 04:05:11,127 [INFO] [Arena] Starting new game
+2025-11-19 04:05:12,180 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:05:16,468 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:05:17,799 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:05:18,991 [INFO] [Arena] Turn 40: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:05:19,914 [INFO] [Arena] Turn 50: eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:05:19,927 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:05:19,927 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:05:19,927 [INFO] [Arena] Starting new game
+2025-11-19 04:05:21,019 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:05:22,499 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:05:23,649 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:24,824 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:05:25,629 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:05:25,641 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:05:25,642 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:25,642 [INFO] [Arena] Starting new game
+2025-11-19 04:05:27,246 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:05:28,594 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:29,889 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:05:31,034 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:05:31,902 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:31,913 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:05:31,914 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:31,914 [INFO] [Arena] Starting new game
+2025-11-19 04:05:32,945 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:34,031 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:35,121 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:36,316 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:37,204 [INFO] [Arena] Turn 50: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 04:05:37,217 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:05:37,217 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 04:05:37,218 [INFO] [Arena] Starting new game
+2025-11-19 04:05:38,978 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:05:40,620 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:42,186 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:05:43,735 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:05:44,543 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:05:44,559 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:05:44,559 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:05:44,559 [INFO] [Arena] Game 5/10: PREV=3, NEW=1, Draws=1
+2025-11-19 04:05:44,559 [INFO] [Arena] Starting new game
+2025-11-19 04:05:46,121 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:05:51,035 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:05:52,461 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:53,905 [INFO] [Arena] Turn 40: eval_p1=0.222, eval_p2=0.222
+2025-11-19 04:05:54,647 [INFO] [Arena] Turn 50: eval_p1=0.333, eval_p2=0.333
+2025-11-19 04:05:54,660 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:05:54,660 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.222, eval_p2=0.222
+2025-11-19 04:05:54,661 [INFO] [Arena] Starting new game
+2025-11-19 04:05:55,952 [INFO] [Arena] Turn 10: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 04:05:57,351 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:05:58,518 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:05:59,767 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:06:00,642 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:06:00,657 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:06:00,657 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:06:00,658 [INFO] [Arena] Starting new game
+2025-11-19 04:06:02,276 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:06:03,524 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:06:04,604 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:06:05,833 [INFO] [Arena] Turn 40: eval_p1=0.333, eval_p2=0.333
+2025-11-19 04:06:06,603 [INFO] [Arena] Turn 50: eval_p1=0.333, eval_p2=0.333
+2025-11-19 04:06:06,614 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:06:06,614 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.222, eval_p2=0.222
+2025-11-19 04:06:06,615 [INFO] [Arena] Starting new game
+2025-11-19 04:06:07,800 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:06:09,119 [INFO] [Arena] Turn 20: eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:06:10,661 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:06:11,627 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:06:12,454 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:06:12,467 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:06:12,467 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:06:12,468 [INFO] [Arena] Starting new game
+2025-11-19 04:06:13,676 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:06:14,925 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:06:15,946 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:06:16,936 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:06:17,822 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:06:17,835 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:06:17,836 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:06:17,836 [INFO] [Arena] Game 10/10: PREV=5, NEW=2, Draws=3
+2025-11-19 04:06:17,837 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 04:06:17,837 [INFO] [Arena] PREVIOUS wins: 5/10 (50.0%)
+2025-11-19 04:06:17,837 [INFO] [Arena] NEW wins: 2/10 (20.0%)
+2025-11-19 04:06:17,837 [INFO] [Arena] Draws: 3/10 (30.0%)
+2025-11-19 04:06:17,837 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 04:06:17,837 [INFO] [Arena] Average final eval P (old): 0.071
+2025-11-19 04:06:17,837 [INFO] [Arena] Average final eval N (new): 0.071
+2025-11-19 04:06:17,837 [INFO] [Arena] Draw results: [0.0001, 0.0001, 0.0001]
+2025-11-19 04:06:17,837 [INFO] [Arena] =====================================
+2025-11-19 04:06:17,837 [INFO] NEW/PREV WINS : 2 / 5 ; DRAWS : 3
+2025-11-19 04:06:17,837 [INFO] REJECTING NEW MODEL
+2025-11-19 04:06:17,848 [INFO] Starting Iter #18 ...
+2025-11-19 04:08:40,116 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 04:08:40,118 [INFO] [Arena] Starting new game
+2025-11-19 04:08:40,963 [INFO] [Arena] Turn 10: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:08:42,023 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:08:43,069 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:08:46,933 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:08:47,710 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:08:47,724 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:08:47,725 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:08:47,725 [INFO] [Arena] Starting new game
+2025-11-19 04:08:48,733 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:08:50,020 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:08:51,165 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:08:52,322 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:08:52,979 [INFO] [Arena] Turn 50: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:08:52,993 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:08:52,994 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:08:52,994 [INFO] [Arena] Starting new game
+2025-11-19 04:08:53,892 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:08:55,110 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:08:56,176 [INFO] [Arena] Turn 30: eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:08:57,229 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:08:58,058 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:08:58,071 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:08:58,071 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:08:58,072 [INFO] [Arena] Starting new game
+2025-11-19 04:08:59,876 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:01,745 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:02,886 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:09:04,207 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:09:05,027 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:05,040 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:09:05,040 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:05,040 [INFO] [Arena] Starting new game
+2025-11-19 04:09:06,107 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:07,290 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:09:08,573 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:09:09,993 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:09:10,751 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:10,766 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:09:10,766 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:10,767 [INFO] [Arena] Game 5/10: PREV=3, NEW=2, Draws=0
+2025-11-19 04:09:10,767 [INFO] [Arena] Starting new game
+2025-11-19 04:09:11,787 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:12,974 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:14,035 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:15,144 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:15,999 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:09:16,014 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:09:16,015 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:09:16,015 [INFO] [Arena] Starting new game
+2025-11-19 04:09:17,320 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:18,792 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:22,782 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:24,159 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:24,979 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:24,992 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:09:24,992 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:24,993 [INFO] [Arena] Starting new game
+2025-11-19 04:09:26,375 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:28,793 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:29,869 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:30,876 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:31,749 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:31,761 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:09:31,761 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:09:31,762 [INFO] [Arena] Starting new game
+2025-11-19 04:09:32,790 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:09:33,827 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:34,966 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:09:35,987 [INFO] [Arena] Turn 40: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:09:36,735 [INFO] [Arena] Turn 50: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:09:36,746 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:09:36,746 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:09:36,746 [INFO] [Arena] Starting new game
+2025-11-19 04:09:38,070 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:39,639 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:09:40,626 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:09:41,610 [INFO] [Arena] Turn 40: eval_p1=-0.286, eval_p2=-0.286
+2025-11-19 04:09:42,359 [INFO] [Arena] Turn 50: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 04:09:42,373 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:09:42,373 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 04:09:42,373 [INFO] [Arena] Game 10/10: PREV=7, NEW=2, Draws=1
+2025-11-19 04:09:42,374 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 04:09:42,374 [INFO] [Arena] PREVIOUS wins: 7/10 (70.0%)
+2025-11-19 04:09:42,374 [INFO] [Arena] NEW wins: 2/10 (20.0%)
+2025-11-19 04:09:42,374 [INFO] [Arena] Draws: 1/10 (10.0%)
+2025-11-19 04:09:42,374 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 04:09:42,374 [INFO] [Arena] Average final eval P (old): 0.012
+2025-11-19 04:09:42,374 [INFO] [Arena] Average final eval N (new): 0.012
+2025-11-19 04:09:42,374 [INFO] [Arena] Draw results: [0.0001]
+2025-11-19 04:09:42,374 [INFO] [Arena] =====================================
+2025-11-19 04:09:42,374 [INFO] NEW/PREV WINS : 2 / 7 ; DRAWS : 1
+2025-11-19 04:09:42,374 [INFO] REJECTING NEW MODEL
+2025-11-19 04:09:42,386 [INFO] Starting Iter #19 ...
+2025-11-19 04:12:01,054 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 04:12:01,056 [INFO] [Arena] Starting new game
+2025-11-19 04:12:02,001 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:03,054 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:12:04,263 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:12:05,647 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:12:06,449 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:12:06,463 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:12:06,464 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:12:06,464 [INFO] [Arena] Starting new game
+2025-11-19 04:12:07,669 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:12:09,228 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:12:10,868 [INFO] [Arena] Turn 30: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:12:12,042 [INFO] [Arena] Turn 40: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:12:12,782 [INFO] [Arena] Turn 50: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:12:12,794 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:12:12,794 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:12:12,795 [INFO] [Arena] Starting new game
+2025-11-19 04:12:13,854 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:18,096 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:19,405 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:12:20,465 [INFO] [Arena] Turn 40: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 04:12:21,221 [INFO] [Arena] Turn 50: eval_p1=-0.286, eval_p2=-0.286
+2025-11-19 04:12:21,233 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:12:21,233 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.286, eval_p2=-0.286
+2025-11-19 04:12:21,234 [INFO] [Arena] Starting new game
+2025-11-19 04:12:22,266 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:12:23,438 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:24,930 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:26,115 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:26,992 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:27,004 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:12:27,004 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:12:27,005 [INFO] [Arena] Starting new game
+2025-11-19 04:12:28,512 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:12:29,833 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:30,892 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:31,871 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:32,755 [INFO] [Arena] Turn 50: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:12:32,768 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:12:32,769 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:12:32,769 [INFO] [Arena] Game 5/10: PREV=1, NEW=2, Draws=2
+2025-11-19 04:12:32,769 [INFO] [Arena] Starting new game
+2025-11-19 04:12:33,700 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:34,917 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:36,164 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:37,336 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:38,115 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:38,128 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:12:38,128 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:38,129 [INFO] [Arena] Starting new game
+2025-11-19 04:12:39,411 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:12:40,601 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:12:41,692 [INFO] [Arena] Turn 30: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:12:42,826 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:12:43,728 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:12:43,741 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:12:43,742 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.222, eval_p2=-0.222
+2025-11-19 04:12:43,742 [INFO] [Arena] Starting new game
+2025-11-19 04:12:45,583 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:47,182 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:48,150 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:49,178 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:49,913 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:49,925 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:12:49,925 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:12:49,926 [INFO] [Arena] Starting new game
+2025-11-19 04:12:54,242 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:12:55,206 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:56,332 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:12:57,427 [INFO] [Arena] Turn 40: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:12:58,253 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:12:58,267 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:12:58,267 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:12:58,267 [INFO] [Arena] Starting new game
+2025-11-19 04:12:59,543 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:13:00,965 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:13:02,383 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:13:03,554 [INFO] [Arena] Turn 40: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:13:04,486 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:13:04,498 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:13:04,499 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:13:04,499 [INFO] [Arena] Game 10/10: PREV=3, NEW=4, Draws=3
+2025-11-19 04:13:04,499 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 04:13:04,499 [INFO] [Arena] PREVIOUS wins: 3/10 (30.0%)
+2025-11-19 04:13:04,499 [INFO] [Arena] NEW wins: 4/10 (40.0%)
+2025-11-19 04:13:04,499 [INFO] [Arena] Draws: 3/10 (30.0%)
+2025-11-19 04:13:04,499 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 04:13:04,499 [INFO] [Arena] Average final eval P (old): -0.043
+2025-11-19 04:13:04,499 [INFO] [Arena] Average final eval N (new): -0.043
+2025-11-19 04:13:04,499 [INFO] [Arena] Draw results: [0.0001, 0.0001, 0.0001]
+2025-11-19 04:13:04,499 [INFO] [Arena] =====================================
+2025-11-19 04:13:04,499 [INFO] NEW/PREV WINS : 4 / 3 ; DRAWS : 3
+2025-11-19 04:13:04,499 [INFO] ACCEPTING NEW MODEL
+2025-11-19 04:13:04,516 [INFO] Starting Iter #20 ...
+2025-11-19 04:15:38,942 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 04:15:38,945 [INFO] [Arena] Starting new game
+2025-11-19 04:15:39,998 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:15:41,301 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:15:42,532 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:15:43,708 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:15:44,546 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:15:44,559 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:15:44,560 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:15:44,560 [INFO] [Arena] Starting new game
+2025-11-19 04:15:45,713 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:15:50,387 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:15:51,831 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:15:53,118 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:15:53,956 [INFO] [Arena] Turn 50: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 04:15:53,969 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:15:53,970 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 04:15:53,970 [INFO] [Arena] Starting new game
+2025-11-19 04:15:55,024 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:15:56,176 [INFO] [Arena] Turn 20: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:15:57,579 [INFO] [Arena] Turn 30: eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:15:58,916 [INFO] [Arena] Turn 40: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:15:59,644 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:15:59,655 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:15:59,656 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:15:59,656 [INFO] [Arena] Starting new game
+2025-11-19 04:16:00,599 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:01,569 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:02,885 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:04,208 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:04,901 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:04,916 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:16:04,916 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:04,917 [INFO] [Arena] Starting new game
+2025-11-19 04:16:07,365 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:16:09,470 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:16:11,361 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:12,764 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:13,526 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:13,541 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:16:13,542 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:16:13,542 [INFO] [Arena] Game 5/10: PREV=3, NEW=1, Draws=1
+2025-11-19 04:16:13,542 [INFO] [Arena] Starting new game
+2025-11-19 04:16:15,217 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:16:16,754 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:16:18,463 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:16:19,893 [INFO] [Arena] Turn 40: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:16:20,624 [INFO] [Arena] Turn 50: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:16:20,636 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:16:20,637 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:16:20,637 [INFO] [Arena] Starting new game
+2025-11-19 04:16:25,744 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:16:27,868 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:16:29,595 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:31,051 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:31,866 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:16:31,879 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:16:31,879 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:16:31,880 [INFO] [Arena] Starting new game
+2025-11-19 04:16:33,519 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:16:35,077 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:16:36,658 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:16:38,026 [INFO] [Arena] Turn 40: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:16:38,697 [INFO] [Arena] Turn 50: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:16:38,709 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:16:38,709 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:16:38,709 [INFO] [Arena] Starting new game
+2025-11-19 04:16:39,711 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:40,595 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:41,638 [INFO] [Arena] Turn 30: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:16:42,924 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:16:43,700 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:43,714 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:16:43,714 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:43,715 [INFO] [Arena] Starting new game
+2025-11-19 04:16:44,870 [INFO] [Arena] Turn 10: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:16:45,985 [INFO] [Arena] Turn 20: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:16:47,065 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:16:48,020 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:16:48,787 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:16:48,804 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:16:48,804 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=-0.053, eval_p2=-0.053
+2025-11-19 04:16:48,804 [INFO] [Arena] Game 10/10: PREV=3, NEW=4, Draws=3
+2025-11-19 04:16:48,805 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 04:16:48,805 [INFO] [Arena] PREVIOUS wins: 3/10 (30.0%)
+2025-11-19 04:16:48,805 [INFO] [Arena] NEW wins: 4/10 (40.0%)
+2025-11-19 04:16:48,805 [INFO] [Arena] Draws: 3/10 (30.0%)
+2025-11-19 04:16:48,805 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 04:16:48,805 [INFO] [Arena] Average final eval P (old): 0.055
+2025-11-19 04:16:48,805 [INFO] [Arena] Average final eval N (new): 0.055
+2025-11-19 04:16:48,805 [INFO] [Arena] Draw results: [0.0001, 0.0001, 0.0001]
+2025-11-19 04:16:48,805 [INFO] [Arena] =====================================
+2025-11-19 04:16:48,805 [INFO] NEW/PREV WINS : 4 / 3 ; DRAWS : 3
+2025-11-19 04:16:48,805 [INFO] ACCEPTING NEW MODEL
+2025-11-19 04:16:48,818 [INFO] Starting Iter #21 ...
+2025-11-19 04:19:05,284 [WARNING] Removing the oldest entry in trainExamples. len(trainExamplesHistory) = 21
+2025-11-19 04:19:11,339 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 04:19:11,341 [INFO] [Arena] Starting new game
+2025-11-19 04:19:12,259 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:19:13,213 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:14,293 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:15,431 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:16,192 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:16,205 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:19:16,205 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 04:19:16,206 [INFO] [Arena] Starting new game
+2025-11-19 04:19:20,167 [INFO] [Arena] Turn 10: eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:19:21,238 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:19:22,320 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:23,420 [INFO] [Arena] Turn 40: eval_p1=0.333, eval_p2=0.333
+2025-11-19 04:19:24,452 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:19:24,466 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:19:24,466 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:19:24,467 [INFO] [Arena] Starting new game
+2025-11-19 04:19:25,580 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:19:26,748 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:27,881 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:19:28,971 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:19:29,785 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:19:29,798 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:19:29,798 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:29,799 [INFO] [Arena] Starting new game
+2025-11-19 04:19:30,917 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:19:32,797 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:19:34,391 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:35,862 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:36,538 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:19:36,552 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:19:36,552 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:19:36,553 [INFO] [Arena] Starting new game
+2025-11-19 04:19:38,211 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:19:39,726 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:41,247 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:19:42,462 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:19:43,282 [INFO] [Arena] Turn 50: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:19:43,297 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:19:43,297 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:43,297 [INFO] [Arena] Game 5/10: PREV=1, NEW=4, Draws=0
+2025-11-19 04:19:43,297 [INFO] [Arena] Starting new game
+2025-11-19 04:19:45,911 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:19:47,849 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:19:49,786 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:50,966 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:51,907 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:51,920 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:19:51,921 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:19:51,921 [INFO] [Arena] Starting new game
+2025-11-19 04:19:56,165 [INFO] [Arena] Turn 10: eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:19:57,554 [INFO] [Arena] Turn 20: eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:19:58,730 [INFO] [Arena] Turn 30: eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:20:00,174 [INFO] [Arena] Turn 40: eval_p1=0.273, eval_p2=0.273
+2025-11-19 04:20:00,938 [INFO] [Arena] Turn 50: eval_p1=0.273, eval_p2=0.273
+2025-11-19 04:20:00,953 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:20:00,954 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.273, eval_p2=0.273
+2025-11-19 04:20:00,954 [INFO] [Arena] Starting new game
+2025-11-19 04:20:02,151 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:20:03,829 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:20:06,087 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:20:07,589 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:20:08,307 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:20:08,322 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:20:08,323 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:20:08,323 [INFO] [Arena] Starting new game
+2025-11-19 04:20:10,044 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:20:11,396 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:20:12,475 [INFO] [Arena] Turn 30: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:20:13,471 [INFO] [Arena] Turn 40: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:20:14,374 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:20:14,386 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:20:14,387 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:20:14,387 [INFO] [Arena] Starting new game
+2025-11-19 04:20:15,528 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:20:17,314 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:20:19,332 [INFO] [Arena] Turn 30: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:20:20,686 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:20:21,429 [INFO] [Arena] Turn 50: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:20:21,443 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:20:21,443 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:20:21,443 [INFO] [Arena] Game 10/10: PREV=4, NEW=5, Draws=1
+2025-11-19 04:20:21,443 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 04:20:21,443 [INFO] [Arena] PREVIOUS wins: 4/10 (40.0%)
+2025-11-19 04:20:21,443 [INFO] [Arena] NEW wins: 5/10 (50.0%)
+2025-11-19 04:20:21,443 [INFO] [Arena] Draws: 1/10 (10.0%)
+2025-11-19 04:20:21,444 [INFO] [Arena] Average game length: 50.0 turns
+2025-11-19 04:20:21,444 [INFO] [Arena] Average final eval P (old): 0.014
+2025-11-19 04:20:21,444 [INFO] [Arena] Average final eval N (new): 0.014
+2025-11-19 04:20:21,444 [INFO] [Arena] Draw results: [0.0001]
+2025-11-19 04:20:21,444 [INFO] [Arena] =====================================
+2025-11-19 04:20:21,444 [INFO] NEW/PREV WINS : 5 / 4 ; DRAWS : 1
+2025-11-19 04:20:21,444 [INFO] ACCEPTING NEW MODEL
+2025-11-19 04:20:21,457 [INFO] Starting Iter #22 ...
+2025-11-19 04:21:58,705 [ERROR] [CRITICAL] Exception in episode at step 40: ValueError: Destinations corrupted at index <tuple_iterator object at 0x7f6521755a80>: <enumerate object at 0x7f64be4d3940> (type: <class 'enumerate'>), from_tile=(2,0)
+2025-11-19 04:21:58,705 [ERROR]   curPlayer=-1, action=227
+2025-11-19 04:21:58,705 [ERROR]   Episode will be terminated early
+2025-11-19 04:21:58,706 [ERROR] Training crashed with ValueError: Destinations corrupted at index <tuple_iterator object at 0x7f6521755a80>: <enumerate object at 0x7f64be4d3940> (type: <class 'enumerate'>), from_tile=(2,0)
+2025-11-19 04:21:58,706 [ERROR] Traceback (most recent call last):
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/run_training.py", line 36, in run_training
+    main.main()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/main.py", line 247, in main
+    c.learn()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/Coach.py", line 159, in learn
+    iterationTrainExamples += self.executeEpisode()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/Coach.py", line 65, in executeEpisode
+    pi = self.mcts.getActionProb(canonicalBoard, temp=temp)
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/MCTS.py", line 72, in getActionProb
+    self.search(canonicalBoard)
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/MCTS.py", line 224, in search
+    v = self.search(next_s, depth + 1)
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/MCTS.py", line 224, in search
+    v = self.search(next_s, depth + 1)
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/MCTS.py", line 224, in search
+    v = self.search(next_s, depth + 1)
+  [Previous line repeated 2 more times]
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/MCTS.py", line 221, in search
+    next_s, next_player = self.game.getNextState(canonicalBoard, 1, a)
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/AntiyoyGame.py", line 76, in getNextState
+    b = self._board_from_numpy(board, player)
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/AntiyoyGame.py", line 242, in _board_from_numpy
+    return Board.from_numpy(numpy_board, player)
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/AntiyoyLogic.py", line 276, in from_numpy
+    board = cls(
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/AntiyoyLogic.py", line 98, in __init__
+    self._build_destination_lookup()
+  File "/home/nrcunard/csc520/520ProjectAntiyoyAI/alpha_zero/antiyoy/AntiyoyLogic.py", line 360, in _build_destination_lookup
+    raise ValueError(f"Destinations corrupted at index {i}: {d} (type: {type(d)}), from_tile=({from_row},{from_col})")
+ValueError: Destinations corrupted at index <tuple_iterator object at 0x7f6521755a80>: <enumerate object at 0x7f64be4d3940> (type: <class 'enumerate'>), from_tile=(2,0)
+
+2025-11-19 04:21:58,707 [WARNING] 
+================================================================================
+2025-11-19 04:21:58,707 [WARNING] Training crashed! This was crash #1
+2025-11-19 04:21:58,707 [WARNING] Waiting 5 seconds before restarting from checkpoint...
+2025-11-19 04:21:58,708 [WARNING] ================================================================================
+
+2025-11-19 04:22:03,712 [INFO] Restarting training from most recent checkpoint...
+2025-11-19 04:22:03,712 [INFO] 
+================================================================================
+2025-11-19 04:22:03,712 [INFO] Training attempt #2 (Total crashes: 1)
+2025-11-19 04:22:03,712 [INFO] Started at: 2025-11-19 04:22:03
+2025-11-19 04:22:03,712 [INFO] ================================================================================
+
+2025-11-19 04:22:03,712 [INFO] ============================================================
+2025-11-19 04:22:03,712 [INFO] ANTIYOY ALPHAZERO TRAINING
+2025-11-19 04:22:03,712 [INFO] ============================================================
+2025-11-19 04:22:03,712 [INFO] Loading AntiyoyGame...
+2025-11-19 04:22:03,712 [INFO] Game Configuration:
+2025-11-19 04:22:03,712 [INFO]   Board size: (22, 4, 4)
+2025-11-19 04:22:03,712 [INFO]   Action size: 433
+2025-11-19 04:22:03,712 [INFO] Loading NNetWrapper...
+2025-11-19 04:22:03,782 [INFO] Neural Network Configuration:
+2025-11-19 04:22:03,782 [INFO]   Input channels: 22 (board state encoding)
+2025-11-19 04:22:03,782 [INFO]   Output size: 433 (possible actions)
+2025-11-19 04:22:03,782 [WARNING] Not loading a checkpoint - starting from scratch!
+2025-11-19 04:22:03,782 [WARNING] Training from scratch will take a long time.
+2025-11-19 04:22:03,782 [WARNING] Consider setting load_model=True to resume from a checkpoint.
+2025-11-19 04:22:03,782 [INFO] Loading the Coach...
+2025-11-19 04:22:03,786 [INFO] ============================================================
+2025-11-19 04:22:03,786 [INFO] Starting the learning process 🎉
+2025-11-19 04:22:03,786 [INFO] ============================================================
+2025-11-19 04:22:03,787 [INFO] 
+2025-11-19 04:22:03,787 [INFO] Training Configuration:
+2025-11-19 04:22:03,787 [INFO]   Iterations: 1000
+2025-11-19 04:22:03,787 [INFO]   Self-play games per iteration: 20
+2025-11-19 04:22:03,787 [INFO]   MCTS simulations per move: 25
+2025-11-19 04:22:03,787 [INFO]   Arena games for evaluation: 10
+2025-11-19 04:22:03,787 [INFO]   Update threshold: 0.48
+2025-11-19 04:22:03,787 [INFO] 
+2025-11-19 04:22:03,787 [INFO] This will take a long time. You can:
+2025-11-19 04:22:03,787 [INFO]   - Monitor progress in the terminal
+2025-11-19 04:22:03,787 [INFO]   - Checkpoints are saved to: ./temp/
+2025-11-19 04:22:03,787 [INFO]   - Press Ctrl+C to stop (progress is saved)
+2025-11-19 04:22:03,787 [INFO] 
+2025-11-19 04:22:03,787 [INFO] ============================================================
+2025-11-19 04:22:03,787 [INFO] Starting Iter #1 ...
+2025-11-19 04:23:36,489 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 04:23:36,489 [INFO] [Arena] Starting new game
+2025-11-19 04:23:37,478 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:23:38,469 [INFO] [Arena] Turn 20: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:23:39,407 [INFO] [Arena] Turn 30: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:23:40,294 [INFO] [Arena] Turn 40: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:23:41,142 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:23:41,156 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:23:41,157 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:23:41,157 [INFO] [Arena] Starting new game
+2025-11-19 04:23:41,967 [INFO] [Arena] Turn 10: eval_p1=-0.273, eval_p2=-0.273
+2025-11-19 04:23:42,864 [INFO] [Arena] Turn 20: eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 04:23:43,746 [INFO] [Arena] Turn 30: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 04:23:44,598 [INFO] [Arena] Turn 40: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 04:23:45,392 [INFO] [Arena] Turn 50: eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 04:23:45,407 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:23:45,407 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=-0.200, eval_p2=-0.200
+2025-11-19 04:23:45,407 [INFO] [Arena] Starting new game
+2025-11-19 04:23:46,250 [INFO] [Arena] Turn 10: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 04:23:47,168 [INFO] [Arena] Turn 20: eval_p1=0.176, eval_p2=0.176
+2025-11-19 04:23:48,174 [INFO] [Arena] Turn 30: eval_p1=-0.231, eval_p2=-0.231
+2025-11-19 04:23:49,292 [INFO] [Arena] Turn 40: eval_p1=-0.143, eval_p2=-0.143
+2025-11-19 04:23:50,217 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:23:50,230 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:23:50,231 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:23:50,231 [INFO] [Arena] Starting new game
+2025-11-19 04:23:51,109 [INFO] [Arena] Turn 10: eval_p1=-0.167, eval_p2=-0.167
+2025-11-19 04:23:52,017 [INFO] [Arena] Turn 20: eval_p1=-0.444, eval_p2=-0.444
+2025-11-19 04:23:52,932 [INFO] [Arena] Turn 30: eval_p1=-0.684, eval_p2=-0.684
+2025-11-19 04:23:53,463 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:23:53,463 [INFO] [Arena] Game finished in 36 turns, winner=-1, eval_p1=-1.000, eval_p2=-1.000
+2025-11-19 04:23:53,463 [INFO] [Arena] Starting new game
+2025-11-19 04:23:54,280 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:23:55,143 [INFO] [Arena] Turn 20: eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:23:56,021 [INFO] [Arena] Turn 30: eval_p1=0.385, eval_p2=0.385
+2025-11-19 04:23:57,002 [INFO] [Arena] Turn 40: eval_p1=0.385, eval_p2=0.385
+2025-11-19 04:23:57,790 [INFO] [Arena] Turn 50: eval_p1=0.333, eval_p2=0.333
+2025-11-19 04:23:57,805 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:23:57,806 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.333, eval_p2=0.333
+2025-11-19 04:23:57,806 [INFO] [Arena] Game 5/10: PREV=3, NEW=2, Draws=0
+2025-11-19 04:23:57,806 [INFO] [Arena] Starting new game
+2025-11-19 04:23:58,597 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:24:02,332 [INFO] [Arena] Turn 20: eval_p1=0.286, eval_p2=0.286
+2025-11-19 04:24:03,168 [INFO] [Arena] Turn 30: eval_p1=0.286, eval_p2=0.286
+2025-11-19 04:24:04,011 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 04:24:04,682 [INFO] [Arena] Turn 50: eval_p1=0.429, eval_p2=0.429
+2025-11-19 04:24:04,698 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:24:04,699 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.429, eval_p2=0.429
+2025-11-19 04:24:04,699 [INFO] [Arena] Starting new game
+2025-11-19 04:24:05,442 [INFO] [Arena] Turn 10: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:24:06,282 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:24:07,204 [INFO] [Arena] Turn 30: eval_p1=0.286, eval_p2=0.286
+2025-11-19 04:24:08,039 [INFO] [Arena] Turn 40: eval_p1=0.333, eval_p2=0.333
+2025-11-19 04:24:08,788 [INFO] [Arena] Turn 50: eval_p1=0.250, eval_p2=0.250
+2025-11-19 04:24:08,806 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:24:08,806 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.250, eval_p2=0.250
+2025-11-19 04:24:08,806 [INFO] [Arena] Starting new game
+2025-11-19 04:24:09,576 [INFO] [Arena] Turn 10: eval_p1=-0.091, eval_p2=-0.091
+2025-11-19 04:24:10,347 [INFO] [Arena] Turn 20: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:24:11,257 [INFO] [Arena] Turn 30: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:24:12,219 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:24:12,959 [INFO] [Arena] Turn 50: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:24:12,974 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:24:12,975 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:24:12,975 [INFO] [Arena] Starting new game
+2025-11-19 04:24:13,747 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:24:14,617 [INFO] [Arena] Turn 20: eval_p1=0.231, eval_p2=0.231
+2025-11-19 04:24:15,590 [INFO] [Arena] Turn 30: eval_p1=0.385, eval_p2=0.385
+2025-11-19 04:24:16,432 [INFO] [Arena] Turn 40: eval_p1=0.286, eval_p2=0.286
+2025-11-19 04:24:17,209 [INFO] [Arena] Turn 50: eval_p1=0.250, eval_p2=0.250
+2025-11-19 04:24:17,228 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:24:17,228 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.250, eval_p2=0.250
+2025-11-19 04:24:17,228 [INFO] [Arena] Starting new game
+2025-11-19 04:24:18,117 [INFO] [Arena] Turn 10: eval_p1=0.091, eval_p2=0.091
+2025-11-19 04:24:19,072 [INFO] [Arena] Turn 20: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:24:20,177 [INFO] [Arena] Turn 30: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:24:21,163 [INFO] [Arena] Turn 40: eval_p1=0.067, eval_p2=0.067
+2025-11-19 04:24:21,934 [INFO] [Arena] Turn 50: eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:24:21,946 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:24:21,947 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.200, eval_p2=0.200
+2025-11-19 04:24:21,947 [INFO] [Arena] Game 10/10: PREV=6, NEW=4, Draws=0
+2025-11-19 04:24:21,947 [INFO] [Arena] ========== ARENA RESULTS ==========
+2025-11-19 04:24:21,947 [INFO] [Arena] PREVIOUS wins: 6/10 (60.0%)
+2025-11-19 04:24:21,947 [INFO] [Arena] NEW wins: 4/10 (40.0%)
+2025-11-19 04:24:21,947 [INFO] [Arena] Draws: 0/10 (0.0%)
+2025-11-19 04:24:21,947 [INFO] [Arena] Average game length: 48.6 turns
+2025-11-19 04:24:21,947 [INFO] [Arena] Average final eval P (old): 0.026
+2025-11-19 04:24:21,947 [INFO] [Arena] Average final eval N (new): 0.026
+2025-11-19 04:24:21,947 [INFO] [Arena] =====================================
+2025-11-19 04:24:21,948 [INFO] NEW/PREV WINS : 4 / 6 ; DRAWS : 0
+2025-11-19 04:24:21,948 [INFO] REJECTING NEW MODEL
+2025-11-19 04:24:21,960 [INFO] Starting Iter #2 ...
+2025-11-19 04:25:53,509 [INFO] PITTING AGAINST PREVIOUS VERSION
+2025-11-19 04:25:53,510 [INFO] [Arena] Starting new game
+2025-11-19 04:25:54,276 [INFO] [Arena] Turn 10: eval_p1=-0.077, eval_p2=-0.077
+2025-11-19 04:25:55,139 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:25:55,960 [INFO] [Arena] Turn 30: eval_p1=-0.125, eval_p2=-0.125
+2025-11-19 04:25:56,803 [INFO] [Arena] Turn 40: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:25:57,507 [INFO] [Arena] Turn 50: eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:25:57,520 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:25:57,521 [INFO] [Arena] Game finished in 50 turns, winner=0.0001, eval_p1=0.000, eval_p2=0.000
+2025-11-19 04:25:57,522 [INFO] [Arena] Starting new game
+2025-11-19 04:25:58,292 [INFO] [Arena] Turn 10: eval_p1=-0.067, eval_p2=-0.067
+2025-11-19 04:25:59,107 [INFO] [Arena] Turn 20: eval_p1=-0.263, eval_p2=-0.263
+2025-11-19 04:25:59,983 [INFO] [Arena] Turn 30: eval_p1=-0.400, eval_p2=-0.400
+2025-11-19 04:26:00,861 [INFO] [Arena] Turn 40: eval_p1=-0.400, eval_p2=-0.400
+2025-11-19 04:26:01,686 [INFO] [Arena] Turn 50: eval_p1=-0.400, eval_p2=-0.400
+2025-11-19 04:26:01,700 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:26:01,701 [INFO] [Arena] Game finished in 50 turns, winner=-1.0, eval_p1=-0.400, eval_p2=-0.400
+2025-11-19 04:26:01,701 [INFO] [Arena] Starting new game
+2025-11-19 04:26:02,491 [INFO] [Arena] Turn 10: eval_p1=0.077, eval_p2=0.077
+2025-11-19 04:26:03,386 [INFO] [Arena] Turn 20: eval_p1=0.143, eval_p2=0.143
+2025-11-19 04:26:04,259 [INFO] [Arena] Turn 30: eval_p1=0.250, eval_p2=0.250
+2025-11-19 04:26:05,128 [INFO] [Arena] Turn 40: eval_p1=0.125, eval_p2=0.125
+2025-11-19 04:26:05,966 [INFO] [Arena] Turn 50: eval_p1=0.250, eval_p2=0.250
+2025-11-19 04:26:05,981 [ERROR] Failed to print board state: Board.from_numpy() got an unexpected keyword argument 'player'
+2025-11-19 04:26:05,982 [INFO] [Arena] Game finished in 50 turns, winner=1.0, eval_p1=0.250, eval_p2=0.250
+2025-11-19 04:26:05,982 [INFO] [Arena] Starting new game
+2025-11-19 04:26:06,790 [INFO] [Arena] Turn 10: eval_p1=0.167, eval_p2=0.167
+2025-11-19 04:26:07,791 [INFO] [Arena] Turn 20: eval_p1=0.000, eval_p2=0.000

@@ -57,7 +57,7 @@ args = dotdict({
     # More games = more diverse training data but slower iterations
     # Fewer games = faster iterations but less diverse data
     # Typical range: 50-200
-    'numEps': 50,
+    'numEps': 20,
 
     # Temperature threshold for move selection
     # First N moves use temperature=1 (exploration)
@@ -117,7 +117,7 @@ args = dotdict({
     # More games = more reliable evaluation but slower
     # Fewer games = faster but less reliable
     # Typical range: 20-100
-    'arenaCompare': 25,
+    'arenaCompare': 10,
 
     # ===================================================================
     # TRAINING DATA PARAMETERS

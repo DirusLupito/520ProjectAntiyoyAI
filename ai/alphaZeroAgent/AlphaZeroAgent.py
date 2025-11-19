@@ -347,8 +347,15 @@ def _get_or_create_agent():
     """
     Get or create the global AlphaZero agent instance.
 
-    This ensures the agent is only created once and reused across turns,
+    This ensures the agent is only created once per process and reused across turns,
     which is much more efficient than creating a new agent each turn.
+
+    Configuration via environment variables:
+    - ALPHAZERO_CHECKPOINT_FOLDER: Path to checkpoint folder (default: temp/)
+    - ALPHAZERO_CHECKPOINT_FILE: Checkpoint filename (default: best.pth.tar)
+    - ALPHAZERO_USE_MCTS: "true" to enable MCTS, "false" for policy-only (default: false)
+    - ALPHAZERO_MCTS_SIMS: Number of MCTS simulations if enabled (default: 25)
+    - ALPHAZERO_TEMPERATURE: Temperature for move selection (default: 0.4)
 
     Returns:
         AlphaZeroAgent instance, or None if checkpoint not found
@@ -358,13 +365,24 @@ def _get_or_create_agent():
     if _agent_initialized:
         return _global_agent
 
+    # Get configuration from environment variables
+    checkpoint_folder = os.getenv(
+        'ALPHAZERO_CHECKPOINT_FOLDER',
+        '/home/nrcunard/csc520/520ProjectAntiyoyAI/temp/'
+    )
+    checkpoint_file = os.getenv('ALPHAZERO_CHECKPOINT_FILE', 'best.pth.tar')
+    use_mcts = os.getenv('ALPHAZERO_USE_MCTS', 'false').lower() == 'true'
+    num_mcts_sims = int(os.getenv('ALPHAZERO_MCTS_SIMS', '25'))
+    temperature = float(os.getenv('ALPHAZERO_TEMPERATURE', '0.4'))
+
     # Try to create the agent
     try:
         _global_agent = AlphaZeroAgent(
-            checkpoint_folder='/home/nrcunard/csc520/520ProjectAntiyoyAI/temp/',
-            checkpoint_file='best.pth.tar',
-            use_mcts=False,  # Fast mode for gameplay (set to True for stronger play)
-            num_mcts_sims=25
+            checkpoint_folder=checkpoint_folder,
+            checkpoint_file=checkpoint_file,
+            use_mcts=use_mcts,
+            num_mcts_sims=num_mcts_sims,
+            temperature=temperature
         )
         _agent_initialized = True
         print("✓ AlphaZero agent loaded and ready!")
@@ -398,6 +416,9 @@ def playTurn(scenario, faction):
     the game engine. It uses a persistent AlphaZero agent instance
     that's created once and reused across turns for efficiency.
 
+    Configuration via environment variables:
+    - ALPHAZERO_DEBUG: "true" to enable debug output (default: false)
+
     Args:
         scenario: Current game scenario
         faction: Faction to play for
@@ -413,6 +434,8 @@ def playTurn(scenario, faction):
         # This prevents crashes when the model hasn't been trained yet
         return []
 
+    # Check if debug mode is enabled
+    debug = os.getenv('ALPHAZERO_DEBUG', 'false').lower() == 'true'
+
     # Use the agent to generate actions
-    # Enable debug=True to see detailed output about what the agent is thinking
-    return agent.playTurn(scenario, faction, debug=True)
+    return agent.playTurn(scenario, faction, debug=debug)
