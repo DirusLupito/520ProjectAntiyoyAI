@@ -3,7 +3,15 @@ from ai.simpleRuleBasedAgent.mark1SRB import playTurn as mark1PlayTurn
 from ai.simpleRuleBasedAgent.mark2SRB import playTurn as mark2PlayTurn
 from ai.simpleRuleBasedAgent.mark3SRB import playTurn as mark3PlayTurn
 from ai.simpleRuleBasedAgent.mark4SRB import playTurn as mark4PlayTurn
-from ai.deepLearning.ppoAI import playTurn as ppoPlayTurn
+try:
+    from ai.deepLearning.ppoAI import playTurn as ppoPlayTurn
+except ImportError:
+    # If the deep learning dependencies are not installed,
+    # we can still use other AI types
+    def ppoPlayTurn(*args, **kwargs):
+        print("PPO AI is not available because the required dependencies are not installed.")
+        return None
+    
 from ai.minimax.minimax_anti import playTurn as minimaxPlayTurn
 
 class AIPersonality:
