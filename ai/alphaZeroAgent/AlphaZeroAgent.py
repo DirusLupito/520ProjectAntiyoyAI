@@ -64,11 +64,11 @@ class AlphaZeroAgent:
                         0 = always choose best move (greedy)
                         >0 = sample from distribution (stochastic)
         """
-        print(f"Initializing AlphaZero agent...")
-        print(f"  Checkpoint: {checkpoint_folder}/{checkpoint_file}")
-        print(f"  MCTS: {'Enabled' if use_mcts else 'Disabled'}")
-        if use_mcts:
-            print(f"  MCTS simulations: {num_mcts_sims}")
+        # print(f"Initializing AlphaZero agent...")
+        # print(f"  Checkpoint: {checkpoint_folder}/{checkpoint_file}")
+        # print(f"  MCTS: {'Enabled' if use_mcts else 'Disabled'}")
+        # if use_mcts:
+        #     print(f"  MCTS simulations: {num_mcts_sims}")
 
         # Initialize game and neural network
         self.game = AntiyoyGame()
@@ -80,7 +80,7 @@ class AlphaZeroAgent:
             checkpoint_folder
         )
         self.nnet.load_checkpoint(full_checkpoint_path, checkpoint_file)
-        print(f"✓ Neural network loaded successfully!")
+        # print(f"✓ Neural network loaded successfully!")
 
         # Set up MCTS if requested
         self.use_mcts = use_mcts
@@ -91,12 +91,14 @@ class AlphaZeroAgent:
             mcts_args = dotdict({
                 'numMCTSSims': num_mcts_sims,
                 'cpuct': 1.0,
+                'dirichletAlpha': 0.3,  # Exploration noise concentration
+                'explorationFraction': 0.25,  # Fraction of policy from noise
             })
             self.mcts = MCTS(self.game, self.nnet, mcts_args)
         else:
             self.mcts = None
 
-        print(f"✓ AlphaZero agent ready!")
+        # print(f"✓ AlphaZero agent ready!")
 
     def playTurn(self, scenario, faction, debug=False):
         """
@@ -371,8 +373,8 @@ def _get_or_create_agent():
         '/home/nrcunard/csc520/520ProjectAntiyoyAI/temp/'
     )
     checkpoint_file = os.getenv('ALPHAZERO_CHECKPOINT_FILE', 'best.pth.tar')
-    use_mcts = os.getenv('ALPHAZERO_USE_MCTS', 'false').lower() == 'true'
-    num_mcts_sims = int(os.getenv('ALPHAZERO_MCTS_SIMS', '25'))
+    use_mcts = os.getenv('ALPHAZERO_USE_MCTS', 'true').lower() == 'true'
+    num_mcts_sims = int(os.getenv('ALPHAZERO_MCTS_SIMS', '50'))
     temperature = float(os.getenv('ALPHAZERO_TEMPERATURE', '0.4'))
 
     # Try to create the agent

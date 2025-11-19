@@ -17,3 +17,6 @@ temp/*# Byte-compiled / optimized / DLL files
 *tournamentStats*
 *tournamentReplays*
 *tournamentResults*
+temp/*
+aztourney*/*
+aztourney*

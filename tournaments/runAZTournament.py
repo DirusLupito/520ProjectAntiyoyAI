@@ -40,8 +40,8 @@ def runAlphaZeroTournament() -> None:
         "recordReplays": False,
         "displayGames": False,
         "trackStatistics": True,
-        "parallelWorkerCount": 4,
-        "maxTurns": 1000,
+        "parallelWorkerCount": 8,
+        "maxTurns": 100,
         "printSummary": False,
     }
 
@@ -61,6 +61,8 @@ def runAlphaZeroTournament() -> None:
     ]
 
     for slot1Name, slot1Type, slot2Name, slot2Type in matchups:
+        print(f"Running {slot1Name} vs. {slot2Name}")
+
         personalities = [
             AIPersonality(slot1Name, slot1Type),
             AIPersonality(slot2Name, slot2Type),

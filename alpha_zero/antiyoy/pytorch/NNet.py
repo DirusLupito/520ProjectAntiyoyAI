@@ -104,7 +104,7 @@ class NNetWrapper(NeuralNet):
         # Move network to GPU if available
         if args.cuda:
             self.nnet.cuda()
-            print("Using CUDA (GPU acceleration)")
+            # print("Using CUDA (GPU acceleration)")
         else:
             print("Using CPU (consider using GPU for faster training)")
 
@@ -415,7 +415,7 @@ class NNetWrapper(NeuralNet):
         # Restore network weights
         self.nnet.load_state_dict(checkpoint['state_dict'])
 
-        print(f"Loaded checkpoint from {filepath}")
+        # print(f"Loaded checkpoint from {filepath}")
 
 
 # ===================================================================

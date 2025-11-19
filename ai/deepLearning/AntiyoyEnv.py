@@ -6,7 +6,7 @@ from game.Action import Action
 from game.world.factions.Province import Province
 from game.world.units.Soldier import Soldier
 from game.world.units.Structure import Structure
-import gym
+import gymnasium as gym
 import numpy as np
 from ai.utils.commonAIUtilityFunctions import checkTimeToBankruptProvince, isEnemyTile
 
@@ -687,7 +687,7 @@ class AntiyoyEnv(gym.Env):
             unit = self.scenario.mapData[r][c].unit
 
             # No unit or wrong faction → all false
-            if unit is None or unit.owner.name !=self.scenario.factions[self.faction_idx].name or not self.can_move_unit(unit):
+            if unit is None or unit.owner is None or unit.owner.name !=self.scenario.factions[self.faction_idx].name or not self.can_move_unit(unit):
                 move_mask_list.extend([False] * self.MAX_REACHABLE)
                 continue
 
