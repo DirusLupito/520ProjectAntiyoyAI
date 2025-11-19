@@ -8,4 +8,12 @@
 *tournamentReplays*
 alpha-zero/temp/*
 *.venv*
-temp/*
+temp/*# Byte-compiled / optimized / DLL files
+# I do not care for these files...
+*__pycache__*
+# No replay files
+*.ayrf
+# No tournament result files
+*tournamentStats*
+*tournamentReplays*
+*tournamentResults*
