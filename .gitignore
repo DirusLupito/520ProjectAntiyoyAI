@@ -1,30 +1,29 @@
-# Byte-compiled / optimized / DLL files
-# I do not care for these files...
-*__pycache__*
-# No replay files
-*.ayrf
-# No tournament result files
-*tournamentStats*
-*tournamentReplays*
-alpha-zero/temp/*
-*.venv*
-# I do not care for these files...
-*__pycache__*
-# No replay files
-*.ayrf
-# No tournament result files
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+*.venv
+
+# Training artifacts
+*.pth
+*.tar
+*.zip
+*.log
+
+# Tournament results
 *tournamentStats*
 *tournamentReplays*
 *tournamentResults*
-temp/*
-aztourney*/*
-aztourney*
-*.pth
-*.zip
-*.tar
-*.log
+
+# Game replays
+*.ayrf
+
+# Temporary files
+temp/
+alpha-zero/temp/
+
+# Project-specific
+aztourney*/
 remote_setup.sh
 input.txt
-temp/
-aztourney/
-aztourney2/

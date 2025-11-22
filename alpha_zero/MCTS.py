@@ -189,11 +189,7 @@ class MCTS():
             if sum_Ps_s > 0 and not np.isnan(sum_Ps_s):
                 self.Ps[s] /= sum_Ps_s  # renormalize
             else:
-                # Handle both masked moves and NaN values
-                # NB! All valid moves may be masked if either your NNet architecture is insufficient or you've get overfitting or something else.
-                # If you have got dozens or hundreds of these messages you should pay attention to your NNet and/or training process.
                 log.error(f"Invalid policy sum ({sum_Ps_s}), using uniform over valid moves")
-                # Replace with uniform distribution over valid moves (don't add to NaN)
                 self.Ps[s] = valids / np.sum(valids)
 
             self.Vs[s] = valids
