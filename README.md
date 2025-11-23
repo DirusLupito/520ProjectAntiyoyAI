@@ -61,3 +61,5 @@ located in the tournaments folder to change parameters of the tournament.
 Also, if you have many CPU cores available and plenty of RAM, 
 you can increase the number of parallel workers used in the tournaments 
 to speed up the process of running the tournaments.
+
+## For AlphaZero instructions, use the readme in the second alpha-zero branch
