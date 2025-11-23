@@ -1,7 +1,7 @@
 # 520ProjectAntiyoyAI
 Project for CSC 520. An AI which can play a replica of Antiyoy by yiotro.
 
-<!-- TODO: EXPLAIN HOW TO GET THE ALPHAZERO TOURNAMENT RUNNER FILE TO WORK -->
+## For AlphaZero instructions, use the readme in the second alpha-zero branch
 
 To generate test data used in our paper for every agent other than AlphaZero,
 you will need the Torch library and the Gym library installed. I recommend using
@@ -61,5 +61,3 @@ located in the tournaments folder to change parameters of the tournament.
 Also, if you have many CPU cores available and plenty of RAM, 
 you can increase the number of parallel workers used in the tournaments 
 to speed up the process of running the tournaments.
-
-## For AlphaZero instructions, use the readme in the second alpha-zero branch
